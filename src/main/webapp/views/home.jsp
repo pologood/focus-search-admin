@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
 <head>
-<title>商圈管理系统</title>
+<title>搜索后台管理系统</title>
 <%@ include file="/common/common.jsp"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style type="text/css">

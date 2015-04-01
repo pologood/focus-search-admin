@@ -59,6 +59,7 @@ public class IndexController {
 			String password = request.getParameter("password");
 			
 //			logger.info("userName:"+userInfo.getUserName()+" passWord:"+userInfo.getPassword());
+			System.out.println("userName:"+userName+" password: "+password);
 			
 			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
 				return "login";
@@ -72,6 +73,8 @@ public class IndexController {
 			HttpSession session = request.getSession(); 
 			session.setMaxInactiveInterval(3600); //一个小时过期
 			session.setAttribute("user", userInfo);
+			
+			System.out.println("redirect:/search/admin/home");
 			
 			return "redirect:/search/admin/home";
 			
@@ -135,6 +138,7 @@ public class IndexController {
 	}
 	
 	public static void main(String args[]){
+		//admin ,以下是用户的登陆密码
 		System.out.println(DigestUtils.md5Hex("Search!@#"));
 	}
 

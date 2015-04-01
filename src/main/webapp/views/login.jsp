@@ -19,7 +19,7 @@ href="/static/images/login/User_Login.css" type=text/css rel=stylesheet>
 
 <BODY id=userlogin_body>
 <DIV></DIV>
- <form name='frm1' action="http://localhost:8080/search/admin/login" method="post" >
+ <form name='frm1' action="<%=basePath %>/search/admin/login" method="post" >
 <DIV id=user_login>
 <DL>
   <DD id=user_top>

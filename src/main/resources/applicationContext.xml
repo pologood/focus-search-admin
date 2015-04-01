@@ -87,22 +87,22 @@
          </bean>
 
          <!-- 使用annotation注解方式配置事务 -->
-         <tx:annotation-driven transaction-manager="transactionManager"/>
+      <!--    <tx:annotation-driven transaction-manager="transactionManager"/> -->
 
          <!-- AOP 配置事务的传播特性 -->
-         <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+<!--          <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
              <tx:attributes>
                  <tx:method name="query*" read-only="true"/>
                  <tx:method name="get*" read-only="true" />
                  <tx:method name="select*" read-only="true" />
-<!--                  <tx:method name="*"  propagation="REQUIRED"/>
+                 <tx:method name="*"  propagation="REQUIRED"/>
                  <tx:method name="delete*" propagation="REQUIRED"/>
                  <tx:method name="update*" propagation="REQUIRED"/>
                  <tx:method name="insert*" propagation="REQUIRED"/>
                  <tx:method name="modify*" propagation="REQUIRED"/>
-                 <tx:method name="create*" propagation="REQUIRED"/> -->
+                 <tx:method name="create*" propagation="REQUIRED"/>
              </tx:attributes>
-         </tx:advice>
+         </tx:advice> -->
 
          <!-- 配置AOP切面含义:第一个* 代表任意返回值
            cn.focus.search.news.services包及其子包下所有类的所有()方法
@@ -110,10 +110,10 @@
            一条sql是一个原子操作，如果一个方法中只有一条sql,没有必要用事务，如果一个方法里有多个sql就需要事务统一
            成功，统一失败（必需把异常throws出去）弄了好久才想起来！
          -->
-         <aop:config>
+<!--          <aop:config>
              <aop:pointcut id="transactionPointcut" expression="execution(* cn.focus.rec.services..*(..))"/>
              <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
-         </aop:config>
+         </aop:config> -->
 
 
          <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
