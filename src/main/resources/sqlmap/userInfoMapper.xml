@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="UserInfoDao">
+	<!--mybatis3 这个namespace 必需指定到接口上去 -->
+	<resultMap id="BaseResultMap" type="UserInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="access_token" property="accessToken" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="update_time" property="updateTime" jdbcType="DATE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id as id,
+		user_name as userName,
+		password as password,
+		access_token as accessToken,
+		create_time as createTime,
+		update_time as
+		updateTime
+
+	</sql>
+
+	<select id="getUserInfo" resultType="UserInfo" parameterType="UserInfo"
+		statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		where user_name=#{userName} and password=#{password}
+	</select>
+
+	<update id="updateUserToken" parameterType="UserInfo"
+		statementType="PREPARED" flushCache="true">
+		update user_info
+		<set>
+			<if test="accessToken != null">access_token = #{accessToken},</if>
+			update_time = now()
+		</set>
+		where user_name = #{userName}
+	</update>
+
+</mapper>

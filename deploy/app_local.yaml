@@ -1,0 +1,5 @@
+appid: 10949
+install: [jetty]
+start: $JETTY_START
+webHealth: true
+setenv: {JVM_ARGS: '-Dspring.profiles.active=local -Dfile.encoding=UTF-8 -XX:MaxPermSize=128m -XX:PermSize=128m'}

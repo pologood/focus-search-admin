@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="CityDao">
+    <!--mybatis3 这个namespace 必需指定到接口上去 -->
+    <resultMap id="BaseResultMap" type="City">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="city_jian_pin" property="cityJianpin" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="modified_time" property="modifiedTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id as id,
+		city_name as cityName,
+		city_id as cityId,
+		city_jian_pin as cityJianpin,
+		create_time as createTime,
+		modified_time as modifiedTime
+
+	</sql>
+
+    <!-- 添加 -->
+    <insert id="insertCity" parameterType="City" useGeneratedKeys="true" keyProperty="id" flushCache="false">
+        insert into city_test(
+        city_id,
+        city_name,
+        city_jian_pin,
+        create_time,
+        modified_time
+        )
+        values (
+        #{cityId},
+        #{cityName},
+        #{cityJianpin},
+        #{createTime},
+        #{modifiedTime}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateCity" parameterType="City" statementType="PREPARED" flushCache="true">
+        update city_test
+        <set>
+            <if test="cityName != null">city_name = #{cityName},</if>
+            <if test="cityJianpin != null">city_jian_pin = #{cityJianpin},</if>
+            <if test="cityId != 0">city_id = #{cityId},</if>
+            <if test="modifiedTime != null">modified_time = #{modifiedTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCityById" parameterType="long">
+   		delete from city_test where id = #{id}
+   	</delete>
+
+    <select id="getCityList" resultType="City" parameterType="int" statementType="PREPARED">
+        select
+        <include refid="Base_Column_List"/>
+        from city_test
+        where city_id=#{cityId}
+    </select>
+    <!--
+        <sql id="Base_Where_Clause">
+            <where>
+                <trim prefixOverrides="and">
+                    <if test="dicId != null">and dic_id = #{dicId}</if>
+                    <if test="dicName != null">and dic_name = #{dicName}</if>
+                    <if test="dicValue != null">and dic_value = #{dicValue}</if>
+                    <if test="dicGroup != null">and dic_group = #{dicGroup}</if>
+                    <if test="dicType != null">and dic_type = #{dicType}</if>
+                    <if test="dicOrder != null">and dic_order = #{dicOrder}</if>
+                    <if test="dicStatus != null">and dic_status = #{dicStatus}</if>
+                    <if test="dicParentId != null">and dic_parent_id = #{dicParentId}</if>
+                    &lt;!&ndash; 模糊查询 &ndash;&gt;
+                    <if test="dicNameLike != null">and dic_name like CONCAT("%",#{dicNameLike},"%")</if>
+                    <if test="dicGroupLike != null">and dic_group like CONCAT("%",#{dicGroupLike},"%")</if>
+                </trim>
+            </where>
+            <if test="sorting != null">order by ${sorting}</if>
+            <if test="offset != null and limit != null">
+                limit #{offset}, #{limit}
+            </if>
+        </sql>
+
+        &lt;!&ndash; 查询总数 &ndash;&gt;
+        <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+            select count(dic_id)
+            from sys_dictionary
+            <include refid="Base_Where_Clause"/>
+        </select>
+
+        &lt;!&ndash; 查询 &ndash;&gt;
+        <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+            select
+            <include refid="Base_Column_List"/>
+            from sys_dictionary
+            <include refid="Base_Where_Clause"/>
+        </select>
+
+        &lt;!&ndash; 根据ID查询 &ndash;&gt;
+        <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+            select
+            <include refid="Base_Column_List"/>
+            from sys_dictionary
+            where dic_id = #{dicId}
+        </select>
+
+        &lt;!&ndash; 根据ID删除 &ndash;&gt;
+        <delete id="deleteById" parameterType="java.lang.String">
+            delete from sys_dictionary
+            where dic_id = #{dicId}
+        </delete>
+
+        &lt;!&ndash; 删除 &ndash;&gt;
+        <delete id="delete" parameterType="java.util.Map">
+            delete from sys_dictionary
+            <include refid="Base_Where_Clause"/>
+        </delete>
+
+        &lt;!&ndash; 通过ID更新 &ndash;&gt;
+        <update id="updateByIdSelective" parameterType="com.viathink.sys.domain.SysDictionary">
+            update sys_dictionary
+            <set>
+                <if test="dicName != null">dic_name = #{dicName},</if>
+                <if test="dicValue != null">dic_value = #{dicValue},</if>
+                <if test="dicGroup != null">dic_group = #{dicGroup},</if>
+                <if test="dicType != null">dic_type = #{dicType},</if>
+                <if test="dicOrder != null">dic_order = #{dicOrder},</if>
+                <if test="dicStatus != null">dic_status = #{dicStatus},</if>
+                <if test="dicParentId != null">dic_parent_id = #{dicParentId},</if>
+            </set>
+            where dic_id = #{dicId}
+        </update>
+
+        <update id="updateById" parameterType="cn.focus.search.news.model.City">
+            update sys_dictionary
+            set dic_name = #{dicName},
+            dic_value = #{dicValue},
+            dic_group = #{dicGroup},
+            dic_type = #{dicType},
+            dic_order = #{dicOrder},
+            dic_status = #{dicStatus},
+            dic_parent_id = #{dicParentId}
+            where dic_id = #{dicId}
+        </update>-->
+
+</mapper>

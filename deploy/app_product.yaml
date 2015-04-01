@@ -1,0 +1,7 @@
+appid: 11300
+install: [jetty,jdk1.7.0]
+start: $JETTY_START
+webHealth: true
+success: [200,403,302]
+needRestart: true
+setenv: {JVM_ARGS: '-Dspring.profiles.active=product -Dlog_path=/opt/logs/ -Dappid=11300 -Dfile.encoding=UTF-8 -XX:MaxPermSize=128m -XX:PermSize=128m'}
