@@ -72,7 +72,6 @@ function modifyManalWords(){
 			cache:false,
 			success:function(response){
 				$.messager.progress('close');
-				alert("code: "+response.errorCode)
 				if(response.errorCode == 0){
 					$('#modifyDiv').dialog('close');
 					$.messager.alert('成功','更新成功!','info');

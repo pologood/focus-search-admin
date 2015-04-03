@@ -51,6 +51,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         if (user != null) {
             //返回true，则这个方面调用后会接着调用postHandle(),  afterCompletion()
+        	System.out.println(user);
             return true;
         } else {
         	System.out.println("request.getContextPath(): "+request.getContextPath());

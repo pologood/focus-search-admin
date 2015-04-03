@@ -74,6 +74,7 @@ public class IndexController {
 			session.setMaxInactiveInterval(3600); //一个小时过期
 			session.setAttribute("user", userInfo);
 			
+			System.out.println(userInfo);
 			System.out.println("redirect:/search/admin/home");
 			
 			return "redirect:/search/admin/home";
@@ -140,6 +141,7 @@ public class IndexController {
 	public static void main(String args[]){
 		//admin ,以下是用户的登陆密码
 		System.out.println(DigestUtils.md5Hex("Search!@#"));
+		System.out.println(DigestUtils.md5Hex("123"));
 	}
 
 }
