@@ -1,9 +1,11 @@
 package cn.focus.search.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -173,22 +175,18 @@ public class ParticipleManagerController {
 	 */
 	@RequestMapping(value="export",method=RequestMethod.GET)
 	@ResponseBody
-	public String exportData(){
+	public String exportData(HttpServletRequest request,
+			HttpServletResponse response){
 		try{
-			if(participleManagerService.getWordMapSize()==0){
-			     return JSONUtils.badResult(2, "error");	
-			}
 			
-			boolean flg = participleManagerService.exportExcel("");
-			if(!flg){
-				return JSONUtils.badResult("failed");
-			}
+			participleManagerService.exportExcel(request, response, "words-data.xls");
+//			participleManagerService.exportExcel(request, response, "words-data.xls", "word.xls", map);
 			
-			return JSONUtils.ok();
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
-			return JSONUtils.badResult("failed");
+//			return JSONUtils.badResult("failed");
 		}
+		return null;
 	}
 	
 	public static void main(String args[]){

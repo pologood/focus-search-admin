@@ -6,12 +6,17 @@ import io.searchbox.core.Search;
 import io.searchbox.core.Update;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -19,12 +24,16 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.elasticsearch.common.netty.util.internal.ConcurrentHashMap;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.fetch.source.FetchSourceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +47,7 @@ import cn.focus.search.admin.model.ManualParticiple;
 import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.utils.ExcelUtil;
 import cn.focus.search.admin.utils.JSONUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -63,6 +73,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	private Logger logger = LoggerFactory.getLogger(ParticipleManagerServiceImpl.class);
 	
 	private static Map<String,Object> wordMap = new ConcurrentHashMap<String, Object>();
+	
+	@Autowired
+	private ExcelUtil excelUtil;
 	
 	
 	public int getWordMapSize(){
@@ -357,7 +370,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
      * @return
      * @throws IOException
      */
-    public boolean exportExcel(String pathName) throws IOException{
+    public boolean exportExcel1(String pathName) throws IOException{
     	List<PplResult> wordsList = (List<PplResult>)wordMap.get("wordKey");
     	if(wordsList == null || wordsList.size()==0){
     		return false;
@@ -391,6 +404,87 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
     	}finally{
     		 book.close(); 
     	}
+    }
+    
+    /**
+     * 导出方法1
+     */
+    public boolean exportExcel(HttpServletRequest request,
+			HttpServletResponse response,String exportName) throws IOException{
+    	
+    	List<PplResult> list = (List<PplResult>)wordMap.get("wordKey");
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+    	
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("分词效果");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("单词");
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 1);
+		cell.setCellValue("索引分词");
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 2);
+		cell.setCellValue("搜索分词");
+		cell.setCellStyle(style);
+
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+		for (int i = 0; i < list.size(); i++) {
+			row = sheet.createRow((int) i + 1);
+			PplResult pplResult =  list.get(i);
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) 0).setCellValue(pplResult.getWord());
+			row.createCell((short) 1).setCellValue(pplResult.getIndexPplWord());
+			row.createCell((short) 2).setCellValue(pplResult.getSearchPplWord());
+		
+		}
+		// 第六步，将文件存到指定位置
+		try {
+//			FileOutputStream fout = new FileOutputStream("D:/data/words.xls");
+			wb.write(os);
+			os.flush();
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
+		}
+    }
+    
+    /**
+     * 导出方法2
+     */
+    public boolean exportExcel(HttpServletRequest request,
+			HttpServletResponse response, String exportName,
+			String templateName, Map<String, Object> dataMap) throws IOException{
+		try {
+		   excelUtil.exportExcel(request, response, exportName, templateName, dataMap);
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
     }
 	
 }

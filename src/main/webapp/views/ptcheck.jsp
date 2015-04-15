@@ -38,26 +38,16 @@ function searchBtnClick() {
 }
 
 function exportBtnClick(){
-	$.ajax({
-		url:rootpath+"/admin/pm/export",
-		type:'get',
-		data:'',
-		dataType:"json",
-		cache:false,
-		success:function(response){
-			if(response.errorCode ==0){
-				 $.messager.alert('成功','导出成功 !  文件已路径：D:\\data\\words.xls。','info');
-			}else if(response.errorCode ==2){
-				$.messager.alert('warning','请先搜索分词结果','info');
-			}
-			else{
-				$.messager.alert('失败','导出失败!','error');
-			}
-		},
-		error:function(e){
-			$.messager.alert('错误','删除失败!','error');
-		}
-	});
+   var words =  $("#wordText").textbox('getText');
+
+   if(words==null || words==""){
+	   $.messager.alert('','请输入搜索query!','info');
+	   return;
+   }
+	   
+	var url= rootpath+"/admin/pm/export"
+	$("#hiddenForm").attr("action",url); 
+	$("#hiddenForm").submit();
 }
 
 </script>
@@ -67,14 +57,17 @@ function exportBtnClick(){
     <br/>
     <h2>请输入搜索query,多个query以换行符标识</h2>
 	<div style="margin:20px 0;"></div>
+	<div>
 	<input class="easyui-textbox" data-options="multiline:true" id="wordText" value="" style="width:500px;height:200px">
-
     <a href="javascript:void(0)" id="searchBtn" class="easyui-linkbutton" iconCls="icon-search">提交</a>
-    <a href="javascript:void(0)" id="exportBtn" class="easyui-linkbutton" iconCls="icon-search">导出</a>
+    <div style="margin:2px 10px 20px 500px;width:200px; height:10px;background-color:White;"><form id="hiddenForm"  method="get" ><a href="javascript:void(0)" id="exportBtn" class="easyui-linkbutton" iconCls="icon-search">导出</a></form></div>
+    
+    </div>
+    
 
 		
 	<table class="easyui-datagrid" id="wordTab" style="width:90%;height:600px"
-			url="<%=basePath %>/admin/pm/check" 
+			url="<%=basePath %>/admin/pm/check"
 			title="分词结果" toolbar="#tb" fitColumns="true" pagination="true">
 		<thead>
 			<tr>

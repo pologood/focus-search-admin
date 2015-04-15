@@ -3,6 +3,9 @@ package cn.focus.search.admin.service;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -40,11 +43,17 @@ public interface ParticipleManagerService {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean exportExcel(String pathName) throws IOException;
+    public boolean exportExcel(HttpServletRequest request,
+			HttpServletResponse response,String exportName) throws IOException;
 	/**
 	 * 
 	 * @return
 	 */
 	public int getWordMapSize();
+	
+	
+	public boolean exportExcel(HttpServletRequest request,
+				HttpServletResponse response, String exportName,
+				String templateName, Map<String, Object> dataMap) throws IOException;
 
 }
