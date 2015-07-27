@@ -71,6 +71,7 @@ $(function(){
 			<div title="分词管理" style="padding:10px">
 				<p class="clickBefore" src="/admin/pm/ptindex">分词效果</p>
 				<p class="clickBefore" src="/admin/pm/mindex">分词干预</p>
+				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
 			</div>
 		</div>
 	</div>

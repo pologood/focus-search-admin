@@ -1,6 +1,8 @@
 package cn.focus.search.admin.controller;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.focus.search.admin.model.Participle;
 import cn.focus.search.admin.model.UserInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.utils.JSONUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 @Controller
 @RequestMapping("/admin/pm")
@@ -46,6 +52,16 @@ public class ParticipleManagerController {
 	public String manualPtIndex(){
 		try{
 			return "manualpt";
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return "error";
+		}
+	}
+	
+	@RequestMapping(value="backup",method =RequestMethod.GET)
+	public String dataBackup(){
+		try{
+			return "backup";
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			return "error";
@@ -138,6 +154,104 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	/***
+	 * 批量获取新加的待分词的数据
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="select4new",method=RequestMethod.POST)
+	@ResponseBody
+	public String selectNewPartList(HttpServletRequest request){
+		try{
+			JSONObject json = new JSONObject();
+			String participles = "";
+			List<Participle> list = new LinkedList<Participle>();
+			list = participleManagerService.getParticipleList(participles,0);
+			int size = list.size();
+			
+			System.out.println("list的大小是"+size);
+			JSONArray jsArray = new JSONArray();
+			jsArray.addAll(list);
+			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
+						
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return JSONUtils.badResult("failed");
+		}
+	}
+
+	/***
+	 * 更新词库
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="updateIK",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateIK(HttpServletRequest request){
+		/*
+		 * 此处编写更新词库部分的处理代码
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 处理成功返回"success",失败返回任意字符串(建议返回"failed")
+		 */
+		
+		return "success";
+	}
+	
+	/**
+	 * 完成人工分词后存库
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="updatePart",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateParticiple(HttpServletRequest request){
+		try{
+			String sId = request.getParameter("Id");
+			if(StringUtils.isBlank(sId)){
+				return JSONUtils.badResult("failed");
+			}
+			int Id = Integer.parseInt(sId);
+			int pid = Integer.parseInt(request.getParameter("pid"));
+			String name = request.getParameter("name");
+			String aliasName = request.getParameter("aliasName");
+			int type = Integer.parseInt(request.getParameter("type"));
+			String participles = request.getParameter("manualWords");
+			UserInfo user = (UserInfo)request.getSession().getAttribute("user");
+			String editor = user.getUserName();
+			String createTime = request.getParameter("createTime");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date cTime = sdf.parse(createTime);
+			//System.out.println("Id:"+Id+" participles:"+participles);
+				
+			Participle participle = new Participle();
+			participle.setId(Id);
+			participle.setPid(pid);
+			participle.setName(name);
+			participle.setAliasName(aliasName);
+			participle.setParticiples(participles);
+			participle.setEditor(editor);
+			participle.setType(type);
+			participle.setStatus(1);
+			participle.setCreateTime(cTime);
+			
+			int result = participleManagerService.updateParticiple(participle);
+			if(result<1){//更新失败
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
 	/**
 	 * 修改人工分词
 	 * @param request
@@ -168,6 +282,7 @@ public class ParticipleManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
+	
 	
 	/**
 	 * 导出数据
