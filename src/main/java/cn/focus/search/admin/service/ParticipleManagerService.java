@@ -68,4 +68,8 @@ public interface ParticipleManagerService {
 	
 	public int updateParticiple(Participle participle);
 	
+	public String updateIK();
+	
+	public String getRemoteFinalHouseWord();
+	
 }

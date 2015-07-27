@@ -191,16 +191,9 @@ public class ParticipleManagerController {
 	@ResponseBody
 	public String updateIK(HttpServletRequest request){
 		/*
-		 * 此处编写更新词库部分的处理代码
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
 		 * 处理成功返回"success",失败返回任意字符串(建议返回"failed")
 		 */
-		
-		return "success";
+		return participleManagerService.updateIK();
 	}
 	
 	/**

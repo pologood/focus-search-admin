@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -43,6 +45,7 @@ import org.springframework.web.client.RestTemplate;
 
 import cn.focus.search.admin.config.Config;
 import cn.focus.search.admin.config.Constants;
+import cn.focus.search.admin.config.LastTime;
 import cn.focus.search.admin.dao.ManualPleDao;
 import cn.focus.search.admin.dao.ParticipleDao;
 import cn.focus.search.admin.model.ManualParticiple;
@@ -513,6 +516,61 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			logger.error("更新数据分词结果异常!", e);
 		}
 		return result;
+	}
+
+	@Override
+	public String updateIK() {
+		// TODO Auto-generated method stub
+		String flag="failed";
+		if (LastTime.setlTime()==1) flag="success";
+		return flag;
+	}
+	
+	public String getRemoteFinalHouseWord(){
+		StringBuffer str=new StringBuffer();;
+		List<Participle> list = new LinkedList<Participle>();
+		try {
+			list=participleDao.getDayFinalHouseParticipleList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("getDayFinalHouseParticipleListException",e);
+			e.printStackTrace();
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String value=list.get(i).getParticiples();
+			String[] words = value.split(",| |，|");//以全角或半角逗号或空格作为分隔符。
+			for(int j=0;j<words.length;j++){
+				if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
+					str.append(words[j]);
+					str.append("\n");
+				}
+
+			}
+		}
+		return str.toString();
+	}
+
+	////判断该词是否已经已经在词库中。
+	private boolean isDuplicate(String word) {
+		// TODO Auto-generated method stub
+		boolean flag=false;
+		StringBuffer ikUrl=new StringBuffer();
+		ikUrl.append(Constants.ik).append(word);
+		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
+		ikUrl.delete( 0, ikUrl.length() );
+		
+		JSONObject json = JSONObject.parseObject(ikWord);
+		JSONArray arr = (JSONArray)json.get("tokens");
+		
+		for(int i=0;i<arr.size();i++){
+			JSONObject js = (JSONObject)arr.get(i);
+			if (js.getString("token").equals(word)){
+				flag=true;
+			}
+		}	
+		
+		return flag;
 	}
 	
 }

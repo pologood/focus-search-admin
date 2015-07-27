@@ -24,5 +24,9 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	public List<Participle> getParticipleList(String participles,int status) throws Exception {
 		return sqlSession.selectList("ParticipleDao.getParticipleList",participles);
 	}
+	
+	public List<Participle> getDayFinalHouseParticipleList() throws Exception {
+		return sqlSession.selectList("ParticipleDao.getDayFinalHouseParticipleList");
+	}
 
 }

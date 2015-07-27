@@ -55,6 +55,16 @@
         where participles = #{participles}
         and status = #{status}
     </select>
+	
+	<select id="getDayFinalHouseParticipleList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from participle
+		where participles =""
+		and status = 1
+		and to_days(update_time)=to_days(now());
+	</select>
     <!--
         <sql id="Base_Where_Clause">
             <where>
