@@ -352,7 +352,7 @@
 			<id>local</id>
 			<activation>
 				<!--设为默认部署环境 -->
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<deploy.surfix>local</deploy.surfix>
@@ -368,6 +368,10 @@
 
 		<profile>
 			<id>test_sce</id>
+			<activation>
+				<!--设为默认部署环境 -->
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<deploy.surfix>test_sce</deploy.surfix>
 			</properties>

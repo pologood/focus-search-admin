@@ -8,6 +8,5 @@
 </head>
 <body>
     没有权限 或者服务器出错
- <a href="<%=basePath %>/search/admin/tologin">登陆</a>
 </body>
 </html>

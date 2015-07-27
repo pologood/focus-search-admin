@@ -170,6 +170,7 @@ public class ExcelUtil {
 			}
 		}
 	}
+	/*
 
 	public void setExcelTemplateMap(Map<String, String> excelTemplateMap) {
 		this.excelTemplateMap = excelTemplateMap;
@@ -235,4 +236,6 @@ public class ExcelUtil {
 
 		return list;
 	}
+
+  */
 }
