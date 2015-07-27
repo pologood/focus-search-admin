@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,9 @@ import org.springframework.web.client.RestTemplate;
 import cn.focus.search.admin.config.Config;
 import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.dao.ManualPleDao;
+import cn.focus.search.admin.dao.ParticipleDao;
 import cn.focus.search.admin.model.ManualParticiple;
+import cn.focus.search.admin.model.Participle;
 import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
@@ -66,6 +69,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
 	@Autowired
 	private ManualPleDao manualPleDao;
+	
+	@Autowired
+	private ParticipleDao participleDao;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -486,5 +492,27 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			return false;
 		}
     }
+
+	@Override
+	public List<Participle> getParticipleList(String participles,int status) {
+		List<Participle> list = new LinkedList<Participle>();
+		try {
+			list = participleDao.getParticipleList(participles,status);
+		} catch (Exception e) {
+			logger.error("获取为分词数据异常!", e);
+		}
+		return list;
+	}
+
+	@Override
+	public int updateParticiple(Participle participle) {
+		int result = 0;
+		try {
+			result = participleDao.updateParticiple(participle);
+		} catch (Exception e) {
+			logger.error("更新数据分词结果异常!", e);
+		}
+		return result;
+	}
 	
 }

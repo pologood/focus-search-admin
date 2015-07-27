@@ -1,10 +1,13 @@
 package cn.focus.search.admin.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cn.focus.search.admin.model.Participle;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -56,4 +59,13 @@ public interface ParticipleManagerService {
 				HttpServletResponse response, String exportName,
 				String templateName, Map<String, Object> dataMap) throws IOException;
 
+	/***
+	 * 批量获取未分词数据
+	 * @param participles
+	 * @return
+	 */
+	public List<Participle> getParticipleList(String participles,int status);
+	
+	public int updateParticiple(Participle participle);
+	
 }
