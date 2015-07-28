@@ -61,9 +61,8 @@
 		select
 		<include refid="Base_Column_List" />
 		from participle
-		where participles =""
-		and status = 1
-		and to_days(update_time)=to_days(now());
+		where status = 1
+		and date_format(from_UNIXTIME(update_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
 	</select>
     <!--
         <sql id="Base_Where_Clause">
