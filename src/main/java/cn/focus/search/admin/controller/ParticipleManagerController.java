@@ -231,7 +231,8 @@ public class ParticipleManagerController {
 			participle.setEditor(editor);
 			participle.setType(type);
 			participle.setStatus(1);
-			participle.setCreateTime(cTime);
+			participle.setCreateTime((int)cTime.getTime());
+			participle.setUpdateTime((int)new Date().getTime());
 			
 			int result = participleManagerService.updateParticiple(participle);
 			if(result<1){//更新失败

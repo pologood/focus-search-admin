@@ -12,8 +12,8 @@
         <result column="editor" 		property="editor" 		jdbcType="VARCHAR"/>
         <result column="type" 			property="type" 		jdbcType="INTEGER"/>
         <result column="status" 		property="status" 		jdbcType="INTEGER"/>
-        <result column="create_time" 	property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="update_time" 	property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="create_time" 	property="createTime" jdbcType="int" javaType="int"/>
+        <result column="update_time" 	property="updateTime" jdbcType="int" javaType="int"/>
     </resultMap>
 
     <sql id="Base_Column_List">

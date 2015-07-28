@@ -12,8 +12,8 @@ public class Participle {
 	private String editor;
 	private int type;
 	private int status;
-	private Date createTime;
-	private Date updateTime;
+	private int createTime;
+	private int updateTime;
 	public int getId() {
 		return id;
 	}
@@ -68,16 +68,16 @@ public class Participle {
 	public void setParticiples(String participles) {
 		this.participles = participles;
 	}
-	public Date getCreateTime() {
+	public int getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(int createTime) {
 		this.createTime = createTime;
 	}
-	public Date getUpdateTime() {
+	public int getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(Date updateTime) {
+	public void setUpdateTime(int updateTime) {
 		this.updateTime = updateTime;
 	}
 	
