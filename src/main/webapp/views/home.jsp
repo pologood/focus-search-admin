@@ -72,6 +72,7 @@ $(function(){
 				<p class="clickBefore" src="/admin/pm/ptindex">分词效果</p>
 				<p class="clickBefore" src="/admin/pm/mindex">分词干预</p>
 				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
+				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 			</div>
 		</div>
 	</div>

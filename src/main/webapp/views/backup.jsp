@@ -96,12 +96,12 @@ function modifyManalWords(){
 					$("#projTab").datagrid('reload');  
 				}else{
 					 $('#modifyDiv').dialog('close');
-					 $.messager.alert('错误','编辑失败!','error');
+					 $.messager.alert('错误','编辑失败1!','error');
 				}
 			},
 			error:function(e){
 				$('#modifyDiv').dialog('close');
-				$.messager.alert('错误','编辑失败!','error');
+				$.messager.alert('错误','编辑失败2!','error');
 			}
 	});
 }
@@ -131,7 +131,7 @@ function formatAction(value,row,index){
 				$("#manualWordsInput_ik").val(result);
 			},
 			error:function(e){
-				$.messager.alert('错误','编辑失败!','error');
+				$.messager.alert('错误','编辑失败3!','error');
 			}
 	});  		
   				

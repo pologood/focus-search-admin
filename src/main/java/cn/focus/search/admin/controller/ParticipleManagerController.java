@@ -68,6 +68,16 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	@RequestMapping(value="stop",method =RequestMethod.GET)
+	public String stopWords(){
+		try{
+			return "stop_words";
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return "error";
+		}
+	}
+	
 	
 	/**
 	 * 查看分词效果
@@ -181,7 +191,7 @@ public class ParticipleManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
-
+	
 	/***
 	 * 更新词库
 	 * @param request
@@ -206,6 +216,7 @@ public class ParticipleManagerController {
 	public String updateParticiple(HttpServletRequest request){
 		try{
 			String sId = request.getParameter("Id");
+			System.out.println("！分词ID："+sId);
 			if(StringUtils.isBlank(sId)){
 				return JSONUtils.badResult("failed");
 			}
@@ -220,7 +231,7 @@ public class ParticipleManagerController {
 			String createTime = request.getParameter("createTime");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date cTime = sdf.parse(createTime);
-			//System.out.println("Id:"+Id+" participles:"+participles);
+			System.out.println("!!!!!新词Id:"+Id+" participles:"+participles);
 				
 			Participle participle = new Participle();
 			participle.setId(Id);
@@ -234,7 +245,9 @@ public class ParticipleManagerController {
 			participle.setCreateTime(cTime);
 			
 			int result = participleManagerService.updateParticiple(participle);
+			System.out.println("！result："+result);
 			if(result<1){//更新失败
+				System.out.println("更新失败！result："+result);
 				return JSONUtils.badResult("failed");
 			}
 			return JSONUtils.ok();

@@ -14,12 +14,24 @@
 		<param-name>spring.profiles.default</param-name>
 		<param-value>test_sce</param-value>
 	</context-param>
+	<!-- timer -->
+	<context-param>
+		<param-name>config-file</param-name>
+		<param-value>src/main/resources/quartz.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>shutdown-on-unload</param-name>
+		<param-value>true</param-value>
+	</context-param>
 	<!-- <context-param>
 		<param-name>spring.profiles.active</param-name>
 		<param-value>production</param-value>
 	</context-param> -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+	<listener-class>org.quartz.ee.servlet.QuartzInitializerListener</listener-class>
 	</listener>
 
 	<filter>
