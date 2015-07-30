@@ -29,4 +29,6 @@ public interface StopWordsDao {
      * @throws Exception
      */
     public List<StopWords> getStopWordsListByName(String wordName)throws Exception;
+
+	public List<StopWords> getDayStopWordsList()throws Exception;
 }

@@ -30,6 +30,12 @@ public class StopWordsDaoImpl implements StopWordsDao{
     @Override
     public List<StopWords> getStopWordsListByName(String wordName)throws Exception
     {
-    	return sqlSession.selectList("StopWordsDao.getStopWordsListByName");
+    	return sqlSession.selectList("StopWordsDao.getStopWordsListByName",wordName);
     }
+
+	@Override
+	public List<StopWords> getDayStopWordsList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("StopWordsDao.getDayStopWordsList");
+	}
 }

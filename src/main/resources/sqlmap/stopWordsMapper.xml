@@ -60,4 +60,12 @@
             SELECT @@IDENTITY AS id
         </selectKey> -->
     </insert>
+    
+    <select id="getDayStopWordsList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from stop_words
+		where to_days(update_time)=to_days(now())
+	</select>
 </mapper>
