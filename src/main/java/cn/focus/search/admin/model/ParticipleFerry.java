@@ -2,7 +2,7 @@ package cn.focus.search.admin.model;
 
 import java.util.Date;
 
-public class Participle {
+public class ParticipleFerry {
 
 	private int id;
 	private int pid;
@@ -12,8 +12,8 @@ public class Participle {
 	private String editor;
 	private int type;
 	private int status;
-	private int createTime;
-	private int updateTime;
+	private Date createTime;
+	private Date updateTime;
 	public int getId() {
 		return id;
 	}
@@ -68,16 +68,16 @@ public class Participle {
 	public void setParticiples(String participles) {
 		this.participles = participles;
 	}
-	public int getCreateTime() {
+	public Date getCreateTime() {
 		return this.createTime;
 	}
-	public void setCreateTime(int createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime=createTime;
 	}
-	public int getUpdateTime() {
+	public Date getUpdateTime() {
 		return this.updateTime;
 	}
-	public void setUpdateTime(int updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime=updateTime;
 	}
 	

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.model.ParticipleFerry;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -71,5 +72,6 @@ public interface ParticipleManagerService {
 	public String updateIK();
 	
 	public String getRemoteFinalHouseWord();
+	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list);
 	
 }

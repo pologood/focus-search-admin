@@ -12,8 +12,8 @@
         <result column="editor" 		property="editor" 		jdbcType="VARCHAR"/>
         <result column="type" 			property="type" 		jdbcType="INTEGER"/>
         <result column="status" 		property="status" 		jdbcType="INTEGER"/>
-        <result column="create_time" 	property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result column="update_time" 	property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="create_time" 	property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" 	property="updateTime" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -61,9 +61,8 @@
 		select
 		<include refid="Base_Column_List" />
 		from participle
-		where participles =""
-		and status = 1
-		and to_days(update_time)=to_days(now());
+		where status = 1
+		and date_format(from_UNIXTIME(update_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
 	</select>
     <!--
         <sql id="Base_Where_Clause">

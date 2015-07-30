@@ -50,6 +50,7 @@ import cn.focus.search.admin.dao.ManualPleDao;
 import cn.focus.search.admin.dao.ParticipleDao;
 import cn.focus.search.admin.model.ManualParticiple;
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.model.ParticipleFerry;
 import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
@@ -571,6 +572,28 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}	
 		
 		return flag;
+	}
+	
+	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list){
+		List<ParticipleFerry> ferryList = new LinkedList<ParticipleFerry>();
+		int size=list.size();
+		for(int i=0;i<size;i++){
+				ParticipleFerry pf=new ParticipleFerry();
+				Participle p=list.get(i);
+				pf.setAliasName(p.getAliasName());
+				pf.setCreateTime(new Date(p.getCreateTime()*1000L));
+				pf.setEditor(p.getEditor());
+				pf.setId(p.getId());
+				pf.setName(p.getName());
+				pf.setParticiple(p.getParticiple());
+				pf.setParticiples(p.getParticiples());
+				pf.setUpdateTime(new Date(p.getUpdateTime()*1000L));
+				pf.setType(p.getType());
+				pf.setStatus(p.getStatus());
+				pf.setPid(p.getPid());
+				ferryList.add(pf);
+		}
+		return ferryList;
 	}
 	
 }

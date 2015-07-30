@@ -49,6 +49,7 @@ public class StopWordsServiceImpl implements StopWordsService{
 		List<StopWords> list=new LinkedList<StopWords>();
         try {
             list = stopWordsDao.getStopWordsListByName(wordName);
+            logger.info("wordname: "+wordName);
         } catch (Exception e) {
             logger.error("获取停止词数据异常!", e);
         }

@@ -31,7 +31,7 @@
     </select>
     
     <!-- 根据名称获取停用词列表 -->
-    <select id="getStopWordsListByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="getStopWordsListByName" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from stop_words

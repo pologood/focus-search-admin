@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.model.ParticipleFerry;
 import cn.focus.search.admin.model.UserInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.utils.JSONUtils;
@@ -175,13 +176,12 @@ public class ParticipleManagerController {
 		try{
 			JSONObject json = new JSONObject();
 			String participles = "";
-			List<Participle> list = new LinkedList<Participle>();
-			list = participleManagerService.getParticipleList(participles,0);
-			int size = list.size();
-			
-			System.out.println("list的大小是"+size);
+			List<Participle> list = participleManagerService.getParticipleList(participles,0);
+			List<ParticipleFerry> ferryList = participleManagerService.convertToParticipleFerry(list);
+			int size = ferryList.size();			
+			System.out.println("ferryList的大小是"+size);
 			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(list);
+			jsArray.addAll(ferryList);
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
 			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
 						
@@ -242,7 +242,8 @@ public class ParticipleManagerController {
 			participle.setEditor(editor);
 			participle.setType(type);
 			participle.setStatus(1);
-			participle.setCreateTime(cTime);
+			participle.setCreateTime((int)(cTime.getTime()/1000));
+			participle.setUpdateTime((int)(new Date().getTime()/1000));
 			
 			int result = participleManagerService.updateParticiple(participle);
 			System.out.println("！result："+result);
