@@ -28,5 +28,5 @@ public interface StopWordsDao {
      * @return
      * @throws Exception
      */
-    public List<StopWords> getStopWordsListByName(String wordName)throws Exception;
+    public List<StopWords> getStopWordsListByName(String name)throws Exception;
 }

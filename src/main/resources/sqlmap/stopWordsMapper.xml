@@ -31,11 +31,11 @@
     </select>
     
     <!-- 根据名称获取停用词列表 -->
-    <select id="getStopWordsListByName" resultMap="BaseResultMap">
+    <select id="getStopWordsListByName" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
         select
         <include refid="Base_Column_List"/>
         from stop_words
-        where name = #{wordName}
+        where name = #{name}
     </select>
     
 	<!-- 添加停用词 -->
