@@ -69,9 +69,14 @@ public interface ParticipleManagerService {
 	
 	public int updateParticiple(Participle participle);
 	
-	public String updateIK();
+	public String updateIK();//更新final_house词库。
+	public String updateStopwordIK();//更新停用词词库。
+	public String updateHotwordIK();//更新临时词词库。
 	
 	public String getRemoteFinalHouseWord();
 	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list);
+	public String getRemoteStopword();
+	public String getRemoteHotword();
+
 	
 }

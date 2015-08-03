@@ -79,6 +79,15 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	@RequestMapping(value="hot",method =RequestMethod.GET)
+	public String hotWord(){
+		try{
+			return "hot_word";
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return "error";
+		}
+	}
 	
 	/**
 	 * 查看分词效果

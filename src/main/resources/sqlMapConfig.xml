@@ -26,6 +26,8 @@
         <typeAlias alias="Participle"     type="cn.focus.search.admin.model.Participle"/>
         <typeAlias alias="StopWordsDao"    type="cn.focus.search.admin.dao.StopWordsDao"/>
         <typeAlias alias="StopWords" type="cn.focus.search.admin.model.StopWords"/>
+        <typeAlias alias="HotWordDao"    type="cn.focus.search.admin.dao.HotWordDao"/>
+        <typeAlias alias="HotWord"  type="cn.focus.search.admin.model.HotWord"/>
     </typeAliases>
     <mappers>
          <mapper resource="sqlmap/cityMapper.xml"/>
@@ -33,5 +35,6 @@
          <mapper resource="sqlmap/manualPleMapper.xml"/>
          <mapper resource="sqlmap/participleMapper.xml"/>
          <mapper resource="sqlmap/stopWordsMapper.xml"/>
+         <mapper resource="sqlmap/hotWordMapper.xml"/>
     </mappers>
 </configuration>

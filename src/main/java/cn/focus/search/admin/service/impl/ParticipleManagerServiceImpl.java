@@ -46,13 +46,17 @@ import org.springframework.web.client.RestTemplate;
 import cn.focus.search.admin.config.Config;
 import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.config.LastTime;
+import cn.focus.search.admin.dao.HotWordDao;
 import cn.focus.search.admin.dao.ManualPleDao;
 import cn.focus.search.admin.dao.ParticipleDao;
+import cn.focus.search.admin.dao.StopWordsDao;
+import cn.focus.search.admin.model.HotWord;
 import cn.focus.search.admin.model.ManualParticiple;
 import cn.focus.search.admin.model.Participle;
 import cn.focus.search.admin.model.ParticipleFerry;
 import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
+import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.utils.ExcelUtil;
 import cn.focus.search.admin.utils.JSONUtils;
@@ -76,6 +80,12 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
 	@Autowired
 	private ParticipleDao participleDao;
+	
+	@Autowired
+	private StopWordsDao stopWordsDao;
+	
+	@Autowired
+	private HotWordDao hotWordDao;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -519,11 +529,35 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		return result;
 	}
 
+	//更新新房（final_house）词库。
 	@Override
 	public String updateIK() {
 		// TODO Auto-generated method stub
+		System.out.println("！！！updateIK");
 		String flag="failed";
 		if (LastTime.setlTime()==1) flag="success";
+		return flag;
+	}
+	
+
+	//更新停用词词库。
+	@Override
+	public String updateStopwordIK() {
+		// TODO Auto-generated method stub
+		System.out.println("@@@@@@updateStop");
+		String flag="failed";
+		if (LastTime.setStopwordlTime()==1) flag="success";
+		return flag;
+	}
+	
+
+	//更新临时热词词库。
+	@Override
+	public String updateHotwordIK() {
+		// TODO Auto-generated method stub
+		System.out.println("######updateHot");
+		String flag="failed";
+		if (LastTime.setHotwordlTime()==1) flag="success";
 		return flag;
 	}
 	
@@ -551,8 +585,57 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}
 		return str.toString();
 	}
+	
+	
 
-	////判断该词是否已经已经在词库中。
+	@Override
+	public String getRemoteStopword() {
+		// TODO Auto-generated method stub
+		StringBuffer str=new StringBuffer();;
+		List<StopWords> list = new LinkedList<StopWords>();
+		try {
+			list=stopWordsDao.getDayStopWordsList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("getDayStopWordsException",e);
+			e.printStackTrace();
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i).getName();
+			if(!isDuplicateStopword(word)){//判断该词是否已经已经在词库中。
+					str.append(word);
+					str.append("\n");
+			}
+		}
+		return str.toString();
+
+	}
+
+	@Override
+	public String getRemoteHotword() {
+		// TODO Auto-generated method stub
+		StringBuffer str=new StringBuffer();;
+		List<HotWord> list = new LinkedList<HotWord>();
+		try {
+			list=hotWordDao.getDayHotWordList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("getDayHotWordException",e);
+			e.printStackTrace();
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i).getName();
+			if(!isDuplicate(word)){//判断该词是否已经已经在词库中。
+					str.append(word);
+					str.append("\n");
+			}
+		}
+		return str.toString();
+	}
+
+	////判断该词是否已经已经在词库(非停用词)中。
 	private boolean isDuplicate(String word) {
 		// TODO Auto-generated method stub
 		boolean flag=false;
@@ -573,6 +656,28 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		
 		return flag;
 	}
+	
+	private boolean isDuplicateStopword(String word) {
+		// TODO Auto-generated method stub
+		boolean flag=true;
+		StringBuffer ikUrl=new StringBuffer();
+		ikUrl.append(Constants.ik).append(word);
+		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
+		ikUrl.delete( 0, ikUrl.length() );
+		
+		JSONObject json = JSONObject.parseObject(ikWord);
+		JSONArray arr = (JSONArray)json.get("tokens");
+		
+		for(int i=0;i<arr.size();i++){
+			JSONObject js = (JSONObject)arr.get(i);
+			if (js.getString("token").equals(word)){
+				flag=false;
+			}
+		}	
+		
+		return flag;
+	}
+
 	
 	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list){
 		List<ParticipleFerry> ferryList = new LinkedList<ParticipleFerry>();
@@ -595,5 +700,6 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}
 		return ferryList;
 	}
+
 	
 }

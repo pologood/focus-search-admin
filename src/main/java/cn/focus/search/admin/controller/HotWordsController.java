@@ -19,23 +19,25 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import cn.focus.search.admin.model.StopWords;
+import cn.focus.search.admin.model.HotWord;
 import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
-import cn.focus.search.admin.service.StopWordsService;
 import cn.focus.search.admin.utils.JSONUtils;
 import cn.focus.search.admin.utils.StopWordsUtil;
 
 @Controller
-@RequestMapping("/stop")
-public class StopWordsController {
+@RequestMapping("/hot")
+public class HotWordsController {
 
 	private Logger logger = LoggerFactory.getLogger(ParticipleManagerController.class);
 	
 	@Autowired
-	private StopWordsService stopWordsService;
+	private HotWordService hotWordService;
+	
 	@Autowired
 	private ParticipleManagerService pmService;
+	
 	@Autowired
 	private StopWordsUtil stopWordsUtil;
 	/***
@@ -43,13 +45,13 @@ public class StopWordsController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="loadStop",method=RequestMethod.POST)
+	@RequestMapping(value="loadHot",method=RequestMethod.POST)
 	@ResponseBody
 	public String getStopWordsList(HttpServletRequest request){
 		try{
 			JSONObject json = new JSONObject();
-			List<StopWords> list = new LinkedList<StopWords>();
-			list = stopWordsService.getStopWordsList();
+			List<HotWord> list = new LinkedList<HotWord>();
+			list = hotWordService.getHotWordList();
 			int size = list.size();
 			
 			System.out.println("list的大小是"+size);
@@ -70,7 +72,7 @@ public class StopWordsController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="addStop",method=RequestMethod.POST)
+	@RequestMapping(value="addHot",method=RequestMethod.POST)
 	@ResponseBody
 	public String InsertStopWords(HttpServletRequest request)
 	{
@@ -84,21 +86,21 @@ public class StopWordsController {
 			UserInfo user = (UserInfo)request.getSession().getAttribute("user");
 			String editor = user.getUserName();
 			int type = Integer.parseInt(stype);
-			String stopWords = request.getParameter("stopWords");
+			String hotWords = request.getParameter("hotWords");
 			
-			List<StopWords> stopList = new LinkedList<StopWords>();
-			stopList = stopWordsUtil.getStopList(type, stopWords, editor, 1);
-			for (StopWords sw : stopList)
+			List<HotWord> hotList = new LinkedList<HotWord>();
+			hotList = stopWordsUtil.getHotList(type, hotWords, editor, 1);
+			for (HotWord hw : hotList)
 			{
-				System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
-				List<StopWords> list = new LinkedList<StopWords>();
-				list = stopWordsService.getStopWordsListByName(sw.getName());
+				System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
+				List<HotWord> list = new LinkedList<HotWord>();
+				list = hotWordService.getHotWordListByName(hw.getName());
 				System.out.println("！@@@@@@@@@@@@list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
-				int result = stopWordsService.insertStopWords(sw);
+				int result = hotWordService.insertHotWord(hw);
 				if(result<1){
-					logger.info(sw + "插入失败!");
+					logger.info(hw + "插入失败!");
 					return JSONUtils.badResult("failed");
 				}
 			}
@@ -110,23 +112,23 @@ public class StopWordsController {
 	}
 	
 	/***
-	 * 更新停止词词库
+	 * 更新热词词库
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="updateStop",method=RequestMethod.POST)
+	@RequestMapping(value="updateHot",method=RequestMethod.POST)
 	@ResponseBody
-	public String updateStopDick(HttpServletRequest request)
-	{
-		return pmService.updateStopwordIK();
+	public String updateHotDic(HttpServletRequest request){
+		
+		return pmService.updateHotwordIK();
 	}
 	
 	/***
-	 * 删除停止词
+	 * 删除热词
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="delStop",method=RequestMethod.POST)
+	@RequestMapping(value="delHot",method=RequestMethod.POST)
 	@ResponseBody
 	public String deleteHotDic(HttpServletRequest request){
 		
@@ -138,7 +140,7 @@ public class StopWordsController {
 			int id = Integer.parseInt(sid);
 			String name = request.getParameter("name");
 			System.out.println("id:"+id +"name:"+name);
-			int result = stopWordsService.delStopWordsById(id);
+			int result = hotWordService.delHotWordById(id);
 			if(result<1){
 				logger.info(id + "删除失败!");
 				return JSONUtils.badResult("failed");
@@ -151,5 +153,4 @@ public class StopWordsController {
 			return JSONUtils.badResult("failed");
 		}
 	}
-
 }

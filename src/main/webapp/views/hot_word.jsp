@@ -3,17 +3,17 @@
 <html>
 <head>
 <%@ include file="/common/common.jsp"%>
-<title>添加停止词</title>	
+<title>添加热词</title>	
 <link rel="stylesheet" type="text/css" href="http://developer.amap.com/Public/css/demo.Default.css" /> 
 <script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=8089bac0001203d3175a245d7db66ef5"></script>
 
 <script language="javascript">
 
 $(function(){   
-	$("#updateStopDic").click(function(){
+	$("#updateHotDic").click(function(){
 	//ajax 异步提交
 		$.ajax({
-				url:rootpath+"/stop/updateStop",
+				url:rootpath+"/hot/updateHot",
 				type:"post",
 				dataType:"text",
 				cache:false,
@@ -26,19 +26,19 @@ $(function(){
 					}
 				},
 				error:function(e){
-					$.messager.alert('错误','提交失败!','error');
+					$.messager.alert('错误','添加失败!','error');
 				}
 		});
 	})
 	
     //更改弹出框
     $('#modifyDiv').dialog({
-    			title:'添加停止词',
+    			title:'添加热词',
     			closed:true,//初始时不显示
 				buttons:[{
 					text:'确定',
 					iconCls:'icon-ok',
-					handler:addStopWords
+					handler:addHotWords
 				},{
 					text:'取消',
 					iconCls:'icon-cancel',
@@ -49,39 +49,9 @@ $(function(){
 	 });
 });
 
-//表格操作区域展示
-function formatAction(value,row,index){
-	a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
-	var id = row.id;
-	var name = row.name;	
-	var data = "id="+id+"&name="+name;
-	
-  	$(document).delegate("#a"+index,"click",function(){
-  		
-  		$.ajax({
-			url:rootpath+"/stop/delStop",
-			type:"post",
-			data:data,
-			dataType:"json",
-			cache:false,
-			success:function(response){
-				if(response.errorCode == 0){
-					$.messager.alert('成功','删除成功!','info');
-					//重新加载数据
-					$("#projTab").datagrid('reload');
-				}else{
-					 $.messager.alert('错误','删除失败!','error');
-				}
-			},
-			error:function(e){
-				$.messager.alert('错误','删除失败3!','error');
-			}
-	});
-  	});
-	return a;
-}
+function searchBtnClick(){
 
-function searchBtnClick(){	
+	
 	//为loadGrid()添加参数  
     var queryParams = $('#projTab').datagrid('options').queryParams;  
     queryParams.groupId = groupId;
@@ -96,11 +66,43 @@ function searchBtnClick(){
     $("#projTab").datagrid('reload'); 
 }
 
-function addStopWords(){
-	var type = $("#typeInput").val();
-	var stopWords = $("#stopWordsInput").val();
+//表格操作区域展示
+function formatAction(value,row,index){
+	a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
+	var id = row.id;
+	var name = row.name;	
+	var data = "id="+id+"&name="+name;
 	
-	var data = "type="+type+"&stopWords="+stopWords;
+  	$(document).delegate("#a"+index,"click",function(){
+  		
+  		$.ajax({
+			url:rootpath+"/hot/delHot",
+			type:"post",
+			data:data,
+			dataType:"json",
+			cache:false,
+			success:function(response){								
+				if(response.errorCode == 0){
+					$.messager.alert('成功','添加成功!','info');
+					//重新加载数据
+					$("#projTab").datagrid('reload');
+				}else{
+					 $.messager.alert('错误','添加失败!','error');
+				}
+			},
+			error:function(e){
+				$.messager.alert('错误','编辑失败3!','error');
+			}
+	});
+  	});
+	return a;
+}
+
+function addHotWords(){
+	var type = $("#typeInput").val();
+	var stopWords = $("#hotWordsInput").val();
+	
+	var data = "type="+type+"&hotWords="+stopWords;
 	var win = $.messager.progress({
         title:'Please waiting',
         msg:'Loading data...'
@@ -108,7 +110,7 @@ function addStopWords(){
 	
 	//ajax 异步提交
 	$.ajax({
-			url:rootpath+"/stop/addStop",
+			url:rootpath+"/hot/addHot",
 			type:"post",
 			data:data,
 			dataType:"json",
@@ -159,8 +161,8 @@ $(function(){
 <body>
 
 	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
-			url="<%=basePath %>/stop/loadStop" 
-			title="添加停止词" toolbar="#tb"fitColumns="true" pagination="true">
+			url="<%=basePath %>/hot/loadHot" 
+			title="添加热词" toolbar="#tb"fitColumns="true" pagination="true">
 		<thead>
 			<tr>
 				<th field="id" width="80" align="center">id</th>
@@ -177,18 +179,18 @@ $(function(){
 	
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
-			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加停止词</a>
-			<a href="javascript:void(0)" id="updateStopDic" class="easyui-linkbutton" iconCls="icon-add">更新停止词词库</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
+			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新热词词库</a>
 		</div>
 	</div>
 	
 	<div id="modifyDiv"  style="padding:5px;width:420px;height:320px;">
 		<br/>
-		<p>类&nbsp;&nbsp;&nbsp;&nbsp;型:<label id="TypeLabel"></label><input  id="typeInput" style="width:150px"/></p>
+		<p>类型:<label id="TypeLabel"></label><input  id="typeInput" style="width:150px"/></p>
 		<br/>
 		<p><font size="2" color="blue">注:1代表楼盘，2代表新闻，只能填写一个类型号！</font></p>
 		<br/>
-		<p>停用词:<input id="stopWordsInput" style="width:320px"/></p>
+		<p>热词:<input id="hotWordsInput" style="width:320px"/></p>
 		<!-- <p><input id="rId" style="width:10px;display:none;"readonly="trye"/></p> -->
 		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>

@@ -12,14 +12,11 @@ import cn.focus.search.admin.service.ParticipleManagerService;
 public class TimerTask implements Job{
 
 	private static Logger log = LoggerFactory.getLogger(TimerTask.class);
-	private ParticipleManagerService participleManagerService;
 	public void execute(JobExecutionContext arg0) throws JobExecutionException
 	{
 		try
 		{
-			String isSuccess = participleManagerService.updateIK();
-			log.info(isSuccess);
-			TimerOperation.getDate();
+			TimerOperation.doTasks();
 		}catch(Exception ex)
 		{
 			log.info(ex.getMessage());

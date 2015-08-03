@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="StopWordsDao">
+<mapper namespace="HotWordDao">
     <!--mybatis3 这个namespace 必需指定到接口上去 -->
-    <resultMap id="BaseResultMap" type="StopWords">
+    <resultMap id="BaseResultMap" type="HotWord">
         <id 	column="id" 			property="id" 			jdbcType="INTEGER"/>
         <result column="name" 			property="name" 		jdbcType="VARCHAR"/>
         <result column="type" 			property="type" 		jdbcType="INTEGER"/>
@@ -22,25 +22,25 @@
 		create_time,
 		update_time
 	</sql>
-
-	<!-- 获取停用词列表 -->
-    <select id="getStopWordsList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
+	
+		<!-- 获取热词列表 -->
+    <select id="getHotWordList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
         select
         <include refid="Base_Column_List"/>
-        from stop_words
+        from hot_word
     </select>
     
-    <!-- 根据名称获取停用词列表 -->
-    <select id="getStopWordsListByName" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
+    <!-- 根据名称获取热词列表 -->
+    <select id="getHotWordListByName" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
         select
         <include refid="Base_Column_List"/>
-        from stop_words
+        from hot_word
         where name = #{wordName}
     </select>
-    
-	<!-- 添加停用词 -->
-    <insert id="insertStopWords" parameterType="StopWords" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
-        insert into stop_words(
+	
+		<!-- 添加停用词 -->
+    <insert id="insertHotWord" parameterType="HotWord" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
+        insert into hot_word(
 		name,
 		type,
 		status,
@@ -60,17 +60,17 @@
             SELECT @@IDENTITY AS id
         </selectKey> -->
     </insert>
-    
-    <select id="getDayStopWordsList" resultMap="BaseResultMap"
+	
+    <select id="getDayHotWordList" resultMap="BaseResultMap"
 		parameterType="java.lang.String" statementType="PREPARED">
 		select
 		<include refid="Base_Column_List" />
-		from stop_words
+		from hot_word
 		where to_days(update_time)=to_days(now())
 	</select>
 	
-	<delete id="delStopWordsById" parameterType="java.lang.Integer" statementType="PREPARED">
-		delete from stop_words
+	<delete id="delHotWordById" parameterType="java.lang.Integer" statementType="PREPARED">
+		delete from hot_word
 		where id=#{id}
 	</delete>
 </mapper>

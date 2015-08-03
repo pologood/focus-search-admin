@@ -29,4 +29,20 @@ public interface StopWordsService {
      * @throws Exception
      */
     public List<StopWords> getStopWordsListByName(String wordName);
+    
+    /**
+     *根据日期获取需要添加到词库的停止词数据
+     * @param wordName
+     * @return
+     * @throws Exception
+     */
+	public List<StopWords> getDayStopWordsList();
+	
+	/**
+     *根据id删除停止词数据
+     * @param wordName
+     * @return
+     * @throws Exception
+     */
+	public int delStopWordsById(int id);
 }

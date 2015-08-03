@@ -55,4 +55,28 @@ public class StopWordsServiceImpl implements StopWordsService{
         }
         return list;
 	}
+
+	@Override
+	public List<StopWords> getDayStopWordsList() {
+		// TODO Auto-generated method stub
+		List<StopWords> list=new LinkedList<StopWords>();
+        try {
+            list = stopWordsDao.getDayStopWordsList();
+        } catch (Exception e) {
+            logger.error("获取停止词数据异常!", e);
+        }
+        return list;
+	}
+
+	@Override
+	public int delStopWordsById(int id) {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = stopWordsDao.delStopWordsById(id);
+        } catch (Exception e) {
+            logger.error("删除停止词数据异常!", e);
+        }
+        return s;
+	}
 }
