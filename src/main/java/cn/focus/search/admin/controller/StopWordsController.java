@@ -86,6 +86,8 @@ public class StopWordsController {
 			int type = Integer.parseInt(stype);
 			String stopWords = request.getParameter("stopWords");
 			
+			if (stopWords == null || stopWords =="" || type < 1 || type > 2)
+				return JSONUtils.badResult("failed");
 			List<StopWords> stopList = new LinkedList<StopWords>();
 			stopList = stopWordsUtil.getStopList(type, stopWords, editor, 1);
 			for (StopWords sw : stopList)
@@ -93,7 +95,7 @@ public class StopWordsController {
 				System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
 				List<StopWords> list = new LinkedList<StopWords>();
 				list = stopWordsService.getStopWordsListByName(sw.getName());
-				System.out.println("！@@@@@@@@@@@@list大小： " + list.size());
+				System.out.println("list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
 				int result = stopWordsService.insertStopWords(sw);

@@ -83,15 +83,15 @@ function formatAction(value,row,index){
 			cache:false,
 			success:function(response){								
 				if(response.errorCode == 0){
-					$.messager.alert('成功','添加成功!','info');
+					$.messager.alert('成功','删除成功!','info');
 					//重新加载数据
 					$("#projTab").datagrid('reload');
 				}else{
-					 $.messager.alert('错误','添加失败!','error');
+					 $.messager.alert('错误','删除失败!','error');
 				}
 			},
 			error:function(e){
-				$.messager.alert('错误','编辑失败3!','error');
+				$.messager.alert('错误','删除失败3!','error');
 			}
 	});
   	});

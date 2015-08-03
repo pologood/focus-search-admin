@@ -87,7 +87,8 @@ public class HotWordsController {
 			String editor = user.getUserName();
 			int type = Integer.parseInt(stype);
 			String hotWords = request.getParameter("hotWords");
-			
+			if (hotWords == null || hotWords =="" || type < 1 || type > 2)
+				return JSONUtils.badResult("failed");
 			List<HotWord> hotList = new LinkedList<HotWord>();
 			hotList = stopWordsUtil.getHotList(type, hotWords, editor, 1);
 			for (HotWord hw : hotList)
