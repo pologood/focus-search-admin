@@ -630,7 +630,6 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("getDayStopWordsException",e);
-			e.printStackTrace();
 		}
 		for(int i=0;i<list.size();i++){
 			
