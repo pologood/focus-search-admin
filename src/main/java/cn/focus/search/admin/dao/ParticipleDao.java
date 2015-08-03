@@ -26,7 +26,12 @@ public interface ParticipleDao {
      */
     public List<Participle> getParticipleList(@Param("participles")String  participles,@Param("status")int  status)throws Exception;
 
-	//获取当天已经人工干预过分词的数据。
+    /**
+     * 获取当天已经人工干预过分词的数据
+     * @param
+     * @return
+     * @throws Exception
+     */
     public List<Participle> getDayFinalHouseParticipleList() throws Exception;
 
 }

@@ -52,7 +52,7 @@ public class StopWordsController {
 			list = stopWordsService.getStopWordsList();
 			int size = list.size();
 			
-			System.out.println("list的大小是"+size);
+			logger.info("list的大小是"+size);
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
@@ -77,7 +77,7 @@ public class StopWordsController {
 		try{
 			
 			String stype = request.getParameter("type");
-			System.out.println("！停止词TYPE："+stype);
+			//System.out.println("！停止词TYPE："+stype);
 			if(StringUtils.isBlank(stype)){
 				return JSONUtils.badResult("failed");
 			}
@@ -92,10 +92,10 @@ public class StopWordsController {
 			stopList = stopWordsUtil.getStopList(type, stopWords, editor, 1);
 			for (StopWords sw : stopList)
 			{
-				System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
+				//System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
 				List<StopWords> list = new LinkedList<StopWords>();
 				list = stopWordsService.getStopWordsListByName(sw.getName());
-				System.out.println("list大小： " + list.size());
+				logger.info("list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
 				int result = stopWordsService.insertStopWords(sw);
@@ -139,7 +139,7 @@ public class StopWordsController {
 			}
 			int id = Integer.parseInt(sid);
 			String name = request.getParameter("name");
-			System.out.println("id:"+id +"name:"+name);
+			//System.out.println("id:"+id +"name:"+name);
 			int result = stopWordsService.delStopWordsById(id);
 			if(result<1){
 				logger.info(id + "删除失败!");

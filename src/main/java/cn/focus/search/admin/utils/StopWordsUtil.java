@@ -18,7 +18,7 @@ public class StopWordsUtil {
 	{
 		List<StopWords> stopList = new LinkedList<StopWords>();
 		try{
-			String[] stop = stops.split(",");
+			String[] stop = stops.split("[, ， ]");
 			for (int i = 0; i < stop.length; i++)
 			{
 				StopWords sw = new StopWords();
@@ -44,7 +44,7 @@ public class StopWordsUtil {
 	{
 		List<HotWord> hotList = new LinkedList<HotWord>();
 		try{
-			String[] stop = hots.split(",");
+			String[] stop = hots.split("[, ， ]");
 			for (int i = 0; i < stop.length; i++)
 			{
 				HotWord hw = new HotWord();
@@ -68,7 +68,7 @@ public class StopWordsUtil {
 	
 	public static void main(String[] args)
 	{
-		Date now=new Date();
+/*		Date now=new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowt = sdf.format(now);
 		System.out.println(nowt);
@@ -76,8 +76,12 @@ public class StopWordsUtil {
 			now = sdf.parse(nowt);
 			System.out.println(now.toString());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+			// TODO Auto-generated catch block
+		}*/
+		String ss = "a,b c，d";
+		String[] stop = ss.split("[, ，]");
+		for (int i = 0; i < stop.length; i++)
+			System.out.println(stop[i]);
 	}
 }

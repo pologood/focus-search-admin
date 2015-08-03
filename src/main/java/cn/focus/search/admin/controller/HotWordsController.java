@@ -79,7 +79,7 @@ public class HotWordsController {
 		try{
 			
 			String stype = request.getParameter("type");
-			System.out.println("！停止词TYPE："+stype);
+			//System.out.println("！停止词TYPE："+stype);
 			if(StringUtils.isBlank(stype)){
 				return JSONUtils.badResult("failed");
 			}
@@ -96,7 +96,7 @@ public class HotWordsController {
 				System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
 				List<HotWord> list = new LinkedList<HotWord>();
 				list = hotWordService.getHotWordListByName(hw.getName());
-				System.out.println("！@@@@@@@@@@@@list大小： " + list.size());
+				logger.info("list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
 				int result = hotWordService.insertHotWord(hw);
