@@ -64,4 +64,15 @@ public class RemoteDicController {
 		
 	}
 	
+	
+/*	@RequestMapping("test")
+	@ResponseBody
+	public String getTestDic(HttpServletResponse response){
+		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
+ 		response.setHeader("ETags", "etagSting");
+  		logger.info("test httpHead");
+		return participleManagerService.getRemoteStopword();
+		
+	}*/
+	
 }

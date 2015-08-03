@@ -67,6 +67,22 @@ public class LastTime {
 		}
  		
  		return flag;
+	}
+
+
+	public static long getFinal_house_lTime() {
+		return final_house_lTime;
+	}
+
+
+	public static long getHotword_lTime() {
+		return hotword_lTime;
+	}
+
+
+	public static long getStopword_lTime() {
+		return stopword_lTime;
 	} 
+	
 
 }
