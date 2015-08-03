@@ -19,14 +19,14 @@ $(function(){
 				cache:false,
 				success:function(data){
 					if(data == "success"){
-						$.messager.alert('成功','添加成功!','info');
+						$.messager.alert('成功','更新成功!','info');
 						//重新加载数据
 					}else{
-						 $.messager.alert('错误','添加失败!','error');
+						 $.messager.alert('错误','更新失败!','error');
 					}
 				},
 				error:function(e){
-					$.messager.alert('错误','提交失败!','error');
+					$.messager.alert('错误','更新失败!','error');
 				}
 		});
 	})
@@ -193,7 +193,7 @@ $(function(){
 		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>
 		<br/>
-		<p><font size="2" color="blue">注:多个停用词请用英文逗号连接  如:万科,北京,金科</font></p>
+		<p><font size="2" color="blue">注:多个停用词请用英文逗号空格或中文逗号空格连接  如:万科,北京,金科</font></p>
 	</div>
 </body>
 </html>

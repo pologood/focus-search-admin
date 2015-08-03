@@ -40,7 +40,7 @@ public interface StopWordsDao {
 	
 	/**
      *根据id删除停止词数据
-     * @param wordName
+     * @param id
      * @return
      * @throws Exception
      */

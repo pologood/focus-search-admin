@@ -13,11 +13,17 @@ import cn.focus.search.admin.model.HotWord;
  */
 public interface HotWordDao {
 
+	/**
+     *根据日期获取需要更新到词库的热词数据
+     * @param
+     * @return
+     * @throws Exception
+     */
 	List<HotWord> getDayHotWordList()throws Exception;
 
     /**
      *插入热词数据
-     * @param stopword
+     * @param hotWord
      * @return
      * @throws Exception
      */
@@ -41,7 +47,7 @@ public interface HotWordDao {
     
     /**
      *根据id删除热词数据
-     * @param wordName
+     * @param id
      * @return
      * @throws Exception
      */
