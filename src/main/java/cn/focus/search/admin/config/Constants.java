@@ -21,6 +21,6 @@ public class Constants {
 	/**
 	 * ik索引端分词url
 	 */
-	public static String ik = "http://es.search.focus.cn:9200/focus_house/_analyze?analyzer=ik&text=";
+	public static String ik = "http://es.search.focus.cn:9200/focus_combinesearch_v1.1/_analyze?analyzer=ik&text=";
 
 }

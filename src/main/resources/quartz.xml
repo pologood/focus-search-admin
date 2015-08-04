@@ -14,7 +14,7 @@
     <job-name>doTasks</job-name>
     <job-group>job</job-group>
     <!-- <cron-expression>0 0 0 * * ?</cron-expression> -->
-    <cron-expression>0/10 * * * * ?</cron-expression><!-- 设置定时器的触发时间即间隔时间 -->
+    <cron-expression>0 0/30 * * * ?</cron-expression><!-- 设置定时器的触发时间即间隔时间 -->
    </cron>
   </trigger>
  </job>

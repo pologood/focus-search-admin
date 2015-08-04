@@ -533,7 +533,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateIK() {
 		// TODO Auto-generated method stub
-		System.out.println("！！！updateIK");
+		//System.out.println("！！！updateIK");
 		String flag="failed";
 		if (LastTime.setlTime()==1) flag="success";
 		return flag;
@@ -544,7 +544,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateStopwordIK() {
 		// TODO Auto-generated method stub
-		System.out.println("@@@@@@updateStop");
+		//System.out.println("@@@@@@updateStop");
 		String flag="failed";
 		if (LastTime.setStopwordlTime()==1) flag="success";
 		return flag;
@@ -555,7 +555,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateHotwordIK() {
 		// TODO Auto-generated method stub
-		System.out.println("######updateHot");
+		//System.out.println("######updateHot");
 		String flag="failed";
 		if (LastTime.setHotwordlTime()==1) flag="success";
 		return flag;
