@@ -58,6 +58,7 @@ import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
 import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.service.RedisService;
 import cn.focus.search.admin.utils.ExcelUtil;
 import cn.focus.search.admin.utils.JSONUtils;
 
@@ -89,6 +90,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private RedisService redisService;
 	
 	private Logger logger = LoggerFactory.getLogger(ParticipleManagerServiceImpl.class);
 	
@@ -562,9 +566,21 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	}
 	
 	public String getRemoteFinalHouseWord(){
-		StringBuffer str=new StringBuffer();;
+		StringBuffer str=new StringBuffer();
+		
+		// read from redis firstly.
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
+		String strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed from redis.");
+			return strWords;
+			
+		}
+		
+		// read from mysql.
 		List<Participle> list = new LinkedList<Participle>();
 		try {
+			logger.info("starting get DayFinalHouseWord from mysql");
 			list=participleDao.getDayFinalHouseParticipleList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -583,7 +599,12 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 
 			}
 		}
-		return str.toString();
+		strWords=str.toString();
+		
+		// write to redis.
+		redisService.setRedis(key, strWords, true, 86400);
+		
+		return strWords;
 	}
 	
 	
@@ -591,14 +612,24 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String getRemoteStopword() {
 		// TODO Auto-generated method stub
-		StringBuffer str=new StringBuffer();;
+		StringBuffer str=new StringBuffer();
+		
+		// read from redis firstly.
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
+		String strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed from redis.");
+			return strWords;
+		}
+		
+		// read from mysql.
 		List<StopWords> list = new LinkedList<StopWords>();
 		try {
+			logger.info("starting get DayRemoteStopWord from mysql");
 			list=stopWordsDao.getDayStopWordsList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("getDayStopWordsException",e);
-			e.printStackTrace();
 		}
 		for(int i=0;i<list.size();i++){
 			
@@ -608,16 +639,34 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 					str.append("\n");
 			}
 		}
-		return str.toString();
+		
+		strWords=str.toString();
+		
+		// write to redis.
+		redisService.setRedis(key, strWords, true, 86400);
+		
+		return strWords;
 
 	}
 
 	@Override
 	public String getRemoteHotword() {
 		// TODO Auto-generated method stub
-		StringBuffer str=new StringBuffer();;
+		StringBuffer str=new StringBuffer();
+		
+		// read from redis firstly.
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteHotword"+Long.toString(LastTime.getHotword_lTime());
+		String strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			
+			logger.info("readed from redis.");
+			return strWords;
+		}
+		
+		// read from mysql.
 		List<HotWord> list = new LinkedList<HotWord>();
 		try {
+			logger.info("starting get RemoteHotWord from mysql");
 			list=hotWordDao.getDayHotWordList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -632,7 +681,11 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 					str.append("\n");
 			}
 		}
-		return str.toString();
+		
+		// write to redis.
+		redisService.setRedis(key, strWords, true, 86400);
+		
+		return strWords;
 	}
 
 	////判断该词是否已经已经在词库(非停用词)中。

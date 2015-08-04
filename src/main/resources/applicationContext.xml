@@ -9,8 +9,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd"
-       default-lazy-init="true">
+        http://www.springframework.org/schema/util/spring-util.xsd">
 
     <description>Spring公共配置</description>
     <context:annotation-config/>
@@ -19,6 +18,8 @@
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
+	
+	<import resource="applicationContext-redis.xml"/>
     
     <!-- production环境 -->
     <beans profile="product">

@@ -1,10 +1,7 @@
 package cn.focus.search.admin.controller;
 
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +60,16 @@ public class RemoteDicController {
 		return participleManagerService.getRemoteHotword();
 		
 	}
+	
+	
+/*	@RequestMapping("test")
+	@ResponseBody
+	public String getTestDic(HttpServletResponse response){
+		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
+ 		response.setHeader("ETags", "etagSting");
+  		logger.info("test httpHead");
+		return participleManagerService.getRemoteStopword();
+		
+	}*/
 	
 }

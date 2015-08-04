@@ -235,6 +235,11 @@
 			<artifactId>quartz-all</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+        <dependency>
+            <groupId>cn.focus.dc.commons</groupId>
+ 			<artifactId>sce-jedis-support</artifactId>
+  			<version>1.0-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 
