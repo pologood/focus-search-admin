@@ -21,6 +21,7 @@
 	</context:component-scan>
 	
 	<import resource="applicationContext-redis.xml"/>
+	
     <!-- production环境 -->
     <beans profile="product">
         <context:property-placeholder ignore-unresolvable="true" location="classpath*:/config/product.properties"/>
