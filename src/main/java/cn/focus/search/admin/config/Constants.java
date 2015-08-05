@@ -9,6 +9,10 @@ public class Constants {
 	 * 登陆密码
 	 */
 	public static final String passWord = "123";
+	/**
+	 * redis cache 词失效时间
+	 */
+	public static final int expiredTime=86400;
 	
 	/**
 	 * 楼盘工程secret key
