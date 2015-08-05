@@ -58,25 +58,33 @@ function formatAction(value,row,index){
 	
   	$(document).delegate("#a"+index,"click",function(){
   		
-  		$.ajax({
-			url:rootpath+"/stop/delStop",
-			type:"post",
-			data:data,
-			dataType:"json",
-			cache:false,
-			success:function(response){
-				if(response.errorCode == 0){
-					$.messager.alert('成功','删除成功!','info');
-					//重新加载数据
-					$("#projTab").datagrid('reload');
-				}else{
-					 $.messager.alert('错误','删除失败!','error');
-				}
-			},
-			error:function(e){
-				$.messager.alert('错误','删除失败3!','error');
-			}
-	});
+  		var isDel = confirm("确定删除请选择确定，否则取消！");
+  		if (isDel == true)
+  		{
+  			$.ajax({
+  				url:rootpath+"/stop/delStop",
+  				type:"post",
+  				data:data,
+  				dataType:"json",
+  				cache:false,
+  				success:function(response){
+  					if(response.errorCode == 0){
+  						$.messager.alert('成功','删除成功!','info');
+  						//重新加载数据
+  						$("#projTab").datagrid('reload');
+  					}else{
+  						 $.messager.alert('错误','删除失败!','error');
+  					}
+  				},
+  				error:function(e){
+  					$.messager.alert('错误','删除失败3!','error');
+  				}
+  			});
+  		}
+  		else
+  		{
+  			isDel.close();
+  		}  		
   	});
 	return a;
 }
