@@ -63,7 +63,7 @@ function searchBtnClick(){
 	p.pagination({pageNumber: 1}); 
  
     //重新加载datagrid的数据  
-    $("#projTab").datagrid('reload'); 
+    $("#projTab").datagrid('reload');
 }
 
 //表格操作区域展示
@@ -76,6 +76,7 @@ function formatAction(value,row,index){
   	$(document).delegate("#a"+index,"click",function(){
   		
   		$.ajax({
+  			
 			url:rootpath+"/hot/delHot",
 			type:"post",
 			data:data,

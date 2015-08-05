@@ -30,12 +30,7 @@
 			</bean>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="prettyPrint" value="true"/>
-<!-- 	            <property name="supportedMediaTypes">
-		                  <list>
-			                <value>text/html;charset=UTF-8</value>
-		                  </list>
-	           </property> -->
-            </bean>			
+            </bean>
   		</mvc:message-converters>
 	</mvc:annotation-driven>	
 <!-- 	

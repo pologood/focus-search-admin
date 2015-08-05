@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util/spring-util-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
+        >
 
     <description>Spring公共配置</description>
-    <context:annotation-config/>
+    <!--配置scheduled的定时调度任务 -->
+    <task:executor id="executor" pool-size="1"/>
+    <task:scheduler id="scheduler" pool-size="1"/>
+    <task:annotation-driven executor="executor" scheduler="scheduler"/>
+
     <context:component-scan base-package="cn.focus.search.*">
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
 	
 	<import resource="applicationContext-redis.xml"/>
-    
     <!-- production环境 -->
     <beans profile="product">
         <context:property-placeholder ignore-unresolvable="true" location="classpath*:/config/product.properties"/>
@@ -86,36 +87,6 @@
              <property name="dataSource" ref="dataSource"/>
          </bean>
 
-         <!-- 使用annotation注解方式配置事务 -->
-      <!--    <tx:annotation-driven transaction-manager="transactionManager"/> -->
-
-         <!-- AOP 配置事务的传播特性 -->
-<!--          <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-             <tx:attributes>
-                 <tx:method name="query*" read-only="true"/>
-                 <tx:method name="get*" read-only="true" />
-                 <tx:method name="select*" read-only="true" />
-                 <tx:method name="*"  propagation="REQUIRED"/>
-                 <tx:method name="delete*" propagation="REQUIRED"/>
-                 <tx:method name="update*" propagation="REQUIRED"/>
-                 <tx:method name="insert*" propagation="REQUIRED"/>
-                 <tx:method name="modify*" propagation="REQUIRED"/>
-                 <tx:method name="create*" propagation="REQUIRED"/>
-             </tx:attributes>
-         </tx:advice> -->
-
-         <!-- 配置AOP切面含义:第一个* 代表任意返回值
-           cn.focus.search.news.services包及其子包下所有类的所有()方法
-           注意，如果事务处理加到那个层中，异常必需throws 出来，不能try cacth,不然事务不起使用；
-           一条sql是一个原子操作，如果一个方法中只有一条sql,没有必要用事务，如果一个方法里有多个sql就需要事务统一
-           成功，统一失败（必需把异常throws出去）弄了好久才想起来！
-         -->
-<!--          <aop:config>
-             <aop:pointcut id="transactionPointcut" expression="execution(* cn.focus.rec.services..*(..))"/>
-             <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
-         </aop:config> -->
-
-
          <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
              <property name="dataSource" ref="dataSource"/>
              <property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
@@ -139,11 +110,6 @@
                 </util:set>
             </property>
         </bean>
+         <bean id="restTemplate" class="org.springframework.web.client.RestTemplate "/>
      </beans>
-     
-     <beans>
-		<bean id="restTemplate" class="org.springframework.web.client.RestTemplate ">
-		</bean>
-	</beans>
-     
 </beans>
