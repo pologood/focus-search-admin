@@ -38,6 +38,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -73,6 +74,12 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 
 	@Autowired
 	private JestClient client;
+	
+	@Value("${ik.url}")
+	private String ikurl;
+	
+    @Value("${redis.expiredTime}")
+    private int expireTime;
 	
 	@Autowired
 	private ManualPleDao manualPleDao;
@@ -603,7 +610,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		
 		// write to redis.
 
-		redisService.setRedis(key, strWords, true, Constants.expiredTime);
+		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
 	}
@@ -643,7 +650,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		strWords=str.toString();
 		
 		// write to redis.
-		redisService.setRedis(key, strWords, true, Constants.expiredTime);
+		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
 
@@ -683,7 +690,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}
 		strWords=str.toString();
 		// write to redis.
-		redisService.setRedis(key, strWords, true, Constants.expiredTime);
+		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
 	}
@@ -693,7 +700,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		boolean flag=false;
 		StringBuffer ikUrl=new StringBuffer();
-		ikUrl.append(Constants.ik).append(word);
+		ikUrl.append(ikurl).append(word);
 		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
 		ikUrl.delete( 0, ikUrl.length() );
 		
