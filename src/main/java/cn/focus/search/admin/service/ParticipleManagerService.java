@@ -77,6 +77,7 @@ public interface ParticipleManagerService {
 	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list);
 	public String getRemoteStopword();
 	public String getRemoteHotword();
+	public String getIkUrl();
 
 	
 }

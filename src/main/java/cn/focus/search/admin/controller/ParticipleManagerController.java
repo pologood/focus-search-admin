@@ -2,7 +2,6 @@ package cn.focus.search.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import cn.focus.search.admin.model.Participle;
 import cn.focus.search.admin.model.ParticipleFerry;
@@ -37,7 +38,6 @@ public class ParticipleManagerController {
 	
 	@Autowired
 	private ParticipleManagerService participleManagerService;
-	
 	
 	@RequestMapping(value="ptindex",method =RequestMethod.GET)
 	public String ptCheckIndex(){
@@ -60,12 +60,17 @@ public class ParticipleManagerController {
 	}
 	
 	@RequestMapping(value="backup",method =RequestMethod.GET)
-	public String dataBackup(){
+	public ModelAndView dataBackup(){ 
 		try{
-			return "backup";
+			ModelAndView mv = new ModelAndView("backup"); 
+			String ikurl = participleManagerService.getIkUrl();
+			System.out.println("ikurl:"+ikurl);
+			mv.addObject("ikurl", ikurl);
+		    return mv;
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
-			return "error";
+			ModelAndView mv = new ModelAndView("error"); 
+			return mv;
 		}
 	}
 	
