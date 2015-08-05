@@ -20,6 +20,7 @@ public class LastTime {
 			long now=cal.getTime().getTime();
 			final_house_lTime = now;
 			flag=1;
+			logger.info("final_house_lTime is setted to "+Long.toString(now));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("set lastTime failed!", e);
@@ -41,6 +42,7 @@ public class LastTime {
 			long now=cal.getTime().getTime();
 			stopword_lTime = now;
 			flag=1;
+			logger.info("stopword_lTime is setted to "+Long.toString(now));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("set stopword lastTime failed!", e);
@@ -60,6 +62,7 @@ public class LastTime {
 			long now=cal.getTime().getTime();
 			hotword_lTime = now;
 			flag=1;
+			logger.info("hotword_lTime is setted to "+Long.toString(now));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("set hot word lastTime failed!", e);

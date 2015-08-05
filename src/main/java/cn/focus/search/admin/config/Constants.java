@@ -12,7 +12,7 @@ public class Constants {
 	/**
 	 * redis cache 词失效时间
 	 */
-	public static final int expiredTime=86400;
+	public static final int expiredTime=6000;
 	
 	/**
 	 * 楼盘工程secret key
