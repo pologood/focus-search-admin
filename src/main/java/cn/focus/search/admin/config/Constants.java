@@ -10,11 +10,6 @@ public class Constants {
 	 */
 	public static final String passWord = "123";
 	/**
-	 * redis cache 词失效时间
-	 */
-	public static final int expiredTime=6000;
-	
-	/**
 	 * 楼盘工程secret key
 	 */
 	public static final String BUILDING_SECRET_KEY = "e0cd45bf9ee7773cc9b72bd824f3b35c";

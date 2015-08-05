@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,13 +20,17 @@ public class RemoteDicTest {
 	
 	@Autowired
 	public ParticipleManagerService participleManagerService;
+	
+	@Value("${jdbc.username}")
+	public String pstr;
 
 	@Test
 	public void testStopword(){
 		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
-		logger.info(participleManagerService.getRemoteFinalHouseWord());
+		logger.info(pstr);
+/*		logger.info(participleManagerService.getRemoteFinalHouseWord());
 		logger.info(participleManagerService.getRemoteHotword());
-		logger.info(participleManagerService.getRemoteStopword());		
+		logger.info(participleManagerService.getRemoteStopword());*/		
 	}
 
 }
