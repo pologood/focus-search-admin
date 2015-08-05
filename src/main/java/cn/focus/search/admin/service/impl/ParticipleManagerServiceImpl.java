@@ -739,5 +739,11 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		return ferryList;
 	}
 
+	@Override
+	public String getIkUrl() {
+		// TODO Auto-generated method stub
+		return ikurl;
+	}
+
 	
 }

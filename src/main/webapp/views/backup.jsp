@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
 <head>
@@ -112,7 +113,7 @@ function formatAction(value,row,index){
 	
   	$(document).delegate("#a"+index,"click",function(){
   		var result = '';
-  		var URL = "http://10.10.26.23:9200/focus_house/_analyze?analyzer=ik&pretty=true&text="+row.name+row.aliasName;
+  		var URL = "${ikurl}"+row.name+row.aliasName;
   		$.ajax({
 			url:URL,
 			type:"get",
