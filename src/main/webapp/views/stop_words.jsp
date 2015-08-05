@@ -72,7 +72,8 @@ function formatAction(value,row,index){
   						$.messager.alert('成功','删除成功!','info');
   						//重新加载数据
   						$("#projTab").datagrid('reload');
-  					}else{
+  					}
+  					else{
   						 $.messager.alert('错误','删除失败!','error');
   					}
   				},
