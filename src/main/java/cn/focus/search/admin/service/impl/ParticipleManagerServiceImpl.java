@@ -573,9 +573,11 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		String strWords=redisService.getRedis(key);
 		if(strWords!=null){
 			logger.info("readed from redis.");
+			logger.info(strWords);
 			return strWords;
 			
 		}
+
 		
 		// read from mysql.
 		List<Participle> list = new LinkedList<Participle>();
@@ -590,7 +592,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		for(int i=0;i<list.size();i++){
 			
 			String value=list.get(i).getParticiples();
-			String[] words = value.split(",| |，|");//以全角或半角逗号或空格作为分隔符。
+			String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
 			for(int j=0;j<words.length;j++){
 				if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
 					str.append(words[j]);
@@ -602,7 +604,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		strWords=str.toString();
 		
 		// write to redis.
-		redisService.setRedis(key, strWords, true, 86400);
+
+		redisService.setRedis(key, strWords, true, Constants.expiredTime);
 		
 		return strWords;
 	}
@@ -634,16 +637,15 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		for(int i=0;i<list.size();i++){
 			
 			String word=list.get(i).getName();
-			if(!isDuplicateStopword(word)){//判断该词是否已经已经在词库中。
-					str.append(word);
-					str.append("\n");
+			str.append(word);
+			str.append("\n");
 			}
-		}
+		
 		
 		strWords=str.toString();
 		
 		// write to redis.
-		redisService.setRedis(key, strWords, true, 86400);
+		redisService.setRedis(key, strWords, true, Constants.expiredTime);
 		
 		return strWords;
 
@@ -681,9 +683,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 					str.append("\n");
 			}
 		}
-		
+		strWords=str.toString();
 		// write to redis.
-		redisService.setRedis(key, strWords, true, 86400);
+		redisService.setRedis(key, strWords, true, Constants.expiredTime);
 		
 		return strWords;
 	}
@@ -709,28 +711,6 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		
 		return flag;
 	}
-	
-	private boolean isDuplicateStopword(String word) {
-		// TODO Auto-generated method stub
-		boolean flag=true;
-		StringBuffer ikUrl=new StringBuffer();
-		ikUrl.append(Constants.ik).append(word);
-		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
-		ikUrl.delete( 0, ikUrl.length() );
-		
-		JSONObject json = JSONObject.parseObject(ikWord);
-		JSONArray arr = (JSONArray)json.get("tokens");
-		
-		for(int i=0;i<arr.size();i++){
-			JSONObject js = (JSONObject)arr.get(i);
-			if (js.getString("token").equals(word)){
-				flag=false;
-			}
-		}	
-		
-		return flag;
-	}
-
 	
 	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list){
 		List<ParticipleFerry> ferryList = new LinkedList<ParticipleFerry>();
