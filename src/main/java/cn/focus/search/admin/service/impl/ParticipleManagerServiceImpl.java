@@ -6,11 +6,9 @@ import io.searchbox.core.Search;
 import io.searchbox.core.Update;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -537,7 +535,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateIK() {
 		// TODO Auto-generated method stub
-		System.out.println("！！！updateIK");
+		//System.out.println("！！！updateIK");
 		String flag="failed";
 		if (LastTime.setlTime()==1) flag="success";
 		return flag;
@@ -548,7 +546,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateStopwordIK() {
 		// TODO Auto-generated method stub
-		System.out.println("@@@@@@updateStop");
+		//System.out.println("@@@@@@updateStop");
 		String flag="failed";
 		if (LastTime.setStopwordlTime()==1) flag="success";
 		return flag;
@@ -559,7 +557,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateHotwordIK() {
 		// TODO Auto-generated method stub
-		System.out.println("######updateHot");
+		//System.out.println("######updateHot");
 		String flag="failed";
 		if (LastTime.setHotwordlTime()==1) flag="success";
 		return flag;

@@ -63,7 +63,7 @@ $(function(){
 <body class="easyui-layout">
 	<div region="north"  class="manageHeader">
 		<div class="welcomeTitle"><h2><font color="#FFFFFF">欢迎来到搜索后台管理系统!</font></h2></div>
-		<div class="logout"><a href="http://localhost:8080/search/admin/logout"><font color="#FFFFFF">退出登录</font></a></div>
+		<div class="logout"><a href="/search/admin/logout"><font color="#FFFFFF">退出登录</font></a></div>
 		<div class="loginUser"><font color="#FFFFFF">用户信息：${userName }</font></div>
 	</div>
 	<div region="west" split="true" title="菜单" style="width:280px;padding:0px;overflow:hidden;">

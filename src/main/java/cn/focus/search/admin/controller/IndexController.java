@@ -102,8 +102,8 @@ public class IndexController {
 		try{
 		   request.getSession().removeAttribute("user");
 			
-           return "redirect:/search/admin/login"; 			
-        		 
+           return "redirect:/search/admin/login";
+
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			return "error";
