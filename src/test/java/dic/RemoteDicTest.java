@@ -19,15 +19,12 @@ import cn.focus.search.admin.service.impl.ParticipleManagerServiceImpl;
 public class RemoteDicTest {
 	
 	@Autowired
-	public ParticipleManagerService participleManagerService;
+	public ParticipleManagerServiceImpl participleManagerService;
 	
-	@Value("${jdbc.username}")
-	public String pstr;
-
 	@Test
 	public void testStopword(){
 		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
-		logger.info(pstr);
+
 /*		logger.info(participleManagerService.getRemoteFinalHouseWord());
 		logger.info(participleManagerService.getRemoteHotword());
 		logger.info(participleManagerService.getRemoteStopword());*/		

@@ -78,6 +78,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Value("${ik.url}")
 	private String ikurl;
 	
+	@Value("${ik.urlSmart}")
+	private String ikurlSmart;
+	
     @Value("${redis.expiredTime}")
     private int expireTime;
 	
@@ -164,13 +167,13 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		ikWords.setWord(word);
 		
 		if(ikUrl!=null){
-			ikUrl.append(Constants.ik).append(word);
+			ikUrl.append(ikurl).append(word);
 			String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
 			ikUrl.delete( 0, ikUrl.length() );
 			ikWords.setIndexPplWord(buildIkWords(ikWord));
 		}
 		if(iksmartUrl!=null){
-			iksmartUrl.append(Constants.ikSmart).append(word);
+			iksmartUrl.append(ikurlSmart).append(word);
 			String iksmartWord = restTemplate.getForObject(iksmartUrl.toString(), String.class);
 			iksmartUrl.delete( 0, iksmartUrl.length() );
 			ikWords.setSearchPplWord(buildIkWords(iksmartWord));
@@ -739,5 +742,13 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		return ferryList;
 	}
 
+
+	@Override
+	public String getIkUrl() {
+		// TODO Auto-generated method stub
+		return ikurl;
+	}
+
 	
+
 }
