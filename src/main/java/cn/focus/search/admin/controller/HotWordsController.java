@@ -30,7 +30,7 @@ import cn.focus.search.admin.utils.StopWordsUtil;
 @RequestMapping("/hot")
 public class HotWordsController {
 
-	private Logger logger = LoggerFactory.getLogger(ParticipleManagerController.class);
+	private Logger logger = LoggerFactory.getLogger(HotWordsController.class);
 	
 	@Autowired
 	private HotWordService hotWordService;
@@ -140,10 +140,10 @@ public class HotWordsController {
 			}
 			int id = Integer.parseInt(sid);
 			String name = request.getParameter("name");
-			System.out.println("id:"+id +"name:"+name);
+			//System.out.println("!!!!!!@@@@@id:"+id +"  name:"+name);
 			int result = hotWordService.delHotWordById(id);
 			if(result<1){
-				logger.info(id + "删除失败!");
+				logger.info("wordId: " + id + "删除失败!");
 				return JSONUtils.badResult("failed");
 			}
 			return JSONUtils.ok();

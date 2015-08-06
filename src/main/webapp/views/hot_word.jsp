@@ -8,6 +8,65 @@
 <script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=8089bac0001203d3175a245d7db66ef5"></script>
 
 <script language="javascript">
+//动态绘制数据表格的代码
+$(function(){
+	$('#projTab').datagrid({
+        idField:'id',  
+        url:'<%=basePath %>/hot/loadHot',  
+        singleSelect:true,  
+        columns:[[  
+          {field:'id',title:'id',width:80,align:'center'},
+          {field:'name',title:'名称',width:120,align:'center'},
+          {field:'type',title:'类型',width:80,align:'center'},
+          {field:'status',title:'状态',width:80,align:'center'},
+          {field:'editor',title:'编辑者',width:80,align:'center'},
+          {field:'createTime',title:'创建时间',width:160,align:'center'},
+          {field:'updateTime',title:'最后更新时间',width:160,align:'center'},
+          {field:'opt',title:'操作',width:100,align:'center',  
+            formatter:function(value,rec,index){
+                var d = '<a href="javascript:void(0)" mce_href="#" onclick="del(\''+ index +'\')">删除</a> ';  
+               // a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
+                return d;  
+            }  
+          }  
+        ]],  
+       
+       pagination:true  
+    });  
+})
+
+function del(index){  //删除操作  
+    $.messager.confirm('确认','确认删除?',function(row){  
+        if(row){  
+            var selectedRow = $('#projTab').datagrid('getSelected');  //获取选中行
+            var aid = selectedRow.id;
+      		var name = selectedRow.name;
+      		var data = "id="+aid+"&name="+name;
+      		//$.messager.alert(data);
+            $.ajax({  
+                url:rootpath+"/hot/delHot",
+                type:"post",
+  				data:data,
+  				dataType:"json",
+  				cache:false,
+                success:function(response)
+                {
+                	if(response.errorCode == 0){;
+  						$.messager.alert('成功','删除成功!','info');  						
+  					}
+  					else{
+  						 $.messager.alert('错误','删除失败!','error');  						 
+  					}
+                },
+                error:function(e){
+  					$.messager.alert('错误','删除失败3!','error');
+  				}
+            });  
+            $("#projTab").datagrid('reload');
+            $('#projTab').datagrid('deleteRow',index);  
+        }  
+    })  
+  } 
 
 $(function(){   
 	$("#updateHotDic").click(function(){
@@ -69,36 +128,50 @@ function searchBtnClick(){
 //表格操作区域展示
 function formatAction(value,row,index){
 	a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
-	var id = row.id;
-	var name = row.name;	
-	var data = "id="+id+"&name="+name;
-	
+		
   	$(document).delegate("#a"+index,"click",function(){
-  		
+  		var aid = row.id;
+  		var name = row.name;
+  		var data = "id="+aid+"&name="+name;
+  		//$.messager.alert(data);
+  		$.messager.alert(data);
   		var isDel = confirm("确定删除请选择确定，否则取消！");
   		if (isDel == true)
   		{
   			$.ajax({
   	  			
-  				url:rootpath+"/hot/delHot",
+  				url:rootpath+"/hot/delHot?time="+Math.random(),
   				type:"post",
   				data:data,
   				dataType:"json",
   				cache:false,
   				success:function(response){								
   					if(response.errorCode == 0){
+  						//$("#projTab").datagrid('reload');
   						$.messager.alert('成功','删除成功!','info');
-  						//重新加载数据
+  					    //$('#projTab').datagrid('deleteRow', index);
   						$("#projTab").datagrid('reload');
+  						$('#projTab').datagrid('clearSelections');
+						//$('#projTab').datagrid('deleteRow', index);
+						//var rows = $('#projTab').datagrid("getRows");
+						//$('#projTab').datagrid("loadData", rows);
+						//$("#projTab").datagrid('reload');
+  						//windows.location("/admin/pm/hot");
+  						//重新加载数据
   					}
   					else{
   						 $.messager.alert('错误','删除失败!','error');
+  						$("#projTab").datagrid('reload');
+  						$('#projTab').datagrid('clearSelections');
   					}
   				},
   				error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
   		});
+  			isDel.close();
+  			$("#projTab").datagrid('reload');
+			$('#projTab').datagrid('clearSelections'); 
   		}
   		else
   		{
@@ -170,6 +243,7 @@ $(function(){
 
 <body>
 
+	<!-- 
 	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
 			url="<%=basePath %>/hot/loadHot" 
 			title="添加热词" toolbar="#tb"fitColumns="true" pagination="true">
@@ -186,7 +260,10 @@ $(function(){
 			</tr>
 		</thead>
 	</table>
-	
+	 -->
+	 <table id="projTab" class="easyui-datagrid" style="width:95%;height:600px"
+	 title="添加热词" toolbar="#tb"fitColumns="true" pagination="true">
+	 </table>
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>

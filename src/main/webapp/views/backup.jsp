@@ -118,7 +118,7 @@ function formatAction(value,row,index){
 			type:"get",
 			dataType:"json",
 			cache:false,
-			success:function(data){	
+			success:function(data){
 				var length = data.tokens.length;
 				result += data.tokens[0].token;
 				if(length>1){

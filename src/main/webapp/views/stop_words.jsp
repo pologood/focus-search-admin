@@ -9,6 +9,66 @@
 
 <script language="javascript">
 
+//动态绘制数据表格的代码
+$(function(){
+	$('#projTab').datagrid({
+        idField:'id',  
+        url:'<%=basePath %>/stop/loadStop',
+        singleSelect:true,  
+        columns:[[  
+          {field:'id',title:'id',width:80,align:'center'},
+          {field:'name',title:'名称',width:120,align:'center'},
+          {field:'type',title:'类型',width:80,align:'center'},
+          {field:'status',title:'状态',width:80,align:'center'},
+          {field:'editor',title:'编辑者',width:80,align:'center'},
+          {field:'createTime',title:'创建时间',width:160,align:'center'},
+          {field:'updateTime',title:'最后更新时间',width:160,align:'center'},
+          {field:'opt',title:'操作',width:100,align:'center',  
+            formatter:function(value,rec,index){
+                var d = '<a href="javascript:void(0)" mce_href="#" onclick="del(\''+ index +'\')">删除</a> ';  
+               // a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
+                return d;  
+            }  
+          }  
+        ]],  
+       
+       pagination:true  
+    });  
+})
+
+function del(index){  //删除操作  
+    $.messager.confirm('确认','确认删除?',function(row){  
+        if(row){  
+            var selectedRow = $('#projTab').datagrid('getSelected');  //获取选中行
+            var aid = selectedRow.id;
+      		var name = selectedRow.name;
+      		var data = "id="+aid+"&name="+name;
+      		//$.messager.alert(data);
+            $.ajax({  
+                url:rootpath+"/stop/delStop",
+                type:"post",
+  				data:data,
+  				dataType:"json",
+  				cache:false,
+                success:function(response)
+                {
+                	if(response.errorCode == 0){;
+  						$.messager.alert('成功','删除成功!','info');  						
+  					}
+  					else{
+  						 $.messager.alert('错误','删除失败!','error');  						 
+  					}
+                },
+                error:function(e){
+  					$.messager.alert('错误','删除失败3!','error');
+  				}
+            });  
+            $("#projTab").datagrid('reload');
+            $('#projTab').datagrid('deleteRow',index);  
+        }  
+    })  
+  } 
+
 $(function(){   
 	$("#updateStopDic").click(function(){
 	//ajax 异步提交
@@ -167,7 +227,7 @@ $(function(){
 
 <body>
 
-	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
+<%-- 	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
 			url="<%=basePath %>/stop/loadStop" 
 			title="添加停止词" toolbar="#tb"fitColumns="true" pagination="true">
 		<thead>
@@ -182,7 +242,11 @@ $(function(){
 				<th field="action" width="80" align="center" formatter="formatAction">删除</th>
 			</tr>
 		</thead>
-	</table>
+	</table> --%>
+	
+	<table id="projTab" class="easyui-datagrid" style="width:95%;height:600px"
+	 title="添加停止词" toolbar="#tb"fitColumns="true" pagination="true">
+	 </table>
 	
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
