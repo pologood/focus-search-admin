@@ -581,7 +581,6 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		String strWords=redisService.getRedis(key);
 		if(strWords!=null){
 			logger.info("readed from redis.");
-			logger.info(strWords);
 			return strWords;
 			
 		}

@@ -31,10 +31,7 @@
                     <value>classpath*:config/product.properties</value>
                 </list>
             </property>
-        </bean>
-        <bean id="" class="">
-        
-        </bean>
+        </bean>      
     </beans>
 
     <!-- local development环境 -->
