@@ -17,8 +17,6 @@
 	</settings>
     <typeAliases>
         <typeAlias alias="UserInfo" type="cn.focus.search.admin.model.UserInfo"/>
-        <typeAlias alias="City" type="cn.focus.search.admin.model.City"/>
-        <typeAlias alias="CityDao"  type="cn.focus.search.admin.dao.CityDao"/>
         <typeAlias alias="UserInfoDao" type="cn.focus.search.admin.dao.UserInfoDao"/>
         <typeAlias alias="ManualParticiple" type="cn.focus.search.admin.model.ManualParticiple"/>
         <typeAlias alias="ManualPleDao" type="cn.focus.search.admin.dao.ManualPleDao"/>
@@ -30,7 +28,6 @@
         <typeAlias alias="HotWord"  type="cn.focus.search.admin.model.HotWord"/>
     </typeAliases>
     <mappers>
-         <mapper resource="sqlmap/cityMapper.xml"/>
          <mapper resource="sqlmap/userInfoMapper.xml"/>
          <mapper resource="sqlmap/manualPleMapper.xml"/>
          <mapper resource="sqlmap/participleMapper.xml"/>

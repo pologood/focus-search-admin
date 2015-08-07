@@ -612,7 +612,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		strWords=str.toString();
 		
 		// write to redis.
-
+		logger.info("write to redis.");
 		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
@@ -653,6 +653,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		strWords=str.toString();
 		
 		// write to redis.
+		logger.info("write to redis.");
 		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
@@ -693,6 +694,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}
 		strWords=str.toString();
 		// write to redis.
+		logger.info("write to redis.");
 		redisService.setRedis(key, strWords, true, expireTime);
 		
 		return strWords;
