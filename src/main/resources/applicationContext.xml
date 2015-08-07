@@ -32,9 +32,6 @@
                 </list>
             </property>
         </bean>
-        <bean id="" class="">
-        
-        </bean>
     </beans>
 
     <!-- local development环境 -->
