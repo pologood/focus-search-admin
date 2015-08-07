@@ -52,8 +52,10 @@ function del(index){  //删除操作
   				cache:false,
                 success:function(response)
                 {
-                	if(response.errorCode == 0){;
-  						$.messager.alert('成功','删除成功!','info');  						
+                	if(response.errorCode == 0){
+  						$.messager.alert('成功','删除成功!','info');
+  						$('#projTab').datagrid('deleteRow',index);
+  						$("#projTab").datagrid('reload');
   					}
   					else{
   						 $.messager.alert('错误','删除失败!','error');  						 
@@ -62,11 +64,10 @@ function del(index){  //删除操作
                 error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
-            });  
-            $("#projTab").datagrid('reload');
-            $('#projTab').datagrid('deleteRow',index);  
+            }); 
         }  
-    })  
+    })
+    $("#projTab").datagrid('reload');
   } 
 
 $(function(){   

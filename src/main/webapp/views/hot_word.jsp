@@ -51,21 +51,25 @@ function del(index){  //删除操作
   				cache:false,
                 success:function(response)
                 {
-                	if(response.errorCode == 0){;
-  						$.messager.alert('成功','删除成功!','info');  						
+                	if(response.errorCode == 1){
+                		 $.messager.alert('错误','删除失败!','error'); 
+                		 $("#projTab").datagrid('reload'); 						
   					}
   					else{
-  						 $.messager.alert('错误','删除失败!','error');  						 
+						$('#projTab').datagrid('deleteRow',index);
+  						$.messager.alert('成功','删除成功!','info');	
+  						$("#projTab").datagrid('reload');
   					}
                 },
                 error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
-            });  
-            $("#projTab").datagrid('reload');
-            $('#projTab').datagrid('deleteRow',index);  
+            });
+            //$('#projTab').datagrid('deleteRow',index);
+            //$("#projTab").datagrid('reload');
         }  
-    })  
+    }) 
+    $("#projTab").datagrid('reload');
   } 
 
 $(function(){   
