@@ -69,6 +69,14 @@
 		where to_days(update_time)=to_days(now())
 	</select>
 	
+	
+    <select id="getTotalStopWordsList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from stop_words
+	</select>
+	
 	<delete id="delStopWordsById" parameterType="java.lang.Integer" statementType="PREPARED">
 		delete from stop_words
 		where id=#{id}

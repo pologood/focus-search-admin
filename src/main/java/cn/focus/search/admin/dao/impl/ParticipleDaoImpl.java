@@ -29,4 +29,10 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		return sqlSession.selectList("ParticipleDao.getDayFinalHouseParticipleList");
 	}
 
+	@Override
+	public List<Participle> getTotalFinalHouseParticipleList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("ParticipleDao.getTotalFinalHouseParticipleList");
+	}
+
 }
