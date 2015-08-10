@@ -77,7 +77,7 @@ public class HotWordsController {
 	public String InsertStopWords(HttpServletRequest request)
 	{
 		try{
-			
+			String existWord = "";
 			String stype = request.getParameter("type");
 			//System.out.println("！停止词TYPE："+stype);
 			if(StringUtils.isBlank(stype)){
@@ -93,19 +93,25 @@ public class HotWordsController {
 			hotList = stopWordsUtil.getHotList(type, hotWords, editor, 1);
 			for (HotWord hw : hotList)
 			{
-				System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
+				//System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
 				List<HotWord> list = new LinkedList<HotWord>();
 				list = hotWordService.getHotWordListByName(hw.getName());
 				logger.info("list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
+				if (pmService.isDuplicate(hw.getName()))
+				{
+					existWord += hw.getName()+",";
+					continue;
+				}
 				int result = hotWordService.insertHotWord(hw);
 				if(result<1){
 					logger.info(hw + "插入失败!");
 					return JSONUtils.badResult("failed");
 				}
 			}
-			return JSONUtils.ok();
+			existWord += "词库中已经存在，其它词已经添加成功";
+			return JSONUtils.ok(existWord);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			return JSONUtils.badResult("failed");

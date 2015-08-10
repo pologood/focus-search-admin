@@ -78,7 +78,9 @@ public interface ParticipleManagerService {
 	public String getRemoteStopword();
 	public String getRemoteHotword();
 	public String getIkUrl();
-	public boolean reloadRemoteDic();
 
+	public boolean isDuplicate(String word);
+
+	public boolean reloadRemoteDic();
 	
 }

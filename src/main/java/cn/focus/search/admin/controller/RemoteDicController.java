@@ -76,8 +76,6 @@ public class RemoteDicController {
 		logger.info("ready to  reload total word.dic");
   		if(participleManagerService.reloadRemoteDic()) return JSONUtils.ok();
   		else return JSONUtils.badResult("failed");
-
-		
 	}
 	
 	

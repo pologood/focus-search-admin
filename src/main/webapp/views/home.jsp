@@ -58,6 +58,33 @@ $(function(){
 		}
 	});
 });
+
+$(function(){   
+	$("#loadDicBtn").click(function(){
+		var isUpdate = confirm("确定重新加载词库吗，加载词库操作耗时较长请谨慎选择！");
+		if (isUpdate == true)
+		{
+			//ajax 异步提交
+			$.ajax({
+					url:rootpath+"/reloadRemoteDic",
+					type:"post",
+	  				dataType:"json",
+					cache:false,
+					success:function(data){
+						if(data.errorMsg == "success"){
+							$.messager.alert('成功','加载成功!','info');
+							//重新加载数据
+						}else{
+							 $.messager.alert('错误','加载失败!','error');
+						}
+					},
+					error:function(e){
+						$.messager.alert('错误','加载失败!','error');
+					}
+			});
+		}		
+	})
+});
 </script>
 </head>
 <body class="easyui-layout">
@@ -74,6 +101,7 @@ $(function(){
 				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
 				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
+				<p class="clickBefore" id="loadDicBtn">重新加载词库</p>
 			</div>
 		</div>
 	</div>

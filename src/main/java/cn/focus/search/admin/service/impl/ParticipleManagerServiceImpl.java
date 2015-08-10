@@ -703,7 +703,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	}
 
 	////判断该词是否已经已经在词库(非停用词)中。
-	private boolean isDuplicate(String word) {
+	@Override
+	public boolean isDuplicate(String word) {
 		// TODO Auto-generated method stub
 		boolean flag=false;
 		StringBuffer ikUrl=new StringBuffer();
