@@ -52,4 +52,6 @@ public interface HotWordDao {
      * @throws Exception
      */
     public int delHotWordById(int id)throws Exception;
+
+	List<HotWord> getTotalHotWordList();
 }

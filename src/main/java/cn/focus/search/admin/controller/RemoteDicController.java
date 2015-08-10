@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.focus.search.admin.config.LastTime;
 import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.utils.JSONUtils;
 
 @Controller
 @RequestMapping("/")
@@ -61,15 +62,17 @@ public class RemoteDicController {
 		
 	}
 	
-	
-/*	@RequestMapping("test")
+	@RequestMapping("reloadRemoteDic")
 	@ResponseBody
-	public String getTestDic(HttpServletResponse response){
+	public String reloadRemoteDic(HttpServletResponse response){
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
- 		response.setHeader("ETags", "etagSting");
-  		logger.info("test httpHead");
-		return participleManagerService.getRemoteStopword();
-		
-	}*/
+  		logger.info("Writing word to  remote_hotword.dic");
+  		if(participleManagerService.reloadRemoteDic()) return JSONUtils.ok();
+  		else return JSONUtils.badResult("failed");
+	}
+	
+	
+	
+
 	
 }

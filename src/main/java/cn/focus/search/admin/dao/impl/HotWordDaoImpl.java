@@ -43,4 +43,10 @@ public class HotWordDaoImpl implements HotWordDao{
 		// TODO Auto-generated method stub
 		return sqlSession.delete("HotWordDao.delHotWordById", id);
 	}
+
+	@Override
+	public List<HotWord> getTotalHotWordList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("HotWordDao.getTotalHotWordList");
+	}
 }

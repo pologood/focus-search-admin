@@ -64,6 +64,16 @@
 		where status = 1
 		and date_format(from_UNIXTIME(update_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
 	</select>
+
+	
+
+	<select id="getTotalFinalHouseParticipleList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from participle
+		where status = 1
+	</select>
     <!--
         <sql id="Base_Where_Clause">
             <where>

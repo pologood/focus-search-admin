@@ -34,4 +34,7 @@ public interface ParticipleDao {
      */
     public List<Participle> getDayFinalHouseParticipleList() throws Exception;
 
+
+	public List<Participle> getTotalFinalHouseParticipleList();
+
 }
