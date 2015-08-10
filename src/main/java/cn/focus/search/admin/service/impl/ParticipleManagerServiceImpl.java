@@ -590,7 +590,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<Participle> list = new LinkedList<Participle>();
 		try {
 			logger.info("starting get DayFinalHouseWord from mysql");
-			if(LastTime.getHotword_lTime()==-1L) list=participleDao.getTotalFinalHouseParticipleList();
+			if(LastTime.getFinal_house_lTime()==-1L) list=participleDao.getTotalFinalHouseParticipleList();
 			list=participleDao.getDayFinalHouseParticipleList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -637,7 +637,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<StopWords> list = new LinkedList<StopWords>();
 		try {
 			logger.info("starting get DayRemoteStopWord from mysql");
-			if(LastTime.getHotword_lTime()==-1L) list=stopWordsDao.getTotalStopWordList();
+			if(LastTime.getStopword_lTime()==-1L) list=stopWordsDao.getTotalStopWordList();
 			else list=stopWordsDao.getDayStopWordsList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
