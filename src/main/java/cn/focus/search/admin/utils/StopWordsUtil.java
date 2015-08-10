@@ -79,7 +79,9 @@ public class StopWordsUtil {
 			e.printStackTrace();
 			// TODO Auto-generated catch block
 		}*/
-		String ss = "a,b c，d";
+		String ss = "a,b c，d，";
+		int len = ss.length();
+		System.out.println(ss.substring(0, len-1));
 		String[] stop = ss.split("[, ，]");
 		for (int i = 0; i < stop.length; i++)
 			System.out.println(stop[i]);
