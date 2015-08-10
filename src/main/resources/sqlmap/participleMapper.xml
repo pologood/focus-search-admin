@@ -65,8 +65,6 @@
 		and date_format(from_UNIXTIME(update_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
 	</select>
 
-	
-
 	<select id="getTotalFinalHouseParticipleList" resultMap="BaseResultMap"
 		parameterType="java.lang.String" statementType="PREPARED">
 		select
@@ -74,89 +72,4 @@
 		from participle
 		where status = 1
 	</select>
-    <!--
-        <sql id="Base_Where_Clause">
-            <where>
-                <trim prefixOverrides="and">
-                    <if test="dicId != null">and dic_id = #{dicId}</if>
-                    <if test="dicName != null">and dic_name = #{dicName}</if>
-                    <if test="dicValue != null">and dic_value = #{dicValue}</if>
-                    <if test="dicGroup != null">and dic_group = #{dicGroup}</if>
-                    <if test="dicType != null">and dic_type = #{dicType}</if>
-                    <if test="dicOrder != null">and dic_order = #{dicOrder}</if>
-                    <if test="dicStatus != null">and dic_status = #{dicStatus}</if>
-                    <if test="dicParentId != null">and dic_parent_id = #{dicParentId}</if>
-                    &lt;!&ndash; 模糊查询 &ndash;&gt;
-                    <if test="dicNameLike != null">and dic_name like CONCAT("%",#{dicNameLike},"%")</if>
-                    <if test="dicGroupLike != null">and dic_group like CONCAT("%",#{dicGroupLike},"%")</if>
-                </trim>
-            </where>
-            <if test="sorting != null">order by ${sorting}</if>
-            <if test="offset != null and limit != null">
-                limit #{offset}, #{limit}
-            </if>
-        </sql>
-
-        &lt;!&ndash; 查询总数 &ndash;&gt;
-        <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
-            select count(dic_id)
-            from sys_dictionary
-            <include refid="Base_Where_Clause"/>
-        </select>
-
-        &lt;!&ndash; 查询 &ndash;&gt;
-        <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
-            select
-            <include refid="Base_Column_List"/>
-            from sys_dictionary
-            <include refid="Base_Where_Clause"/>
-        </select>
-
-        &lt;!&ndash; 根据ID查询 &ndash;&gt;
-        <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
-            select
-            <include refid="Base_Column_List"/>
-            from sys_dictionary
-            where dic_id = #{dicId}
-        </select>
-
-        &lt;!&ndash; 根据ID删除 &ndash;&gt;
-        <delete id="deleteById" parameterType="java.lang.String">
-            delete from sys_dictionary
-            where dic_id = #{dicId}
-        </delete>
-
-        &lt;!&ndash; 删除 &ndash;&gt;
-        <delete id="delete" parameterType="java.util.Map">
-            delete from sys_dictionary
-            <include refid="Base_Where_Clause"/>
-        </delete>
-
-        &lt;!&ndash; 通过ID更新 &ndash;&gt;
-        <update id="updateByIdSelective" parameterType="com.viathink.sys.domain.SysDictionary">
-            update sys_dictionary
-            <set>
-                <if test="dicName != null">dic_name = #{dicName},</if>
-                <if test="dicValue != null">dic_value = #{dicValue},</if>
-                <if test="dicGroup != null">dic_group = #{dicGroup},</if>
-                <if test="dicType != null">dic_type = #{dicType},</if>
-                <if test="dicOrder != null">dic_order = #{dicOrder},</if>
-                <if test="dicStatus != null">dic_status = #{dicStatus},</if>
-                <if test="dicParentId != null">dic_parent_id = #{dicParentId},</if>
-            </set>
-            where dic_id = #{dicId}
-        </update>
-
-        <update id="updateById" parameterType="cn.focus.search.news.model.City">
-            update sys_dictionary
-            set dic_name = #{dicName},
-            dic_value = #{dicValue},
-            dic_group = #{dicGroup},
-            dic_type = #{dicType},
-            dic_order = #{dicOrder},
-            dic_status = #{dicStatus},
-            dic_parent_id = #{dicParentId}
-            where dic_id = #{dicId}
-        </update>-->
-
 </mapper>
