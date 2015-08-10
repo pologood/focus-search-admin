@@ -110,7 +110,9 @@ public class HotWordsController {
 					return JSONUtils.badResult("failed");
 				}
 			}
-			existWord += "词库中已经存在，其它词已经添加成功";
+			int len = existWord.length();
+			existWord = existWord.substring(0, len-1);
+			existWord += "等词词库中已经存在，其它词已经添加成功";
 			return JSONUtils.ok(existWord);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
