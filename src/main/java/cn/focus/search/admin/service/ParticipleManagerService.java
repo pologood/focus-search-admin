@@ -78,6 +78,6 @@ public interface ParticipleManagerService {
 	public String getRemoteStopword();
 	public String getRemoteHotword();
 	public String getIkUrl();
-
+	public boolean isDuplicate(String word);
 	
 }
