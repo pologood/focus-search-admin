@@ -101,11 +101,9 @@ $(function(){
 				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
 				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
-<<<<<<< HEAD
 				<p class="clickBefore" src="/user/um/userList">查看用户列表</p>
-=======
 				<p class="clickBefore" id="loadDicBtn">重新加载词库</p>
->>>>>>> 036a279603f1d61f6f733c40c5444c2ce2f52d72
+
 			</div>
 		</div>
 	</div>
