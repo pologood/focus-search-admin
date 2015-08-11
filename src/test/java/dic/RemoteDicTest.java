@@ -19,7 +19,7 @@ import cn.focus.search.admin.service.impl.ParticipleManagerServiceImpl;
 public class RemoteDicTest {
 	
 	@Autowired
-	public ParticipleManagerServiceImpl participleManagerService;
+	public ParticipleManagerService participleManagerService;
 	
 	@Test
 	public void testStopword(){
@@ -27,7 +27,8 @@ public class RemoteDicTest {
 
 /*		logger.info(participleManagerService.getRemoteFinalHouseWord());
 		logger.info(participleManagerService.getRemoteHotword());
-		logger.info(participleManagerService.getRemoteStopword());*/		
+		logger.info(participleManagerService.getRemoteStopword());*/	
+		logger.info(String.valueOf(participleManagerService.getParticipleList(0).size()));
 	}
 
 }

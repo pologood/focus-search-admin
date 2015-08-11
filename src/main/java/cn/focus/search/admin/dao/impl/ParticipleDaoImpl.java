@@ -21,8 +21,8 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	}
 
 	@Override
-	public List<Participle> getParticipleList(String participles,int status) throws Exception {
-		return sqlSession.selectList("ParticipleDao.getParticipleList",participles);
+	public List<Participle> getParticipleList(int status) throws Exception {
+		return sqlSession.selectList("ParticipleDao.getParticipleList",status);
 	}
 	@Override
 	public List<Participle> getDayFinalHouseParticipleList() throws Exception {

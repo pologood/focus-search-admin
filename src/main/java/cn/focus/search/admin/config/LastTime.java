@@ -78,9 +78,10 @@ public class LastTime {
 		Logger logger=LoggerFactory.getLogger(LastTime.class);
 		
  		try {
-			hotword_lTime = -1L;
-			stopword_lTime = -1L;
-			final_house_lTime = -1L;
+ 			//设置-2，主要是为了与es服务器发过来的请求头中不存在If-Modified-Since时返回的-1L区分。
+ 			//只设置hotword_lTime，没有设置final_house_lTime和stopword_lTime,是因为当前Medcl的ik插件是，只要有一个词库的时间
+ 			//改变，就会重新加载所有词库。
+			hotword_lTime = -2L;
 			flag=1;
 			logger.info("ready to reload all remote word.");
 		} catch (Exception e) {

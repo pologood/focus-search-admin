@@ -32,7 +32,7 @@ public class RemoteDicController {
 
   		logger.info("Writing word to  remote_final_house.dic");
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp!=-1&&temp==LastTime.final_house_lTime) return "";
+  		if (temp==LastTime.final_house_lTime) return "";
   		else return participleManagerService.getRemoteFinalHouseWord();
 		
 	}
@@ -48,7 +48,7 @@ public class RemoteDicController {
 
   		logger.info("Writing word to  remote_stopword.dic");
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp!=-1&&temp==LastTime.stopword_lTime) return "";
+  		if (temp==LastTime.stopword_lTime) return "";
   		else return participleManagerService.getRemoteStopword();
 		
 	}
@@ -64,7 +64,7 @@ public class RemoteDicController {
 
   		logger.info("Writing word to  remote_hotword.dic");
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp!=-1&&temp==LastTime.hotword_lTime) return "";
+  		if (temp==LastTime.hotword_lTime) return "";
   		else return participleManagerService.getRemoteHotword();
 		
 	}

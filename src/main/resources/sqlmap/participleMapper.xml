@@ -12,8 +12,8 @@
         <result column="editor" 		property="editor" 		jdbcType="VARCHAR"/>
         <result column="type" 			property="type" 		jdbcType="INTEGER"/>
         <result column="status" 		property="status" 		jdbcType="INTEGER"/>
-        <result column="create_time" 	property="createTime" jdbcType="INTEGER"/>
-        <result column="update_time" 	property="updateTime" jdbcType="INTEGER"/>
+        <result column="create_time" 	property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" 	property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -48,12 +48,11 @@
     </update>
 
 	<!-- 获取未分词列表 -->
-    <select id="getParticipleList" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
+    <select id="getParticipleList" resultMap="BaseResultMap"  statementType="PREPARED">
         select
         <include refid="Base_Column_List"/>
         from participle
-        where participles = #{participles}
-        and status = #{status}
+        where status = #{status}
     </select>
 	
 	<select id="getDayFinalHouseParticipleList" resultMap="BaseResultMap"

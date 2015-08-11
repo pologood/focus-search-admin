@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.focus.search.admin.model.Participle;
-import cn.focus.search.admin.model.ParticipleFerry;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -65,7 +64,7 @@ public interface ParticipleManagerService {
 	 * @param participles
 	 * @return
 	 */
-	public List<Participle> getParticipleList(String participles,int status);
+	public List<Participle> getParticipleList(int status);
 	
 	public int updateParticiple(Participle participle);
 	
@@ -74,7 +73,6 @@ public interface ParticipleManagerService {
 	public String updateHotwordIK();//更新临时词词库。
 	
 	public String getRemoteFinalHouseWord();
-	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list);
 	public String getRemoteStopword();
 	public String getRemoteHotword();
 	public String getIkUrl();

@@ -52,7 +52,6 @@ import cn.focus.search.admin.dao.StopWordsDao;
 import cn.focus.search.admin.model.HotWord;
 import cn.focus.search.admin.model.ManualParticiple;
 import cn.focus.search.admin.model.Participle;
-import cn.focus.search.admin.model.ParticipleFerry;
 import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.ProjInfo;
 import cn.focus.search.admin.model.StopWords;
@@ -520,10 +519,10 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
     }
 
 	@Override
-	public List<Participle> getParticipleList(String participles,int status) {
+	public List<Participle> getParticipleList(int status) {
 		List<Participle> list = new LinkedList<Participle>();
 		try {
-			list = participleDao.getParticipleList(participles,status);
+			list = participleDao.getParticipleList(status);
 		} catch (Exception e) {
 			logger.error("获取为分词数据异常!", e);
 		}
@@ -575,22 +574,26 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
 	public String getRemoteFinalHouseWord(){
 		StringBuffer str=new StringBuffer();
+		String strWords=null;
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
 		
 		// read from redis firstly.
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
-		String strWords=redisService.getRedis(key);
-		if(strWords!=null){
-			logger.info("readed from redis.");
-			return strWords;
+		if(LastTime.getHotword_lTime()!=-2L){
 			
+			strWords=redisService.getRedis(key);
+			if(strWords!=null){
+				logger.info("readed from redis.");
+				return strWords;	
+			}
 		}
+
 
 		
 		// read from mysql.
 		List<Participle> list = new LinkedList<Participle>();
 		try {
 			logger.info("starting get DayFinalHouseWord from mysql");
-			if(LastTime.getFinal_house_lTime()==-1L) list=participleDao.getTotalFinalHouseParticipleList();
+			if(LastTime.getHotword_lTime()==-2L) list=participleDao.getTotalFinalHouseParticipleList();
 			list=participleDao.getDayFinalHouseParticipleList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -624,20 +627,23 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	public String getRemoteStopword() {
 		// TODO Auto-generated method stub
 		StringBuffer str=new StringBuffer();
-		
-		// read from redis firstly.
+		String strWords=null;
 		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
-		String strWords=redisService.getRedis(key);
-		if(strWords!=null){
-			logger.info("readed from redis.");
-			return strWords;
+		// read from redis firstly.
+		if(LastTime.getHotword_lTime()!=-2L){
+			
+			strWords=redisService.getRedis(key);
+			if(strWords!=null){
+				logger.info("readed from redis.");
+				return strWords;	
+			}
 		}
 		
 		// read from mysql.
 		List<StopWords> list = new LinkedList<StopWords>();
 		try {
 			logger.info("starting get DayRemoteStopWord from mysql");
-			if(LastTime.getStopword_lTime()==-1L) list=stopWordsDao.getTotalStopWordList();
+			if(LastTime.getHotword_lTime()==-2L) list=stopWordsDao.getTotalStopWordList();
 			else list=stopWordsDao.getDayStopWordsList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -679,7 +685,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<HotWord> list = new LinkedList<HotWord>();
 		try {
 			logger.info("starting get RemoteHotWord from mysql");
-			if(LastTime.getHotword_lTime()==-1L) list=hotWordDao.getTotalHotWordList();
+			if(LastTime.getHotword_lTime()==-2L) list=hotWordDao.getTotalHotWordList();
 			else list=hotWordDao.getDayHotWordList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -731,29 +737,6 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	    else return false;
 	}
 	
-	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list){
-		List<ParticipleFerry> ferryList = new LinkedList<ParticipleFerry>();
-		int size=list.size();
-		for(int i=0;i<size;i++){
-				ParticipleFerry pf=new ParticipleFerry();
-				Participle p=list.get(i);
-				pf.setAliasName(p.getAliasName());
-				pf.setCreateTime(new Date(p.getCreateTime()*1000L));
-				pf.setEditor(p.getEditor());
-				pf.setId(p.getId());
-				pf.setName(p.getName());
-				pf.setParticiple(p.getParticiple());
-				pf.setParticiples(p.getParticiples());
-				pf.setUpdateTime(new Date(p.getUpdateTime()*1000L));
-				pf.setType(p.getType());
-				pf.setStatus(p.getStatus());
-				pf.setPid(p.getPid());
-				ferryList.add(pf);
-		}
-		return ferryList;
-	}
-
-
 	@Override
 	public String getIkUrl() {
 		// TODO Auto-generated method stub
