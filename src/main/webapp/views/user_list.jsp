@@ -88,7 +88,6 @@ function modifyUPw(){
 	var oPw = $("#oPwInput").val();
 	var nPw = $("#nPwInput").val();
 	var nPwCf = $("#nPwCfInput").val();
-	var type = 2;
 	if(oPw == ''||nPw == ''||nPwCf == ''){
 		$.messager.alert('错误','填写不完整！请确认是否已全部填写！','error');
 		return;
@@ -101,8 +100,8 @@ function modifyUPw(){
 		$.messager.alert('错误','两次新密码输入不一致!请重新输入','error');
 		return;
 	}
-	/*
-	var data = "name="+name+"&oPw="+oPw+"&nPw="+nPw+"&type="+type;
+
+	var data = "name="+name+"&oPw="+oPw+"&nPw="+nPw;
 	var win = $.messager.progress({
         title:'Please waiting',
         msg:'Loading data...'
@@ -110,7 +109,7 @@ function modifyUPw(){
 	
 	//ajax 异步提交
 	$.ajax({
-			url:rootpath+"/admin/pm/updatePart",
+			url:rootpath+"/user/um/updatePw",
 			type:"post",
 			data:data,
 			dataType:"json",
@@ -119,19 +118,19 @@ function modifyUPw(){
 				$.messager.progress('close');
 				if(response.errorCode == 0){
 					$('#modifyPwDia').dialog('close');
-					$.messager.alert('成功','更新成功!','info');
+					$.messager.alert('成功','密码修改成功!','info');
 					//重新加载数据
 					$("#projTab").datagrid('reload');  
 				}else{
 					 $('#modifyPwDia').dialog('close');
-					 $.messager.alert('错误','编辑失败1!','error');
+					 $.messager.alert('错误','密码修改失败!请确认密码是否输入正确！','error');
 				}
 			},
 			error:function(e){
 				$('#modifyPwDia').dialog('close');
-				$.messager.alert('错误','编辑失败2!','error');
+				$.messager.alert('错误','密码修改失败!请确认密码是否输入正确！','error');
 			}
-	});*/
+	});
 }
 
 //表格操作区域展示
@@ -139,7 +138,7 @@ function formatAction(value,row,index){
 	var cName = "${cUserName}";
 	a = '<a href="javascript:void(0)" id="a'+index+'">重置密码</a>&nbsp;';
 	b = '<a href="javascript:void(0)" id="b'+index+'">删除用户</a>&nbsp;';
-	c = '查看';
+	c = '当前用户无权操作';
 	var id = row.id;
 	var name = row.userName;
 	var accessToken = row.accessToken;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.LoginService;
 import cn.focus.search.admin.service.UserManagerService;
 import cn.focus.search.admin.utils.JSONUtils;
 
@@ -33,6 +34,9 @@ public class UserManagerController {
 	
 	@Autowired
 	private UserManagerService userManagerService;
+	
+	@Autowired
+	private LoginService loginService;
 	 
 	@RequestMapping(value="userList",method =RequestMethod.GET)
 	public ModelAndView showUserListPage(HttpServletRequest request){
@@ -130,4 +134,47 @@ public class UserManagerController {
 		}
 	}
 	
+	/**
+	 * 用户自行修改密码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="updatePw",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateUserPw(HttpServletRequest request){
+		try{
+			String userName = request.getParameter("name");
+			String oPw = request.getParameter("oPw");
+			String nPw = request.getParameter("nPw");
+			System.out.println("userName:"+userName+" nPw: "+nPw);
+			
+			if(StringUtils.isBlank(userName) || StringUtils.isBlank(oPw) || StringUtils.isBlank(nPw)){
+				return JSONUtils.badResult("failed");
+			}
+			String nPwMd5 = DigestUtils.md5Hex(nPw);
+			UserInfo cUserInfo = loginService.getUser(userName, oPw);
+			if(cUserInfo == null){
+				return JSONUtils.badResult("failed");
+			}
+			
+			UserInfo userInfo = new UserInfo();
+			userInfo.setId(cUserInfo.getId());
+			userInfo.setUserName(cUserInfo.getUserName());
+			userInfo.setPassword(nPwMd5);
+			userInfo.setAccessToken(cUserInfo.getAccessToken());
+			userInfo.setStatus(cUserInfo.getStatus());
+			userInfo.setCreateTime(cUserInfo.getCreateTime());
+			
+			int result = userManagerService.updateUserInfo(userInfo);
+			System.out.println("！result："+result);
+			if(result<1){//更新失败
+				System.out.println("更新失败！result："+result);
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("failed");
+		}
+	}
 }
