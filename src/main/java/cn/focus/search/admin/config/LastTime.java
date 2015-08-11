@@ -71,6 +71,26 @@ public class LastTime {
  		
  		return flag;
 	}
+	
+	//修改所有远程词库最后修改时间，成功返回1，失败返回0.
+	public static int setReloadTime(){
+		int flag=0;
+		Logger logger=LoggerFactory.getLogger(LastTime.class);
+		
+ 		try {
+			hotword_lTime = -1L;
+			stopword_lTime = -1L;
+			final_house_lTime = -1L;
+			flag=1;
+			logger.info("ready to reload all remote word.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("set reload Time failed!", e);
+			e.printStackTrace();
+		}
+ 		
+ 		return flag;
+	}
 
 
 	public static long getFinal_house_lTime() {

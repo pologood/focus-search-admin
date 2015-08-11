@@ -206,7 +206,8 @@ function addHotWords(){
 				$.messager.progress('close');
 				if(response.errorCode == 0){
 					$('#modifyDiv').dialog('close');
-					$.messager.alert('成功','添加成功!','info');
+					$.messager.alert('成功',response.errorMsg,'info');
+					//$.messager.alert('成功','添加成功!','info');
 					//重新加载数据
 					$("#projTab").datagrid('reload');  
 				}else{

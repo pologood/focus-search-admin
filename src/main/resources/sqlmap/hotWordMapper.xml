@@ -69,6 +69,15 @@
 		where to_days(update_time)=to_days(now())
 	</select>
 	
+	
+	
+    <select id="getTotalHotWordList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from hot_word
+	</select>
+	
 	<delete id="delHotWordById" parameterType="java.lang.Integer" statementType="PREPARED">
 		delete from hot_word
 		where id=#{id}

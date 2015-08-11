@@ -45,4 +45,6 @@ public interface StopWordsDao {
      * @throws Exception
      */
 	public int delStopWordsById(int id)throws Exception;
+
+	public List<StopWords> getTotalStopWordList();
 }

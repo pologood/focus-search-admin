@@ -590,6 +590,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<Participle> list = new LinkedList<Participle>();
 		try {
 			logger.info("starting get DayFinalHouseWord from mysql");
+			if(LastTime.getFinal_house_lTime()==-1L) list=participleDao.getTotalFinalHouseParticipleList();
 			list=participleDao.getDayFinalHouseParticipleList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -636,7 +637,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<StopWords> list = new LinkedList<StopWords>();
 		try {
 			logger.info("starting get DayRemoteStopWord from mysql");
-			list=stopWordsDao.getDayStopWordsList();
+			if(LastTime.getStopword_lTime()==-1L) list=stopWordsDao.getTotalStopWordList();
+			else list=stopWordsDao.getDayStopWordsList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("getDayStopWordsException",e);
@@ -677,7 +679,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<HotWord> list = new LinkedList<HotWord>();
 		try {
 			logger.info("starting get RemoteHotWord from mysql");
-			list=hotWordDao.getDayHotWordList();
+			if(LastTime.getHotword_lTime()==-1L) list=hotWordDao.getTotalHotWordList();
+			else list=hotWordDao.getDayHotWordList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("getDayHotWordException",e);
@@ -700,7 +703,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	}
 
 	////判断该词是否已经已经在词库(非停用词)中。
-	private boolean isDuplicate(String word) {
+	@Override
+	public boolean isDuplicate(String word) {
 		// TODO Auto-generated method stub
 		boolean flag=false;
 		StringBuffer ikUrl=new StringBuffer();
@@ -719,6 +723,12 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}	
 		
 		return flag;
+	}
+	
+	//重新加载所有远程词库。
+	public boolean reloadRemoteDic(){
+	    if(LastTime.setReloadTime()==1) return true;
+	    else return false;
 	}
 	
 	public List<ParticipleFerry> convertToParticipleFerry(List<Participle> list){

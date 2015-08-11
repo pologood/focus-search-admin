@@ -44,4 +44,10 @@ public class StopWordsDaoImpl implements StopWordsDao{
 		// TODO Auto-generated method stub
 		return sqlSession.delete("StopWordsDao.delStopWordsById", id);
 	}
+
+	@Override
+	public List<StopWords> getTotalStopWordList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("StopWordsDao.getTotalStopWordsList");
+	}
 }

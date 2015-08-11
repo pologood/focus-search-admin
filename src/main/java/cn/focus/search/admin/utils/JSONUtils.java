@@ -33,4 +33,11 @@ public class JSONUtils {
 		return json.toJSONString();
 	}
 
+	public static String ok(String suMsg)
+	{
+		JSONObject json = new JSONObject();
+		json.put("errorCode", 0);
+		json.put("errorMsg", suMsg);
+		return json.toJSONString();
+	}
 }
