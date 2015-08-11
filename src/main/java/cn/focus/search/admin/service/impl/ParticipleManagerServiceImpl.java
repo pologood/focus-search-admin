@@ -525,7 +525,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		try {
 			list = participleDao.getParticipleList(participles,status);
 		} catch (Exception e) {
-			logger.error("获取为分词数据异常!", e);
+			logger.error("获取未分词数据异常!", e);
 		}
 		return list;
 	}

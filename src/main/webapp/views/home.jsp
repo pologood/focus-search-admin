@@ -74,6 +74,7 @@ $(function(){
 				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
 				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
+				<p class="clickBefore" src="/user/um/userList">查看用户列表</p>
 			</div>
 		</div>
 	</div>

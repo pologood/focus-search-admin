@@ -1,5 +1,7 @@
 package cn.focus.search.admin.dao.impl;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +33,18 @@ public class UserInfoDaoImpl implements UserInfoDao{
 		userInfo.setPassword(password);
 		
 		return sqlSession.selectOne("UserInfoDao.getUserInfo", userInfo);
+	}
+
+
+	@Override
+	public List<UserInfo> getUserList() throws Exception{
+		return sqlSession.selectList("UserInfoDao.getUserList");
+	}
+
+
+	@Override
+	public int updateUserInfo(UserInfo userInfo) throws Exception {
+		return sqlSession.update("UserInfoDao.updateUserInfo",userInfo);
 	}
 
 }
