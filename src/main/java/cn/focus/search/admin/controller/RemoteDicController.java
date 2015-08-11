@@ -29,8 +29,7 @@ public class RemoteDicController {
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
-
-  		logger.info("Writing word to  remote_final_house.dic");
+ 		
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==LastTime.final_house_lTime) return "";
   		else return participleManagerService.getRemoteFinalHouseWord();
@@ -46,7 +45,6 @@ public class RemoteDicController {
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
 
-  		logger.info("Writing word to  remote_stopword.dic");
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==LastTime.stopword_lTime) return "";
   		else return participleManagerService.getRemoteStopword();
@@ -62,7 +60,6 @@ public class RemoteDicController {
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
 
-  		logger.info("Writing word to  remote_hotword.dic");
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==LastTime.hotword_lTime) return "";
   		else return participleManagerService.getRemoteHotword();
@@ -73,7 +70,7 @@ public class RemoteDicController {
 	@ResponseBody
 	public String reloadRemoteDic(HttpServletResponse response){
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		logger.info("ready to  reload total word.dic");
+		logger.info("start to reload total dic");
   		if(participleManagerService.reloadRemoteDic()) return JSONUtils.ok();
   		else return JSONUtils.badResult("failed");
 	}

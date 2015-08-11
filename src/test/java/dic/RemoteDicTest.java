@@ -25,10 +25,10 @@ public class RemoteDicTest {
 	public void testStopword(){
 		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
 
-/*		logger.info(participleManagerService.getRemoteFinalHouseWord());
-		logger.info(participleManagerService.getRemoteHotword());
+		logger.info(participleManagerService.getRemoteFinalHouseWord());
+		/*		logger.info(participleManagerService.getRemoteHotword());
 		logger.info(participleManagerService.getRemoteStopword());*/	
-		logger.info(String.valueOf(participleManagerService.getParticipleList(0).size()));
+		//logger.info(String.valueOf(participleManagerService.getParticipleList(0).size()));
 	}
 
 }

@@ -61,7 +61,7 @@ $(function(){
 
 $(function(){   
 	$("#loadDicBtn").click(function(){
-		var isUpdate = confirm("确定重新加载词库吗，加载词库操作耗时较长请谨慎选择！");
+		var isUpdate = confirm("重启ES搜索服务器之后需要重新加载所有词库，其他情况不必需！");
 		if (isUpdate == true)
 		{
 			//ajax 异步提交

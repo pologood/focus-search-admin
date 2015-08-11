@@ -61,7 +61,7 @@
 		<include refid="Base_Column_List" />
 		from participle
 		where status = 1
-		and date_format(from_UNIXTIME(update_time),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+		and to_days(update_time)=to_days(now())
 	</select>
 
 	<select id="getTotalFinalHouseParticipleList" resultMap="BaseResultMap"
