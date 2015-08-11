@@ -64,4 +64,27 @@
         where id = #{id}
 	</update>
 
+	<!-- 添加新用户 -->
+    <insert id="addNewUser" parameterType="UserInfo" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
+        insert into user_info(
+		user_name,
+		password,
+		access_token,
+		status,
+		create_time,
+		update_time
+        )
+        values (
+        #{userName},        
+        #{password},
+        #{accessToken},
+        #{status},
+        #{createTime},
+        #{updateTime}
+        )
+        <!-- <selectKey resultType="java.lang.Integer" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey> -->
+    </insert>
+
 </mapper>

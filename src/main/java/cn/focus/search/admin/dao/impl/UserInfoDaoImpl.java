@@ -47,4 +47,11 @@ public class UserInfoDaoImpl implements UserInfoDao{
 		return sqlSession.update("UserInfoDao.updateUserInfo",userInfo);
 	}
 
+
+	@Override
+	public int addNewUser(UserInfo userInfo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("UserInfoDao.addNewUser",userInfo);
+	}
+
 }
