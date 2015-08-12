@@ -61,7 +61,7 @@ $(function(){
 
 $(function(){   
 	$("#loadDicBtn").click(function(){
-		var isUpdate = confirm("重启ES搜索服务器之后需要重新加载所有词库，其他情况不必需！");
+		var isUpdate = confirm("该操作将耗费很多服务器资源，请慎重操作！");
 		if (isUpdate == true)
 		{
 			//ajax 异步提交
@@ -96,12 +96,13 @@ $(function(){
 	<div region="west" split="true" title="菜单" style="width:280px;padding:0px;overflow:hidden;">
 		<div class="easyui-accordion" fit="true" border="false">
 			<div title="分词管理" style="padding:10px">
+			    <p class="clickBefore" src="/user/um/userList">用户信息管理</p>
 				<p class="clickBefore" src="/admin/pm/ptindex">分词效果</p>
 				<p class="clickBefore" src="/admin/pm/mindex">分词干预</p>
 				<p class="clickBefore" src="/admin/pm/backup">新加数据分词</p>
 				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
-				<p class="clickBefore" src="/user/um/userList">用户信息管理</p>
+				<p class="clickBefore" src="/admin/pm/exportdic">词典导出</p>
 				<p class="clickBefore" id="loadDicBtn">重新加载词库</p>
 
 			</div>

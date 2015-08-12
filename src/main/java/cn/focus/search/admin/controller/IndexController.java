@@ -66,7 +66,7 @@ public class IndexController {
 			}
 			
 			UserInfo userInfo = loginService.getUser(userName, password);
-			if(userInfo == null){
+			if(userInfo == null||userInfo.getStatus() == 0){
 				return "login";
 			}
 			

@@ -395,51 +395,243 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
         return rs;
     }
     
-    /**
-     * 导出数据
-     * @param pathName
-     * @return
-     * @throws IOException
-     */
-    public boolean exportExcel1(String pathName) throws IOException{
-    	List<PplResult> wordsList = (List<PplResult>)wordMap.get("wordKey");
-    	if(wordsList == null || wordsList.size()==0){
-    		return false;
-    	}
-    	WritableWorkbook book = null;
-    	try{
-    		String[] title = {"单词","索引分词","搜索分词"};
-             book= Workbook.createWorkbook(new File("D:\\data\\words.xls")); 
-            //生成名为“第一页”的工作表，参数0表示这是第一页 
-            WritableSheet sheet=book.createSheet("第一页",0); 
-            
-            //写入内容
-            for(int i=0;i<title.length;i++)    //title
-            {
-            	sheet.addCell(new Label(i,0,title[i])); 
-            }
-               
-            for(int i=0;i<wordsList.size();i++)    //context
-            {
-                sheet.addCell(new Label(0,i+1,wordsList.get(i).getWord())); 
-                sheet.addCell(new Label(1,i+1,wordsList.get(i).getIndexPplWord())); 
-                sheet.addCell(new Label(2,i+1,wordsList.get(i).getSearchPplWord())); 
-            }
-            //写入数据
-            book.write(); 
-            System.out.println("导出成功");
-            return true;
-    	}catch(Exception e){
-    		logger.error(e.getMessage(), e);
-    		return false;
-    	}finally{
-    		 book.close(); 
-    	}
-    }
+
     
+
+    
+
+
+	@Override
+	public List<Participle> getParticipleList(int status) {
+		List<Participle> list = new LinkedList<Participle>();
+		try {
+			list = participleDao.getParticipleList(status);
+		} catch (Exception e) {
+			logger.error("获取未分词数据异常!", e);
+		}
+		return list;
+	}
+
+	@Override
+	public int updateParticiple(Participle participle) {
+		int result = 0;
+		try {
+			result = participleDao.updateParticiple(participle);
+		} catch (Exception e) {
+			logger.error("更新数据分词结果异常!", e);
+		}
+		return result;
+	}
+
+	//更新新房（final_house）词库。
+	@Override
+	public String updateIK() {
+		// TODO Auto-generated method stub
+		//System.out.println("！！！updateIK");
+		String flag="failed";
+		if (LastTime.setlTime()==1) flag="success";
+		return flag;
+	}
+	
+
+	//更新停用词词库。
+	@Override
+	public String updateStopwordIK() {
+		// TODO Auto-generated method stub
+		//System.out.println("@@@@@@updateStop");
+		String flag="failed";
+		if (LastTime.setStopwordlTime()==1) flag="success";
+		return flag;
+	}
+	
+
+	//更新临时热词词库。
+	@Override
+	public String updateHotwordIK() {
+		// TODO Auto-generated method stub
+		//System.out.println("######updateHot");
+		String flag="failed";
+		if (LastTime.setHotwordlTime()==1) flag="success";
+		return flag;
+	}
+	
+	public String getRemoteFinalHouseWord(){
+		StringBuffer str=new StringBuffer();
+		String strWords=null;
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
+		
+		// read from redis firstly.
+		strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed FinalHouseWord from redis.");
+			return strWords;	
+		}
+
+
+		
+		// read from mysql.
+		List<Participle> list = new LinkedList<Participle>();
+		try {
+			
+			list=participleDao.getTotalFinalHouseParticipleList();
+		
+			logger.info("readed FinalHouseWord from mysql");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("getFinalHouseParticipleListException",e);
+			e.printStackTrace();
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String value=list.get(i).getParticiples();
+			String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
+			for(int j=0;j<words.length;j++){
+				if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
+					str.append(words[j]);
+					str.append("\n");
+				}
+
+			}
+		}
+		strWords=str.toString();
+		
+		// write to redis.
+		
+		redisService.setRedis(key, strWords, true, expireTime);
+		logger.info("writed FinalHouseWord to redis.");
+		
+		return strWords;
+	}
+	
+	
+
+	@Override
+	public String getRemoteStopword() {
+		// TODO Auto-generated method stub
+		StringBuffer str=new StringBuffer();
+		String strWords=null;
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
+		// read from redis firstly.
+		
+			
+		strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed stopword from redis.");
+			return strWords;	
+		}
+		
+		
+		// read from mysql.
+		List<StopWords> list = new LinkedList<StopWords>();
+		try {
+			
+			list=stopWordsDao.getTotalStopWordList();
+			logger.info("readed RemoteStopWord from mysql");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("getStopWordsException",e);
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i).getName();
+			str.append(word);
+			str.append("\n");
+			}
+		
+		
+		strWords=str.toString();
+		
+		// write to redis.
+		
+		redisService.setRedis(key, strWords, true, expireTime);
+		logger.info("writed RemoteStopword to redis");
+		
+		return strWords;
+
+	}
+
+	@Override
+	public String getRemoteHotword() {
+		// TODO Auto-generated method stub
+		StringBuffer str=new StringBuffer();
+		
+		// read from redis firstly.
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteHotword"+Long.toString(LastTime.getHotword_lTime());
+		String strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			
+			logger.info("readed RemoteHotword from redis.");
+			return strWords;
+		}
+		
+		// read from mysql.
+		List<HotWord> list = new LinkedList<HotWord>();
+		try {
+			
+		    list=hotWordDao.getTotalHotWordList();
+			logger.info("readed RemoteHotWord from mysql");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("get HotWordException",e);
+			e.printStackTrace();
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i).getName();
+			if(!isDuplicate(word)){//判断该词是否已经已经在词库中。
+					str.append(word);
+					str.append("\n");
+			}
+		}
+		strWords=str.toString();
+		// write to redis.
+		
+		redisService.setRedis(key, strWords, true, expireTime);
+		logger.info("write remoteHotWord to redis.");
+		
+		return strWords;
+	}
+
+	////判断该词是否已经已经在词库(非停用词)中。
+	@Override
+	public boolean isDuplicate(String word) {
+		// TODO Auto-generated method stub
+		boolean flag=false;
+		StringBuffer ikUrl=new StringBuffer();
+		ikUrl.append(ikurl).append(word);
+		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
+		ikUrl.delete( 0, ikUrl.length() );
+		
+		JSONObject json = JSONObject.parseObject(ikWord);
+		JSONArray arr = (JSONArray)json.get("tokens");
+		
+		for(int i=0;i<arr.size();i++){
+			JSONObject js = (JSONObject)arr.get(i);
+			if (js.getString("token").equals(word)){
+				flag=true;
+			}
+		}	
+		
+		return flag;
+	}
+	
+	//重新加载所有远程词库。
+	public boolean reloadRemoteDic(){
+	    if(LastTime.setReloadTime()==1) return true;
+	    else return false;
+	}
+	
+	@Override
+	public String getIkUrl() {
+		// TODO Auto-generated method stub
+		return ikurl;
+	}
+
     /**
      * 导出方法1
      */
+	
+	@Override
     public boolean exportExcel(HttpServletRequest request,
 			HttpServletResponse response,String exportName) throws IOException{
     	
@@ -502,252 +694,154 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			os.close();
 		}
     }
-    
-    /**
-     * 导出方法2
-     */
-    public boolean exportExcel(HttpServletRequest request,
-			HttpServletResponse response, String exportName,
-			String templateName, Map<String, Object> dataMap) throws IOException{
+	@Override
+	public boolean exportHouse(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+		    List<Participle> list =participleDao.getTotalFinalHouseParticipleList();
+	    	if(list == null || list.size()==0){
+	    		return false;
+	    	}
+
+			response.reset();
+			response.setContentType("application/vnd.ms-excel");
+			response.addHeader("Content-Disposition", "attachment;filename=\""
+					+ exportName + "\"");
+			OutputStream os = null;
+			os = response.getOutputStream();
+			 
+	    	// 第一步，创建一个webbook，对应一个Excel文件
+			HSSFWorkbook wb = new HSSFWorkbook();
+			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+			HSSFSheet sheet = wb.createSheet("新房词");
+			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow((int) 0);
+
+			// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+			int count=0;
+			for(int i=0;i<list.size();i++){
+				
+				String value=list.get(i).getParticiples();
+				String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
+				for(int j=0;j<words.length;j++){
+					if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
+						row = sheet.createRow(count);
+						row.createCell((short) 0).setCellValue(words[j]);
+						count++;
+					}
+
+				}
+			}
+			// 第五步，将文件存到指定位置
+			try {
+				wb.write(os);
+				os.flush();
+				return true;
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				e.printStackTrace();
+				return false;
+			}finally{
+				os.close();
+			}
+	}
+
+	@Override
+	public boolean exportStop(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+	    List<StopWords> list =stopWordsDao.getTotalStopWordList();
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("停用词");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+
+		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+		int count=0;
+		for(int i=0;i<list.size();i++){
+			
+			String value=list.get(i).getName();
+			row = sheet.createRow(count);
+			row.createCell((short) 0).setCellValue(value);
+			count++;
+				}
+
+	
+	
+		// 第五步，将文件存到指定位置
 		try {
-		   excelUtil.exportExcel(request, response, exportName, templateName, dataMap);
+			wb.write(os);
+			os.flush();
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return false;
-		}
-    }
-
-	@Override
-	public List<Participle> getParticipleList(int status) {
-		List<Participle> list = new LinkedList<Participle>();
-		try {
-			list = participleDao.getParticipleList(status);
-		} catch (Exception e) {
-			logger.error("获取未分词数据异常!", e);
-		}
-		return list;
-	}
-
-	@Override
-	public int updateParticiple(Participle participle) {
-		int result = 0;
-		try {
-			result = participleDao.updateParticiple(participle);
-		} catch (Exception e) {
-			logger.error("更新数据分词结果异常!", e);
-		}
-		return result;
-	}
-
-	//更新新房（final_house）词库。
-	@Override
-	public String updateIK() {
-		// TODO Auto-generated method stub
-		//System.out.println("！！！updateIK");
-		String flag="failed";
-		if (LastTime.setlTime()==1) flag="success";
-		return flag;
-	}
-	
-
-	//更新停用词词库。
-	@Override
-	public String updateStopwordIK() {
-		// TODO Auto-generated method stub
-		//System.out.println("@@@@@@updateStop");
-		String flag="failed";
-		if (LastTime.setStopwordlTime()==1) flag="success";
-		return flag;
-	}
-	
-
-	//更新临时热词词库。
-	@Override
-	public String updateHotwordIK() {
-		// TODO Auto-generated method stub
-		//System.out.println("######updateHot");
-		String flag="failed";
-		if (LastTime.setHotwordlTime()==1) flag="success";
-		return flag;
-	}
-	
-	public String getRemoteFinalHouseWord(){
-		StringBuffer str=new StringBuffer();
-		String strWords=null;
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
-		
-		// read from redis firstly.
-		if(LastTime.getHotword_lTime()!=-2L){
-			
-			strWords=redisService.getRedis(key);
-			if(strWords!=null){
-				logger.info("readed FinalHouseWord from redis.");
-				return strWords;	
-			}
-		}
-
-
-		
-		// read from mysql.
-		List<Participle> list = new LinkedList<Participle>();
-		try {
-			
-			if(LastTime.getHotword_lTime()==-2L) list=participleDao.getTotalFinalHouseParticipleList();
-			list=participleDao.getDayFinalHouseParticipleList();
-			logger.info("readed DayFinalHouseWord from mysql");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("getDayFinalHouseParticipleListException",e);
 			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
 		}
+	}
+
+	@Override
+	public boolean exportHot(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+	    List<HotWord> list =hotWordDao.getTotalHotWordList();
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("临时热词");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+
+		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+		int count=0;
 		for(int i=0;i<list.size();i++){
 			
-			String value=list.get(i).getParticiples();
-			String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
-			for(int j=0;j<words.length;j++){
-				if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
-					str.append(words[j]);
-					str.append("\n");
+			String value=list.get(i).getName();
+				if(!isDuplicate(value)){//判断该词是否已经已经在词库中。
+					row = sheet.createRow(count);
+					row.createCell((short) 0).setCellValue(value);
+					count++;
 				}
 
 			}
-		}
-		strWords=str.toString();
-		
-		// write to redis.
-		
-		redisService.setRedis(key, strWords, true, expireTime);
-		logger.info("writed DayFinalHouseWord to redis.");
-		
-		return strWords;
-	}
-	
-	
 
-	@Override
-	public String getRemoteStopword() {
-		// TODO Auto-generated method stub
-		StringBuffer str=new StringBuffer();
-		String strWords=null;
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
-		// read from redis firstly.
-		if(LastTime.getHotword_lTime()!=-2L){
-			
-			strWords=redisService.getRedis(key);
-			if(strWords!=null){
-				logger.info("readed stopword from redis.");
-				return strWords;	
-			}
-		}
-		
-		// read from mysql.
-		List<StopWords> list = new LinkedList<StopWords>();
+		// 第五步，将文件存到指定位置
 		try {
-			
-			if(LastTime.getHotword_lTime()==-2L) list=stopWordsDao.getTotalStopWordList();
-			else list=stopWordsDao.getDayStopWordsList();
-			logger.info("readed RemoteStopWord from mysql");
+			wb.write(os);
+			os.flush();
+			return true;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("getDayStopWordsException",e);
-		}
-		for(int i=0;i<list.size();i++){
-			
-			String word=list.get(i).getName();
-			str.append(word);
-			str.append("\n");
-			}
-		
-		
-		strWords=str.toString();
-		
-		// write to redis.
-		
-		redisService.setRedis(key, strWords, true, expireTime);
-		logger.info("writed RemoteStopword to redis");
-		
-		return strWords;
-
-	}
-
-	@Override
-	public String getRemoteHotword() {
-		// TODO Auto-generated method stub
-		StringBuffer str=new StringBuffer();
-		
-		// read from redis firstly.
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteHotword"+Long.toString(LastTime.getHotword_lTime());
-		String strWords=redisService.getRedis(key);
-		if(strWords!=null){
-			
-			logger.info("readed RemoteHotword from redis.");
-			return strWords;
-		}
-		
-		// read from mysql.
-		List<HotWord> list = new LinkedList<HotWord>();
-		try {
-			
-			if(LastTime.getHotword_lTime()==-2L) list=hotWordDao.getTotalHotWordList();
-			else list=hotWordDao.getDayHotWordList();
-			logger.info("readed RemoteHotWord from mysql");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("getDayHotWordException",e);
+			logger.error(e.getMessage(), e);
 			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
 		}
-		for(int i=0;i<list.size();i++){
-			
-			String word=list.get(i).getName();
-			if(!isDuplicate(word)){//判断该词是否已经已经在词库中。
-					str.append(word);
-					str.append("\n");
-			}
-		}
-		strWords=str.toString();
-		// write to redis.
-		
-		redisService.setRedis(key, strWords, true, expireTime);
-		logger.info("write remoteHotWord to redis.");
-		
-		return strWords;
 	}
 
-	////判断该词是否已经已经在词库(非停用词)中。
-	@Override
-	public boolean isDuplicate(String word) {
-		// TODO Auto-generated method stub
-		boolean flag=false;
-		StringBuffer ikUrl=new StringBuffer();
-		ikUrl.append(ikurl).append(word);
-		String ikWord = restTemplate.getForObject(ikUrl.toString(), String.class);
-		ikUrl.delete( 0, ikUrl.length() );
-		
-		JSONObject json = JSONObject.parseObject(ikWord);
-		JSONArray arr = (JSONArray)json.get("tokens");
-		
-		for(int i=0;i<arr.size();i++){
-			JSONObject js = (JSONObject)arr.get(i);
-			if (js.getString("token").equals(word)){
-				flag=true;
-			}
-		}	
-		
-		return flag;
-	}
-	
-	//重新加载所有远程词库。
-	public boolean reloadRemoteDic(){
-	    if(LastTime.setReloadTime()==1) return true;
-	    else return false;
-	}
-	
-	@Override
-	public String getIkUrl() {
-		// TODO Auto-generated method stub
-		return ikurl;
-	}
 
 	
 

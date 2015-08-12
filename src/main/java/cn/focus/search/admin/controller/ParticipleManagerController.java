@@ -82,7 +82,7 @@ public class ParticipleManagerController {
 			return "error";
 		}
 	}
-	
+		
 	@RequestMapping(value="hot",method =RequestMethod.GET)
 	public String hotWord(){
 		try{
@@ -310,11 +310,47 @@ public class ParticipleManagerController {
 		try{
 			
 			participleManagerService.exportExcel(request, response, "words-data.xls");
-//			participleManagerService.exportExcel(request, response, "words-data.xls", "word.xls", map);
 			
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
-//			return JSONUtils.badResult("failed");
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="exportHouse",method=RequestMethod.GET)
+	@ResponseBody
+	public String exportHouse(HttpServletRequest request,
+			HttpServletResponse response){
+		try{			
+			participleManagerService.exportHouse(request, response, "words-house.xls");			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	
+	@RequestMapping(value="exportStop",method=RequestMethod.GET)
+	@ResponseBody
+	public String exportStop(HttpServletRequest request,
+			HttpServletResponse response){
+		try{		
+			participleManagerService.exportStop(request, response, "words-stop.xls");	
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	
+	@RequestMapping(value="exportHot",method=RequestMethod.GET)
+	@ResponseBody
+	public String exportHot(HttpServletRequest request,
+			HttpServletResponse response){
+		try{			
+			participleManagerService.exportHot(request, response, "words-hot.xls");			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
 		}
 		return null;
 	}
