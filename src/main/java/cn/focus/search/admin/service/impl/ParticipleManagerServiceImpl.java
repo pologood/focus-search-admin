@@ -395,128 +395,11 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
         return rs;
     }
     
-    /**
-     * 导出数据
-     * @param pathName
-     * @return
-     * @throws IOException
-     */
-    public boolean exportExcel1(String pathName) throws IOException{
-    	List<PplResult> wordsList = (List<PplResult>)wordMap.get("wordKey");
-    	if(wordsList == null || wordsList.size()==0){
-    		return false;
-    	}
-    	WritableWorkbook book = null;
-    	try{
-    		String[] title = {"单词","索引分词","搜索分词"};
-             book= Workbook.createWorkbook(new File("D:\\data\\words.xls")); 
-            //生成名为“第一页”的工作表，参数0表示这是第一页 
-            WritableSheet sheet=book.createSheet("第一页",0); 
-            
-            //写入内容
-            for(int i=0;i<title.length;i++)    //title
-            {
-            	sheet.addCell(new Label(i,0,title[i])); 
-            }
-               
-            for(int i=0;i<wordsList.size();i++)    //context
-            {
-                sheet.addCell(new Label(0,i+1,wordsList.get(i).getWord())); 
-                sheet.addCell(new Label(1,i+1,wordsList.get(i).getIndexPplWord())); 
-                sheet.addCell(new Label(2,i+1,wordsList.get(i).getSearchPplWord())); 
-            }
-            //写入数据
-            book.write(); 
-            System.out.println("导出成功");
-            return true;
-    	}catch(Exception e){
-    		logger.error(e.getMessage(), e);
-    		return false;
-    	}finally{
-    		 book.close(); 
-    	}
-    }
+
     
-    /**
-     * 导出方法1
-     */
-    public boolean exportExcel(HttpServletRequest request,
-			HttpServletResponse response,String exportName) throws IOException{
-    	
-    	List<PplResult> list = (List<PplResult>)wordMap.get("wordKey");
-    	if(list == null || list.size()==0){
-    		return false;
-    	}
-    	
-		response.reset();
-		response.setContentType("application/vnd.ms-excel");
-		response.addHeader("Content-Disposition", "attachment;filename=\""
-				+ exportName + "\"");
-		OutputStream os = null;
-		os = response.getOutputStream();
-		 
-    	// 第一步，创建一个webbook，对应一个Excel文件
-		HSSFWorkbook wb = new HSSFWorkbook();
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("分词效果");
-		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
-		HSSFRow row = sheet.createRow((int) 0);
-		// 第四步，创建单元格，并设置值表头 设置表头居中
-		HSSFCellStyle style = wb.createCellStyle();
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
 
-		HSSFCell cell = row.createCell((short) 0);
-		cell.setCellValue("单词");
-		cell.setCellStyle(style);
-
-		cell = row.createCell((short) 1);
-		cell.setCellValue("索引分词");
-		cell.setCellStyle(style);
-
-		cell = row.createCell((short) 2);
-		cell.setCellValue("搜索分词");
-		cell.setCellStyle(style);
-
-		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
-
-		for (int i = 0; i < list.size(); i++) {
-			row = sheet.createRow((int) i + 1);
-			PplResult pplResult =  list.get(i);
-			// 第四步，创建单元格，并设置值
-			row.createCell((short) 0).setCellValue(pplResult.getWord());
-			row.createCell((short) 1).setCellValue(pplResult.getIndexPplWord());
-			row.createCell((short) 2).setCellValue(pplResult.getSearchPplWord());
-		
-		}
-		// 第六步，将文件存到指定位置
-		try {
-//			FileOutputStream fout = new FileOutputStream("D:/data/words.xls");
-			wb.write(os);
-			os.flush();
-			return true;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
-			return false;
-		}finally{
-			os.close();
-		}
-    }
     
-    /**
-     * 导出方法2
-     */
-    public boolean exportExcel(HttpServletRequest request,
-			HttpServletResponse response, String exportName,
-			String templateName, Map<String, Object> dataMap) throws IOException{
-		try {
-		   excelUtil.exportExcel(request, response, exportName, templateName, dataMap);
-			return true;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return false;
-		}
-    }
+
 
 	@Override
 	public List<Participle> getParticipleList(int status) {
@@ -743,6 +626,222 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		return ikurl;
 	}
+
+    /**
+     * 导出方法1
+     */
+	
+	@Override
+    public boolean exportExcel(HttpServletRequest request,
+			HttpServletResponse response,String exportName) throws IOException{
+    	
+    	List<PplResult> list = (List<PplResult>)wordMap.get("wordKey");
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+    	
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("分词效果");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+		HSSFCell cell = row.createCell((short) 0);
+		cell.setCellValue("单词");
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 1);
+		cell.setCellValue("索引分词");
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 2);
+		cell.setCellValue("搜索分词");
+		cell.setCellStyle(style);
+
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+		for (int i = 0; i < list.size(); i++) {
+			row = sheet.createRow((int) i + 1);
+			PplResult pplResult =  list.get(i);
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) 0).setCellValue(pplResult.getWord());
+			row.createCell((short) 1).setCellValue(pplResult.getIndexPplWord());
+			row.createCell((short) 2).setCellValue(pplResult.getSearchPplWord());
+		
+		}
+		// 第六步，将文件存到指定位置
+		try {
+//			FileOutputStream fout = new FileOutputStream("D:/data/words.xls");
+			wb.write(os);
+			os.flush();
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
+		}
+    }
+	@Override
+	public boolean exportHouse(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+		    List<Participle> list =participleDao.getTotalFinalHouseParticipleList();
+	    	if(list == null || list.size()==0){
+	    		return false;
+	    	}
+
+			response.reset();
+			response.setContentType("application/vnd.ms-excel");
+			response.addHeader("Content-Disposition", "attachment;filename=\""
+					+ exportName + "\"");
+			OutputStream os = null;
+			os = response.getOutputStream();
+			 
+	    	// 第一步，创建一个webbook，对应一个Excel文件
+			HSSFWorkbook wb = new HSSFWorkbook();
+			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+			HSSFSheet sheet = wb.createSheet("新房词");
+			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow((int) 0);
+
+			// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+			int count=0;
+			for(int i=0;i<list.size();i++){
+				
+				String value=list.get(i).getParticiples();
+				String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
+				for(int j=0;j<words.length;j++){
+					if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
+						row = sheet.createRow(count);
+						row.createCell((short) 0).setCellValue(words[j]);
+						count++;
+					}
+
+				}
+			}
+			// 第五步，将文件存到指定位置
+			try {
+				wb.write(os);
+				os.flush();
+				return true;
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				e.printStackTrace();
+				return false;
+			}finally{
+				os.close();
+			}
+	}
+
+	@Override
+	public boolean exportStop(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+	    List<StopWords> list =stopWordsDao.getTotalStopWordList();
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("停用词");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+
+		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+		int count=0;
+		for(int i=0;i<list.size();i++){
+			
+			String value=list.get(i).getName();
+			row = sheet.createRow(count);
+			row.createCell((short) 0).setCellValue(value);
+			count++;
+				}
+
+	
+	
+		// 第五步，将文件存到指定位置
+		try {
+			wb.write(os);
+			os.flush();
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
+		}
+	}
+
+	@Override
+	public boolean exportHot(HttpServletRequest request, HttpServletResponse response, String exportName)
+			throws IOException {
+	    List<HotWord> list =hotWordDao.getTotalHotWordList();
+    	if(list == null || list.size()==0){
+    		return false;
+    	}
+
+		response.reset();
+		response.setContentType("application/vnd.ms-excel");
+		response.addHeader("Content-Disposition", "attachment;filename=\""
+				+ exportName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		 
+    	// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("临时热词");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+
+		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
+		int count=0;
+		for(int i=0;i<list.size();i++){
+			
+			String value=list.get(i).getName();
+				if(!isDuplicate(value)){//判断该词是否已经已经在词库中。
+					row = sheet.createRow(count);
+					row.createCell((short) 0).setCellValue(value);
+					count++;
+				}
+
+			}
+
+		// 第五步，将文件存到指定位置
+		try {
+			wb.write(os);
+			os.flush();
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return false;
+		}finally{
+			os.close();
+		}
+	}
+
 
 	
 

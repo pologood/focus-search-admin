@@ -40,14 +40,7 @@ public interface ParticipleManagerService {
 	 */
 	public boolean updateManualWords(String groupId,String manualWords,String userName)throws Exception;
 	
-	/**
-	 * 导出数据
-	 * @param pathName
-	 * @return
-	 * @throws IOException
-	 */
-    public boolean exportExcel(HttpServletRequest request,
-			HttpServletResponse response,String exportName) throws IOException;
+
 	/**
 	 * 
 	 * @return
@@ -55,9 +48,6 @@ public interface ParticipleManagerService {
 	public int getWordMapSize();
 	
 	
-	public boolean exportExcel(HttpServletRequest request,
-				HttpServletResponse response, String exportName,
-				String templateName, Map<String, Object> dataMap) throws IOException;
 
 	/***
 	 * 批量获取未分词数据
@@ -80,5 +70,16 @@ public interface ParticipleManagerService {
 	public boolean isDuplicate(String word);
 
 	public boolean reloadRemoteDic();
+	
+	/**
+	 * 导出数据
+	 * @param pathName
+	 * @return
+	 * @throws IOException
+	 */
+    public boolean exportExcel(HttpServletRequest request,HttpServletResponse response,String exportName) throws IOException;
+	public boolean exportHouse(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
+	public boolean exportStop(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
+	public boolean exportHot(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
 	
 }
