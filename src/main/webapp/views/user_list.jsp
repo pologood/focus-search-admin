@@ -14,15 +14,25 @@ $(function(){
 	$("#modifyPwB").click(function(){
 		var name = "${cUserName}";
 		$("#nameInput").val(name);
+		$("#oPwInput").val('');
+		$("#nPwInput").val('');
+		$("#nPwCfInput").val('');
 		$('#modifyPwDia').dialog('open');
 	})
 	
-	$("#addUserB").click(function(){
-		/*var name = "${cUserName}";
-		$("#nameInput").val(name);*/
-		$('#addUserDia').dialog('open');
-	})
-	
+	var name = "${cUserName}";
+	if(name!= "admin1"){
+		$("#addUserB").attr("disabled","disabled"); 
+	}
+	else{
+		$("#addUserB").removeAttr("disabled");//启用按钮
+		$("#addUserB").click(function(){
+			$("#uNameInput").val('');
+			$("#uPwInput").val('');
+			$('#addUserDia').dialog('open');
+		})
+	}
+		
 	//更改弹出框
     $('#addUserDia').dialog({
     			title:'添加新用户',
@@ -267,14 +277,15 @@ function formatAction(value,row,index){
 		</div>
 	</div>
 	
-	<div id="modifyPwDia"  style="padding:5px;width:420px;height:320px;">
-		<p>用&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
+	<div id="modifyPwDia"  style="padding:5px;width:300px;height:260px;">
 		<br/>
-		<p>原&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:<label id="oPwLabel"></label><input  id="oPwInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;用&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:&nbsp;<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
 		<br/>
-		<p>新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;原&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="oPwLabel"></label><input  id="oPwInput" style="width:180px" type=password /></p>
 		<br/>
-		<p>新密码确认:<label id="nPwCfLabel"></label><input  id="nPwCfInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password /></p>
+		<br/>
+		<p>&nbsp;&nbsp;&nbsp;新密码确认:<label id="nPwCfLabel"></label><input  id="nPwCfInput" style="width:180px" type=password /></p>
 		<br/>
 	</div>
 	
