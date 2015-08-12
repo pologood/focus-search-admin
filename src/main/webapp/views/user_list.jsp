@@ -23,6 +23,7 @@ $(function(){
 	var name = "${cUserName}";
 	if(name!= "admin1"){
 		$("#addUserB").attr("disabled","disabled"); 
+		$("#addUserB").hide();
 	}
 	else{
 		$("#addUserB").removeAttr("disabled");//启用按钮
@@ -99,7 +100,7 @@ function modifyUPw(){
 		return;
 	}
 	else if(nPw!=nPwCf){
-		$.messager.alert('错误','两次新密码输入不一致!请重新输入','error');
+		$.messager.alert('错误','两次新密码输入不一致!请重新输入!','error');
 		return;
 	}
 
