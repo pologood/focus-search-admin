@@ -1,9 +1,11 @@
 package cn.focus.search.admin.controller;
 
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -161,5 +163,29 @@ public class HotWordsController {
 			e.printStackTrace();
 			return JSONUtils.badResult("failed");
 		}
+	}
+	
+	/***
+	 * 删除热词
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="exportHot",method=RequestMethod.GET)
+	@ResponseBody
+	public int exportHotWords(HttpServletRequest request, HttpServletResponse response)
+	{
+		//System.out.println("QQQQQ!!!!!!!!");
+		try{
+			String exportName = "hot-words.txt";
+			response.reset();
+			response.setContentType("application/vnd.ms-txt");
+			response.addHeader("Content-Disposition", "attachment;filename=\""
+					+ exportName + "\"");
+			OutputStream os = null;
+			os = response.getOutputStream();
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return 1;
 	}
 }
