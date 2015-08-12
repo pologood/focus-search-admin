@@ -8,4 +8,6 @@ public interface UserManagerService {
 	public List<UserInfo> getUserList();
 	
 	public int updateUserInfo(UserInfo userInfo);
+	
+	public int addNewUser(UserInfo userInfo);
 }

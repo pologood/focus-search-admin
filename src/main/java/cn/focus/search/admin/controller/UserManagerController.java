@@ -97,7 +97,6 @@ public class UserManagerController {
 			int type = Integer.parseInt(request.getParameter("type"));
 			int status = 1;
 			String pw = new String();
-//			String passwordMd5 = DigestUtils.md5Hex(password);
 			if(type == 0){//逻辑删除
 				status = 0;
 				pw = request.getParameter("pw");
@@ -177,4 +176,43 @@ public class UserManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
+	
+	/**
+	 * 添加新用户
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="addNewUser",method=RequestMethod.POST)
+	@ResponseBody
+	public String addNewUser(HttpServletRequest request){
+		try{
+			String userName = request.getParameter("name");
+			String password = request.getParameter("password");
+			System.out.println("新用户：userName:"+userName+" password: "+password);
+			
+			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
+				return JSONUtils.badResult("failed");
+			}
+			String PwMd5 = DigestUtils.md5Hex(password);
+			
+			UserInfo userInfo = new UserInfo();
+			userInfo.setUserName(userName);
+			userInfo.setPassword(PwMd5);
+			userInfo.setAccessToken("");
+			userInfo.setStatus(1);
+			Date d =new Date();
+			userInfo.setCreateTime(d);		
+			int result = userManagerService.addNewUser(userInfo);
+			System.out.println("！result："+result);
+			if(result<1){//更新失败
+				System.out.println("更新失败！result："+result);
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
 }

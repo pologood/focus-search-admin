@@ -42,4 +42,15 @@ public class UserManagerServiceImpl implements UserManagerService{
 		return result;
 	}
 
+	@Override
+	public int addNewUser(UserInfo userInfo) {
+		int r = 0;
+        try {
+            r = userInfoDao.addNewUser(userInfo);
+        } catch (Exception e) {
+            logger.error("插入新用户数据异常!", e);
+        }
+        return r;
+	}
+
 }

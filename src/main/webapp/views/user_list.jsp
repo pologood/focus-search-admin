@@ -14,38 +14,41 @@ $(function(){
 	$("#modifyPwB").click(function(){
 		var name = "${cUserName}";
 		$("#nameInput").val(name);
+		$("#oPwInput").val('');
+		$("#nPwInput").val('');
+		$("#nPwCfInput").val('');
 		$('#modifyPwDia').dialog('open');
-	//ajax 异步提交
-	/*
-		$.ajax({
-				url:rootpath+"/admin/pm/updateIK",
-				type:"post",
-				dataType:"text",
-				cache:false,
-				success:function(data){
-					if(data == "success"){
-						$.messager.alert('成功','更新成功!','info');
-						//重新加载数据
-					}else{
-						 $.messager.alert('错误','更新失败!','error');
-					}
-				},
-				error:function(e){
-					$.messager.alert('错误','更新失败!','error');
-				}
-		});*/
 	})
-	/*
-	$('#pp1').tooltip({
-		position: 'right',
-		content: '<span style="color:#fff">This is the tooltip message.</span>',
-		onShow: function(){
-			$(this).tooltip('tip').css({
-				backgroundColor: '#666',
-				borderColor: '#666'
-			});
-		}
-	});*/
+	
+	var name = "${cUserName}";
+	if(name!= "admin1"){
+		$("#addUserB").attr("disabled","disabled"); 
+		$("#addUserB").hide();
+	}
+	else{
+		$("#addUserB").removeAttr("disabled");//启用按钮
+		$("#addUserB").click(function(){
+			$("#uNameInput").val('');
+			$("#uPwInput").val('');
+			$('#addUserDia').dialog('open');
+		})
+	}
+		
+	//更改弹出框
+    $('#addUserDia').dialog({
+    			title:'添加新用户',
+    			closed:true,//初始时不显示
+				buttons:[{
+					text:'确定',
+					iconCls:'icon-ok',
+					handler:addNewUser
+				},{
+					text:'取消',
+					handler:function(){
+						$('#addUserDia').dialog('close');
+					}
+				}]
+	 });
 	
     //更改弹出框
     $('#modifyPwDia').dialog({
@@ -63,12 +66,9 @@ $(function(){
 				}]
 	 });
 	
-
 });
 
 function searchBtnClick(){
-
-	
 	//为loadGrid()添加参数  
     var queryParams = $('#projTab').datagrid('options').queryParams;  
     queryParams.groupId = groupId;
@@ -83,6 +83,9 @@ function searchBtnClick(){
     $("#projTab").datagrid('reload'); 
 }
 
+/***
+ * 用户修改个人密码
+ */
 function modifyUPw(){
 	var name = $("#nameInput").val();
 	var oPw = $("#oPwInput").val();
@@ -97,7 +100,7 @@ function modifyUPw(){
 		return;
 	}
 	else if(nPw!=nPwCf){
-		$.messager.alert('错误','两次新密码输入不一致!请重新输入','error');
+		$.messager.alert('错误','两次新密码输入不一致!请重新输入!','error');
 		return;
 	}
 
@@ -129,6 +132,48 @@ function modifyUPw(){
 			error:function(e){
 				$('#modifyPwDia').dialog('close');
 				$.messager.alert('错误','密码修改失败!请确认密码是否输入正确！','error');
+			}
+	});
+}
+/***
+ * 添加新用户
+ */
+function addNewUser(){
+	var name = $("#uNameInput").val();
+	var password = $("#uPwInput").val();
+	if(name == ''||password == ''){
+		$.messager.alert('错误','填写不完整！请确认是否已全部填写！','error');
+		return;
+	}
+
+	var data = "name="+name+"&password="+password;
+	var win = $.messager.progress({
+        title:'Please waiting',
+        msg:'Loading data...'
+    });
+	
+	//ajax 异步提交
+	$.ajax({
+			url:rootpath+"/user/um/addNewUser",
+			type:"post",
+			data:data,
+			dataType:"json",
+			cache:false,
+			success:function(response){
+				$.messager.progress('close');
+				if(response.errorCode == 0){
+					$('#addUserDia').dialog('close');
+					$.messager.alert('成功','用户添加成功!','info');
+					//重新加载数据
+					$("#projTab").datagrid('reload');  
+				}else{
+					 $('#addUserDia').dialog('close');
+					 $.messager.alert('错误','用户添加失败!','error');
+				}
+			},
+			error:function(e){
+				$('#addUserDia').dialog('close');
+				$.messager.alert('错误','用户添加失败!','error');
 			}
 	});
 }
@@ -229,21 +274,29 @@ function formatAction(value,row,index){
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
 			<a href="javascript:void(0)" id="modifyPwB" class="easyui-linkbutton" iconCls="icon-edit">修改密码</a>
+			<a href="javascript:void(0)" id="addUserB" class="easyui-linkbutton" iconCls="icon-add">添加用户</a>
 		</div>
 	</div>
 	
-	<div id="modifyPwDia"  style="padding:5px;width:420px;height:320px;">
-		<p>用&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
+	<div id="modifyPwDia"  style="padding:5px;width:300px;height:260px;">
 		<br/>
-		<p>原&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:<label id="oPwLabel"></label><input  id="oPwInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;用&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:&nbsp;<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
 		<br/>
-		<p>新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;原&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="oPwLabel"></label><input  id="oPwInput" style="width:180px" type=password /></p>
 		<br/>
-		<p>新密码确认:<label id="nPwCfLabel"></label><input  id="nPwCfInput" style="width:180px" type=password /></p>
-		<p><input id="rId" style="width:10px;display:none;"readonly="true"/></p>
-		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
-		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>
+		<p>&nbsp;&nbsp;&nbsp;新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password /></p>
+		<br/>
+		<p>&nbsp;&nbsp;&nbsp;新密码确认:<label id="nPwCfLabel"></label><input  id="nPwCfInput" style="width:180px" type=password /></p>
 		<br/>
 	</div>
+	
+	<div id="addUserDia"  style="padding:5px;width:300px;height:200px;">
+		<br/>
+		<p>&nbsp;&nbsp;&nbsp;用&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:&nbsp;&nbsp;<label id="uNameLabel"></label><input  id="uNameInput" style="width:180px" /></p>
+		<br/>
+		<p>&nbsp;&nbsp;&nbsp;初&nbsp;始&nbsp;密&nbsp;码:&nbsp;&nbsp;<label id="uPwLabel"></label><input  id="uPwInput" style="width:180px" type=password /></p>
+		<br/>
+	</div>
+	
 </body>
 </html>
