@@ -22,6 +22,12 @@
 		create_time,
 		update_time
 	</sql>
+	
+	<update id="setExported"  flushCache="true">
+        update stop_words
+        set status=0
+        where status=1
+    </update>
 
 	<!-- 获取停用词列表 -->
     <select id="getStopWordsList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->

@@ -46,13 +46,21 @@
         </set>
         where id = #{id}
     </update>
-
+    
+    <!-- 将已经导出楼盘status状态置0 -->
+    <update id="setExported"  flushCache="true">
+        update participle
+        set status=0
+        where !ISNULL(participles) and status=1
+    </update>
+    
+    
 	<!-- 获取未分词列表 -->
     <select id="getParticipleList" resultMap="BaseResultMap"  statementType="PREPARED">
         select
         <include refid="Base_Column_List"/>
         from participle
-        where status = #{status}
+        where status = #{status} and ISNULL(participles)
     </select>
 	
 	<select id="getDayFinalHouseParticipleList" resultMap="BaseResultMap"

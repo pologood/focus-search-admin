@@ -35,4 +35,11 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		return sqlSession.selectList("ParticipleDao.getTotalFinalHouseParticipleList");
 	}
 
+	@Override
+	public int setExported() {
+		// TODO Auto-generated method stub
+		return sqlSession.update("ParticipleDao.setExported");
+		
+	}
+
 }

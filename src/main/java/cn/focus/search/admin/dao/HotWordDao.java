@@ -54,4 +54,6 @@ public interface HotWordDao {
     public int delHotWordById(int id)throws Exception;
 
 	List<HotWord> getTotalHotWordList();
+
+	public int setExported();
 }
