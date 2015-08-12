@@ -578,13 +578,10 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
 		
 		// read from redis firstly.
-		if(LastTime.getHotword_lTime()!=-2L){
-			
-			strWords=redisService.getRedis(key);
-			if(strWords!=null){
-				logger.info("readed FinalHouseWord from redis.");
-				return strWords;	
-			}
+		strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed FinalHouseWord from redis.");
+			return strWords;	
 		}
 
 
@@ -593,12 +590,12 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<Participle> list = new LinkedList<Participle>();
 		try {
 			
-			if(LastTime.getHotword_lTime()==-2L) list=participleDao.getTotalFinalHouseParticipleList();
-			list=participleDao.getDayFinalHouseParticipleList();
-			logger.info("readed DayFinalHouseWord from mysql");
+			list=participleDao.getTotalFinalHouseParticipleList();
+		
+			logger.info("readed FinalHouseWord from mysql");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("getDayFinalHouseParticipleListException",e);
+			logger.error("getFinalHouseParticipleListException",e);
 			e.printStackTrace();
 		}
 		for(int i=0;i<list.size();i++){
@@ -618,7 +615,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// write to redis.
 		
 		redisService.setRedis(key, strWords, true, expireTime);
-		logger.info("writed DayFinalHouseWord to redis.");
+		logger.info("writed FinalHouseWord to redis.");
 		
 		return strWords;
 	}
@@ -632,25 +629,24 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		String strWords=null;
 		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
 		// read from redis firstly.
-		if(LastTime.getHotword_lTime()!=-2L){
+		
 			
-			strWords=redisService.getRedis(key);
-			if(strWords!=null){
-				logger.info("readed stopword from redis.");
-				return strWords;	
-			}
+		strWords=redisService.getRedis(key);
+		if(strWords!=null){
+			logger.info("readed stopword from redis.");
+			return strWords;	
 		}
+		
 		
 		// read from mysql.
 		List<StopWords> list = new LinkedList<StopWords>();
 		try {
 			
-			if(LastTime.getHotword_lTime()==-2L) list=stopWordsDao.getTotalStopWordList();
-			else list=stopWordsDao.getDayStopWordsList();
+			list=stopWordsDao.getTotalStopWordList();
 			logger.info("readed RemoteStopWord from mysql");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("getDayStopWordsException",e);
+			logger.error("getStopWordsException",e);
 		}
 		for(int i=0;i<list.size();i++){
 			
@@ -689,12 +685,11 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		List<HotWord> list = new LinkedList<HotWord>();
 		try {
 			
-			if(LastTime.getHotword_lTime()==-2L) list=hotWordDao.getTotalHotWordList();
-			else list=hotWordDao.getDayHotWordList();
+		    list=hotWordDao.getTotalHotWordList();
 			logger.info("readed RemoteHotWord from mysql");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("getDayHotWordException",e);
+			logger.error("get HotWordException",e);
 			e.printStackTrace();
 		}
 		for(int i=0;i<list.size();i++){

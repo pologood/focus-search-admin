@@ -61,7 +61,7 @@ $(function(){
 
 $(function(){   
 	$("#loadDicBtn").click(function(){
-		var isUpdate = confirm("重启ES搜索服务器之后需要重新加载所有词库，其他情况不必需！");
+		var isUpdate = confirm("该操作将耗费很多服务器资源，请慎重操作！");
 		if (isUpdate == true)
 		{
 			//ajax 异步提交
