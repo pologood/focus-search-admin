@@ -23,6 +23,12 @@
 		update_time
 	</sql>
 	
+	<update id="setExported"  flushCache="true">
+        update hot_word
+        set status=0
+        where status=1
+    </update>
+	
 		<!-- 获取热词列表 -->
     <select id="getHotWordList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
         select

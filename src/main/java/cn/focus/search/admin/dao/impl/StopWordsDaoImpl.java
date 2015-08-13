@@ -50,4 +50,10 @@ public class StopWordsDaoImpl implements StopWordsDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("StopWordsDao.getTotalStopWordsList");
 	}
+
+	@Override
+	public int setExported() {
+		// TODO Auto-generated method stub
+		return sqlSession.update("StopWordsDao.setExported");
+	}
 }

@@ -37,4 +37,7 @@ public interface ParticipleDao {
 
 	public List<Participle> getTotalFinalHouseParticipleList();
 
+
+	public int setExported();
+
 }
