@@ -209,6 +209,15 @@ $(function(){
 	});
 });
 
+//exportStopDic
+$(function(){
+	$("#exportStopDic").click(function(){
+		//alert("!!!");
+		var url= rootpath+"/stop/exportStop"
+		$("#exportForm").attr("action",url);
+		$("#exportForm").submit();
+	});
+});
 
 $(function(){
 	$('#pp1').tooltip({
@@ -253,6 +262,9 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加停止词</a>
 			<a href="javascript:void(0)" id="updateStopDic" class="easyui-linkbutton" iconCls="icon-add">更新停止词词库</a>
+			<form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			</form>	
 		</div>
 	</div>
 	

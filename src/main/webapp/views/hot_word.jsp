@@ -274,9 +274,9 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
 			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新热词词库</a>
-			<form id="exportForm"  method="get">
+			<form id="exportForm"  method="get" style="float:right">
 			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			</form>
+			</form>			
 		</div>
 	</div>
 	

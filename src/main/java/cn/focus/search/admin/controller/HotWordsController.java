@@ -176,13 +176,14 @@ public class HotWordsController {
 	{
 		//System.out.println("QQQQQ!!!!!!!!");
 		try{
-			String exportName = "hot-words.txt";
-			response.reset();
+			String fileName = "hot-words.txt";
+			pmService.exportHot(request, response, fileName);
+			/*response.reset();
 			response.setContentType("application/vnd.ms-txt");
 			response.addHeader("Content-Disposition", "attachment;filename=\""
 					+ exportName + "\"");
 			OutputStream os = null;
-			os = response.getOutputStream();
+			os = response.getOutputStream();*/
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 		}
