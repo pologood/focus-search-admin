@@ -49,4 +49,11 @@ public class HotWordDaoImpl implements HotWordDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("HotWordDao.getTotalHotWordList");
 	}
+
+	@Override
+	public int setExported() {
+		// TODO Auto-generated method stub
+		return sqlSession.update("HotWordDao.setExported");
+		
+	}
 }

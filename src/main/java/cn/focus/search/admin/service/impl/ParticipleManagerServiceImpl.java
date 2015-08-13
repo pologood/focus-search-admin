@@ -735,6 +735,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			try {
 				wb.write(os);
 				os.flush();
+				participleDao.setExported();
 				return true;
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
@@ -743,6 +744,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			}finally{
 				os.close();
 			}
+			
+			
+
 	}
 
 	@Override
@@ -783,6 +787,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		try {
 			wb.write(os);
 			os.flush();
+			
+			stopWordsDao.setExported();
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -791,6 +797,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}finally{
 			os.close();
 		}
+		
+		
 	}
 
 	@Override
@@ -832,6 +840,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		try {
 			wb.write(os);
 			os.flush();
+			
+			hotWordDao.setExported();
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -840,6 +850,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}finally{
 			os.close();
 		}
+		
 	}
 
 
