@@ -224,7 +224,7 @@ $(function(){
 //exportHotDic
 $(function(){
 	$("#exportHotDic").click(function(){
-		//alert("!!!");
+		//alert("功能暂未开放！");
 		var url= rootpath+"/hot/exportHot"
 		$("#exportForm").attr("action",url); 
 		$("#exportForm").submit();

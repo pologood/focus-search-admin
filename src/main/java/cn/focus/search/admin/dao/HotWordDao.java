@@ -53,7 +53,21 @@ public interface HotWordDao {
      */
     public int delHotWordById(int id)throws Exception;
 
+    /**
+     *根据status获取热词数据（只要名称）
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+    public List<String> getHotWordnameByStatus(int status)throws Exception;
+    
 	List<HotWord> getTotalHotWordList();
 
+	/**
+     *将status置0
+     * @param status
+     * @return
+     * @throws Exception
+     */
 	public int setExported();
 }

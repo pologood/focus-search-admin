@@ -23,6 +23,7 @@
 		update_time
 	</sql>
 	
+	<!-- 更新热词status -->
 	<update id="setExported"  flushCache="true">
         update hot_word
         set status=0
@@ -44,7 +45,7 @@
         where name = #{wordName}
     </select>
 	
-		<!-- 添加停用词 -->
+		<!-- 添加热词 -->
     <insert id="insertHotWord" parameterType="HotWord" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
         insert into hot_word(
 		name,
@@ -84,8 +85,17 @@
 		from hot_word
 	</select>
 	
+	<!-- 根据ID删除热词 -->
 	<delete id="delHotWordById" parameterType="java.lang.Integer" statementType="PREPARED">
 		delete from hot_word
 		where id=#{id}
 	</delete>
+	
+	<!-- 根据status获取热词 -->
+	<select id="getHotWordnameByStatus" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED"><!-- resultMap="BaseResultMap"  -->
+		select name	
+		from hot_word
+		where status=#{status}
+	</select>
 </mapper>

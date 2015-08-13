@@ -59,6 +59,7 @@ import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.service.RedisService;
 import cn.focus.search.admin.utils.ExcelUtil;
 import cn.focus.search.admin.utils.JSONUtils;
+import cn.focus.search.admin.utils.StopWordsUtil;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -106,8 +107,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	private static Map<String,Object> wordMap = new ConcurrentHashMap<String, Object>();
 	
 	@Autowired
-	private ExcelUtil excelUtil;
-	
+	private StopWordsUtil stopWordsUtil;
 	
 	public int getWordMapSize(){
 		return wordMap.size();
@@ -694,166 +694,62 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			os.close();
 		}
     }
+	
 	@Override
-	public boolean exportHouse(HttpServletRequest request, HttpServletResponse response, String exportName)
+	public boolean exportParticiple(HttpServletResponse response, String fileName, List<String> list)
 			throws IOException {
-		    List<Participle> list =participleDao.getTotalFinalHouseParticipleList();
-	    	if(list == null || list.size()==0){
-	    		return false;
-	    	}
-
-			response.reset();
-			response.setContentType("application/vnd.ms-excel");
-			response.addHeader("Content-Disposition", "attachment;filename=\""
-					+ exportName + "\"");
-			OutputStream os = null;
-			os = response.getOutputStream();
-			 
-	    	// 第一步，创建一个webbook，对应一个Excel文件
-			HSSFWorkbook wb = new HSSFWorkbook();
-			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-			HSSFSheet sheet = wb.createSheet("新房词");
-			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
-			HSSFRow row = sheet.createRow((int) 0);
-
-			// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
-			int count=0;
-			for(int i=0;i<list.size();i++){
-				
-				String value=list.get(i).getParticiples();
-				String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
-				for(int j=0;j<words.length;j++){
-					if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
-						row = sheet.createRow(count);
-						row.createCell((short) 0).setCellValue(words[j]);
-						count++;
-					}
-
-				}
+		response.reset();
+		response.setContentType("application/vnd.ms-txt");
+		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		
+		// 第二步，将文件存到指定位置
+		try {
+			for (String str : list)
+			{
+				//System.out.println("!!!!!!!!"+ str);
+				String[] parti = stopWordsUtil.getParticiple(str);
+				if (parti == null || parti.length == 0)
+					continue;
+				for (String participle : parti)
+				{
+					os.write(participle.getBytes());
+					os.write('\n'); 
+					os.flush();
+				}				
 			}
-			// 第五步，将文件存到指定位置
-			try {
-				wb.write(os);
-				os.flush();
-				participleDao.setExported();
-				return true;
+			return true;
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
-				e.printStackTrace();
 				return false;
 			}finally{
 				os.close();
 			}
-			
-			
-
 	}
 
 	@Override
-	public boolean exportStop(HttpServletRequest request, HttpServletResponse response, String exportName)
-			throws IOException {
-	    List<StopWords> list =stopWordsDao.getTotalStopWordList();
-    	if(list == null || list.size()==0){
-    		return false;
-    	}
-
-		response.reset();
-		response.setContentType("application/vnd.ms-excel");
-		response.addHeader("Content-Disposition", "attachment;filename=\""
-				+ exportName + "\"");
-		OutputStream os = null;
-		os = response.getOutputStream();
-		 
-    	// 第一步，创建一个webbook，对应一个Excel文件
-		HSSFWorkbook wb = new HSSFWorkbook();
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("停用词");
-		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
-		HSSFRow row = sheet.createRow((int) 0);
-
-		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
-		int count=0;
-		for(int i=0;i<list.size();i++){
-			
-			String value=list.get(i).getName();
-			row = sheet.createRow(count);
-			row.createCell((short) 0).setCellValue(value);
-			count++;
-				}
-
-	
-	
-		// 第五步，将文件存到指定位置
-		try {
-			wb.write(os);
-			os.flush();
-			
-			stopWordsDao.setExported();
-			return true;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
-			return false;
-		}finally{
-			os.close();
-		}
-		
-		
+	public int setExported() {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = participleDao.setExported();
+        } catch (Exception e) {
+            logger.error("删除停止词数据异常!", e);
+        }
+        return s;
 	}
 
 	@Override
-	public boolean exportHot(HttpServletRequest request, HttpServletResponse response, String exportName)
-			throws IOException {
-	    List<HotWord> list =hotWordDao.getTotalHotWordList();
-    	if(list == null || list.size()==0){
-    		return false;
-    	}
-
-		response.reset();
-		response.setContentType("application/vnd.ms-excel");
-		response.addHeader("Content-Disposition", "attachment;filename=\""
-				+ exportName + "\"");
-		OutputStream os = null;
-		os = response.getOutputStream();
-		 
-    	// 第一步，创建一个webbook，对应一个Excel文件
-		HSSFWorkbook wb = new HSSFWorkbook();
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("临时热词");
-		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
-		HSSFRow row = sheet.createRow((int) 0);
-
-		// 第四步，写入实体数据 实际应用中这些数据从数据库得到，
-		int count=0;
-		for(int i=0;i<list.size();i++){
-			
-			String value=list.get(i).getName();
-				if(!isDuplicate(value)){//判断该词是否已经已经在词库中。
-					row = sheet.createRow(count);
-					row.createCell((short) 0).setCellValue(value);
-					count++;
-				}
-
-			}
-
-		// 第五步，将文件存到指定位置
-		try {
-			wb.write(os);
-			os.flush();
-			
-			hotWordDao.setExported();
-			return true;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
-			return false;
-		}finally{
-			os.close();
-		}
-		
+	public List<String> getParticiplesByStatus(int status) throws Exception {
+		// TODO Auto-generated method stub
+		List<String> list=new LinkedList<String>();
+        try {
+            list = participleDao.getParticiplesByStatus(status);
+            logger.info("status: "+status);
+        } catch (Exception e) {
+            logger.error("获取热词数据异常!", e);
+        }
+        return list;
 	}
-
-
-	
-
 }

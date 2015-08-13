@@ -152,7 +152,7 @@ function formatAction(value,row,index){
 //exportParticipleDic
 $(function(){
 	$("#exportParticipleDic").click(function(){
-		//alert("!!!");
+		//alert("功能暂未开放！");
 		var url= rootpath+"/admin/pm/exportParticiple"
 		$("#exportForm").attr("action",url); 
 		$("#exportForm").submit();
@@ -199,7 +199,7 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" iconCls="icon-search">更新词库</a>
 			<form id="exportForm"  method="get" style="float:right">
-			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>
 			</form>
 		</div>
 	</div>

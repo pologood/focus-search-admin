@@ -66,6 +66,12 @@ public class StopWordsUtil {
 		return hotList;		
 	}
 	
+	public String[] getParticiple(String par)
+	{
+		String[] stop = par.split("[, ， ]");
+		return stop;
+	}
+	
 	public static void main(String[] args)
 	{
 /*		Date now=new Date();

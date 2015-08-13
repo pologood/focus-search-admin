@@ -56,4 +56,10 @@ public class HotWordDaoImpl implements HotWordDao{
 		return sqlSession.update("HotWordDao.setExported");
 		
 	}
+
+	@Override
+	public List<String> getHotWordnameByStatus(int status) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("HotWordDao.getHotWordnameByStatus",status);
+	}
 }

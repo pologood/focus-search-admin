@@ -1,7 +1,11 @@
 package cn.focus.search.admin.service.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,5 +84,58 @@ public class HotWordServiceImpl implements HotWordService{
         }
         return s;
 	}
+	
+	@Override
+	public List<String> getHotWordnameByStatus(int status) throws Exception {
+		// TODO Auto-generated method stub
+		List<String> list=new LinkedList<String>();
+        try {
+            list = hotWordDao.getHotWordnameByStatus(status);
+            logger.info("status: "+status);
+        } catch (Exception e) {
+            logger.error("获取热词数据异常!", e);
+        }
+        return list;
+	}
+	
+	@Override
+	public boolean exportHot(HttpServletResponse response, String fileName, List<String> list) throws IOException {
 		
+		response.reset();
+		response.setContentType("application/vnd.ms-txt");
+		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+		OutputStream os = null;
+		os = response.getOutputStream();
+		
+		// 第二步，将文件存到指定位置
+		try {
+			for (String str : list)
+			{
+				os.write(str.getBytes());
+				//os.write('\r');
+				os.write('\n'); 
+				os.flush();
+			}
+			return true;
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				return false;
+			}finally{
+				os.close();
+			}
+	}
+
+	@Override
+	public int setExported() throws Exception {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = hotWordDao.setExported();
+        } catch (Exception e) {
+            logger.error("插入热词数据异常!", e);
+        }
+        return s;
+	}
+
+	
 }

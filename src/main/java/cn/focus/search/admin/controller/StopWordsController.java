@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -154,4 +155,22 @@ public class StopWordsController {
 		}
 	}
 
+	@RequestMapping(value="exportStop",method=RequestMethod.GET)
+	@ResponseBody
+	public String exportStop(HttpServletRequest request, HttpServletResponse response){
+		try{
+			List<String> stoplist = new LinkedList<String>();
+			stoplist = stopWordsService.getStopWordnameByStatus(1);
+			if (stoplist.size() == 0)
+				return "没有符合导出的数据！";
+			logger.info("stoplist: " + stoplist.get(stoplist.size()-1));
+			String fileName = "stop-words.dic";
+			stopWordsService.exportStop(response, fileName, stoplist);
+			//pmService.exportHot(request, response, fileName);
+			stopWordsService.setExported();
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
 }

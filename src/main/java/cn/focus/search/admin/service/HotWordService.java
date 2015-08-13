@@ -1,6 +1,10 @@
 package cn.focus.search.admin.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.focus.search.admin.model.HotWord;
 
@@ -45,4 +49,28 @@ public interface HotWordService {
      * @throws Exception
      */
     public int delHotWordById(int id) throws Exception;
+    
+    /**
+     *根据status获取热词数据（只要名称）
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+    public List<String> getHotWordnameByStatus(int status)throws Exception;
+    
+    /**
+     *将status=1热词（名称）导出到文本
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+    public boolean exportHot(HttpServletResponse response, String string, List<String> list)throws IOException;
+
+    /**
+     *将status置0
+     * @param status
+     * @return
+     * @throws Exception
+     */
+    public int setExported()throws Exception;
 }

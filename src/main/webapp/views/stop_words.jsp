@@ -212,7 +212,7 @@ $(function(){
 //exportStopDic
 $(function(){
 	$("#exportStopDic").click(function(){
-		//alert("!!!");
+		//alert("功能暂未开放！");
 		var url= rootpath+"/stop/exportStop"
 		$("#exportForm").attr("action",url);
 		$("#exportForm").submit();

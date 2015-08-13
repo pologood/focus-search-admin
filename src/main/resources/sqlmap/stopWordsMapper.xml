@@ -23,6 +23,7 @@
 		update_time
 	</sql>
 	
+	<!-- 将status置0 -->
 	<update id="setExported"  flushCache="true">
         update stop_words
         set status=0
@@ -67,6 +68,14 @@
         </selectKey> -->
     </insert>
     
+    <!-- 根据status获取停止词 -->
+	<select id="getStopWordnameByStatus" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED"><!-- resultMap="BaseResultMap"  -->
+		select name	
+		from stop_words
+		where status=#{status}
+	</select>
+	
     <select id="getDayStopWordsList" resultMap="BaseResultMap"
 		parameterType="java.lang.String" statementType="PREPARED">
 		select

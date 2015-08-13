@@ -172,21 +172,22 @@ public class HotWordsController {
 	 */
 	@RequestMapping(value="exportHot",method=RequestMethod.GET)
 	@ResponseBody
-	public int exportHotWords(HttpServletRequest request, HttpServletResponse response)
+	public String exportHotWords(HttpServletRequest request, HttpServletResponse response)
 	{
-		//System.out.println("QQQQQ!!!!!!!!");
+		//System.out.println("QQQQQ!!!!!!!!");		
 		try{
-			String fileName = "hot-words.txt";
-			pmService.exportHot(request, response, fileName);
-			/*response.reset();
-			response.setContentType("application/vnd.ms-txt");
-			response.addHeader("Content-Disposition", "attachment;filename=\""
-					+ exportName + "\"");
-			OutputStream os = null;
-			os = response.getOutputStream();*/
+			List<String> hotlist = new LinkedList<String>();
+			hotlist = hotWordService.getHotWordnameByStatus(1);
+			if (hotlist.size() == 0)
+				return "没有符合导出的数据！";
+			logger.info("hotlist: " + hotlist.get(hotlist.size()-1));
+			String fileName = "hot-words.dic";
+			hotWordService.exportHot(response, fileName, hotlist);
+			//pmService.exportHot(request, response, fileName);
+			hotWordService.setExported();
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 		}
-		return 1;
+		return null;
 	}
 }
