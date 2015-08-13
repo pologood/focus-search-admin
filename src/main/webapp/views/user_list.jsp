@@ -68,21 +68,6 @@ $(function(){
 	
 });
 
-function searchBtnClick(){
-	//为loadGrid()添加参数  
-    var queryParams = $('#projTab').datagrid('options').queryParams;  
-    queryParams.groupId = groupId;
-    queryParams.projName = projName;  
-    
-     //查询后返回首页
-    $('#projTab').datagrid('options').pageNumber = 1;  
-    var p = $('#projTab').datagrid('getPager');
-	p.pagination({pageNumber: 1}); 
- 
-    //重新加载datagrid的数据  
-    $("#projTab").datagrid('reload'); 
-}
-
 /***
  * 用户修改个人密码
  */
@@ -178,71 +163,17 @@ function addNewUser(){
 	});
 }
 
-//表格操作区域展示
+/***
+ * 表格操作区域功能填充
+ */
 function formatAction(value,row,index){
 	var cName = "${cUserName}";
-	a = '<a href="javascript:void(0)" id="a'+index+'">重置密码</a>&nbsp;';
-	b = '<a href="javascript:void(0)" id="b'+index+'">删除用户</a>&nbsp;';
-	c = '当前用户无权操作';
 	var id = row.id;
-	var name = row.userName;
-	var accessToken = row.accessToken;
-	var password = row.password;
-	var createTime = row.createTime;
+
+	var a = '<a href="javascript:void(0)" onclick="reset('+ index +','+ id +')">重置密码</a> ';
+	var b = '<a href="javascript:void(0)" onclick="del('+ index +','+ id +')">删除用户</a> ';
+	var c = '当前用户无权操作';
 	
-  	$(document).delegate("#a"+index,"click",function(){
-  		var type = 1;
-  		var result = '';
-  		var data = "id="+id+"&name="+name+"&accessToken="+accessToken+"&password="+password+"&createTime="+createTime+"&type="+type;
-  		$.ajax({
-  			url:rootpath+"/user/um/updateUser",
-            type:"post",
-			data:data,
-			dataType:"json",
-			cache:false,
-			success:function(response){
-				if(response.errorCode == 0){
-					$.messager.alert('成功','密码重置成功!','info');
-					//重新加载数据
-				}else{
-					 $.messager.alert('错误','密码重置失败!','error');
-				}			
-			},
-			error:function(e){
-				$.messager.alert('错误','密码重置失败!','error');
-			}
-		});  		 				
-  	});
-	
-	$(document).delegate("#b"+index,"click",function(){
-		var type = 0;
-		$.messager.confirm('确认','确认删除用户'+name+'?',function(row){  
-	        if(row){  
-	      		var data = "id="+id+"&name="+name+"&accessToken="+accessToken+"&password="+password+"&createTime="+createTime+"&type="+type;
-	      		//$.messager.alert(data);
-	            $.ajax({  
-	                url:rootpath+"/user/um/updateUser",
-	                type:"post",
-	    			data:data,
-	    			dataType:"json",
-	    			cache:false,
-	    			success:function(response){
-	    				if(response.errorCode == 0){
-	    					$.messager.alert('成功','用户删除成功!','info');
-	    					//重新加载数据
-	    					$("#projTab").datagrid('reload');  
-	    				}else{
-	    					 $.messager.alert('错误','用户删除失败!','error');
-	    				}
-	    			},
-	                error:function(e){
-	  					$.messager.alert('错误','用户删除失败!','error');
-	  				}
-	            });
-	        }  
-	    }) 
-	    $("#projTab").datagrid('reload');
-  	});
 	if(cName == "admin1"){
 		return a+'/ '+b;
 	}		
@@ -251,6 +182,75 @@ function formatAction(value,row,index){
 		return c;
 	}
 }
+/***
+ * 重置用户密码
+ */
+function reset(index,id){
+	var type = 1;
+	var selectedRow = $('#projTab').datagrid('getData').rows[index];  //获取选中行
+	var id = selectedRow.id;
+	var name = selectedRow.userName;
+	var accessToken = selectedRow.accessToken;
+	var password = selectedRow.password;
+	var createTime = selectedRow.createTime;
+	var data = "id="+id+"&name="+name+"&accessToken="+accessToken+"&password="+password+"&createTime="+createTime+"&type="+type;
+	$.ajax({
+		url:rootpath+"/user/um/updateUser",
+        type:"post",
+		data:data,
+		dataType:"json",
+		cache:false,
+		success:function(response){
+			if(response.errorCode == 0){
+				$.messager.alert('成功','密码重置成功!','info');
+				//重新加载数据
+			}else{
+				 $.messager.alert('错误','密码重置失败!','error');
+			}			
+		},
+		error:function(e){
+			$.messager.alert('错误','密码重置失败!','error');
+		}
+	});
+}
+/***
+ * 删除用户
+ */
+function del(index,id){  //删除操作  	
+	var type = 0;
+	$.messager.confirm('确认','确认删除用户'+name+'?',function(row){  
+		if(row){
+			var selectedRow = $('#projTab').datagrid('getData').rows[index];  //获取选中行
+			var id = selectedRow.id;
+  			var name = selectedRow.userName;
+  			var accessToken = selectedRow.accessToken;
+  			var password = selectedRow.password;
+  			var createTime = selectedRow.createTime;
+      		var data = "id="+id+"&name="+name+"&accessToken="+accessToken+"&password="+password+"&createTime="+createTime+"&type="+type;
+            $.ajax({  
+                url:rootpath+"/user/um/updateUser",
+                type:"post",
+    			data:data,
+    			dataType:"json",
+    			cache:false,
+    			success:function(response){
+    				if(response.errorCode == 0){
+    					$.messager.alert('成功','用户删除成功!','info');
+    					//重新加载数据
+    					$("#projTab").datagrid('reload');  
+    				}else{
+    					 $.messager.alert('错误','用户删除失败!','error');
+    				}
+    			},
+                error:function(e){
+  					$.messager.alert('错误','用户删除失败!','error');
+  				}
+            });
+		}
+    }) 
+    $("#projTab").datagrid('reload');
+  } 
+
 
 </script>
 </head>
