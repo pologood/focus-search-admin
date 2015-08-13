@@ -151,17 +151,9 @@ function formatAction(value,row,index){
   				cache:false,
   				success:function(response){								
   					if(response.errorCode == 0){
-  						//$("#projTab").datagrid('reload');
   						$.messager.alert('成功','删除成功!','info');
-  					    //$('#projTab').datagrid('deleteRow', index);
   						$("#projTab").datagrid('reload');
   						$('#projTab').datagrid('clearSelections');
-						//$('#projTab').datagrid('deleteRow', index);
-						//var rows = $('#projTab').datagrid("getRows");
-						//$('#projTab').datagrid("loadData", rows);
-						//$("#projTab").datagrid('reload');
-  						//windows.location("/admin/pm/hot");
-  						//重新加载数据
   					}
   					else{
   						 $.messager.alert('错误','删除失败!','error');
@@ -229,6 +221,15 @@ $(function(){
 	});
 });
 
+//exportHotDic
+$(function(){
+	$("#exportHotDic").click(function(){
+		//alert("功能暂未开放！");
+		var url= rootpath+"/hot/exportHot"
+		$("#exportForm").attr("action",url); 
+		$("#exportForm").submit();
+	});
+});
 
 $(function(){
 	$('#pp1').tooltip({
@@ -273,6 +274,9 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
 			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新热词词库</a>
+			<form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			</form>			
 		</div>
 	</div>
 	

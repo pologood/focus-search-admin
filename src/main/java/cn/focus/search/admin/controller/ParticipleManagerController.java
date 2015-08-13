@@ -2,6 +2,7 @@ package cn.focus.search.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -317,38 +318,18 @@ public class ParticipleManagerController {
 		return null;
 	}
 	
-	@RequestMapping(value="exportHouse",method=RequestMethod.GET)
+	@RequestMapping(value="exportParticiple",method=RequestMethod.GET)
 	@ResponseBody
-	public String exportHouse(HttpServletRequest request,
-			HttpServletResponse response){
-		try{			
-			participleManagerService.exportHouse(request, response, "words-house.xls");			
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-		}
-		return null;
-	}
-	
-	
-	@RequestMapping(value="exportStop",method=RequestMethod.GET)
-	@ResponseBody
-	public String exportStop(HttpServletRequest request,
-			HttpServletResponse response){
-		try{		
-			participleManagerService.exportStop(request, response, "words-stop.xls");	
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-		}
-		return null;
-	}
-	
-	
-	@RequestMapping(value="exportHot",method=RequestMethod.GET)
-	@ResponseBody
-	public String exportHot(HttpServletRequest request,
-			HttpServletResponse response){
-		try{			
-			participleManagerService.exportHot(request, response, "words-hot.xls");			
+	public String exportParticiple(HttpServletRequest request, HttpServletResponse response){
+		try{
+			List<String> parlist = new LinkedList<String>();
+			parlist = participleManagerService.getParticiplesByStatus(1);
+			if (parlist.size() == 0)
+				return "没有符合导出的数据！";
+			logger.info("parlist: " + parlist.get(parlist.size()-1));
+			String fileName = "participle-words.dic";
+			participleManagerService.exportParticiple(response, fileName, parlist);
+			participleManagerService.setExported();
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 		}

@@ -1,6 +1,10 @@
 package cn.focus.search.admin.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.focus.search.admin.model.StopWords;
 
@@ -45,4 +49,22 @@ public interface StopWordsService {
      * @throws Exception
      */
 	public int delStopWordsById(int id);
+	
+	/**
+     *根据status获取停止词数据（只要名称）
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+	public List<String> getStopWordnameByStatus(int status);
+	
+	/**
+     *将status=1停止词（名称）导出到文本
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+	public boolean exportStop(HttpServletResponse response, String string, List<String> list)throws IOException;
+	
+	public int setExported()throws Exception;
 }

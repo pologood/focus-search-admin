@@ -1,9 +1,11 @@
 package cn.focus.search.admin.controller;
 
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -161,5 +163,31 @@ public class HotWordsController {
 			e.printStackTrace();
 			return JSONUtils.badResult("failed");
 		}
+	}
+	
+	/***
+	 * 删除热词
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="exportHot",method=RequestMethod.GET)
+	@ResponseBody
+	public String exportHotWords(HttpServletRequest request, HttpServletResponse response)
+	{
+		//System.out.println("QQQQQ!!!!!!!!");		
+		try{
+			List<String> hotlist = new LinkedList<String>();
+			hotlist = hotWordService.getHotWordnameByStatus(1);
+			if (hotlist.size() == 0)
+				return "没有符合导出的数据！";
+			logger.info("hotlist: " + hotlist.get(hotlist.size()-1));
+			String fileName = "hot-words.dic";
+			hotWordService.exportHot(response, fileName, hotlist);
+			//pmService.exportHot(request, response, fileName);
+			hotWordService.setExported();
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return null;
 	}
 }

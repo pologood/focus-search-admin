@@ -46,7 +46,21 @@ public interface StopWordsDao {
      */
 	public int delStopWordsById(int id)throws Exception;
 
+	/**
+     *根据status获取停止词数据（只要名称）
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+	public List<String> getStopWordnameByStatus(int status)throws Exception;
+	
 	public List<StopWords> getTotalStopWordList();
 
+	/**
+     *将status置0
+     * @param status
+     * @return
+     * @throws Exception
+     */
 	public int setExported();
 }

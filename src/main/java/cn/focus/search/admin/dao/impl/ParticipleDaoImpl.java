@@ -42,4 +42,10 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		
 	}
 
+	@Override
+	public List<String> getParticiplesByStatus(int status) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("ParticipleDao.getParticiplesByStatus", status);
+	}
+
 }

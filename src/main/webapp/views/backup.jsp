@@ -149,6 +149,15 @@ function formatAction(value,row,index){
 	return a;
 }
 
+//exportParticipleDic
+$(function(){
+	$("#exportParticipleDic").click(function(){
+		//alert("功能暂未开放！");
+		var url= rootpath+"/admin/pm/exportParticiple"
+		$("#exportForm").attr("action",url); 
+		$("#exportForm").submit();
+	});
+});
 
 $(function(){
 	$('#pp1').tooltip({
@@ -189,6 +198,9 @@ $(function(){
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
 			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" iconCls="icon-search">更新词库</a>
+			<form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>
+			</form>
 		</div>
 	</div>
 	

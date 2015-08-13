@@ -78,8 +78,28 @@ public interface ParticipleManagerService {
 	 * @throws IOException
 	 */
     public boolean exportExcel(HttpServletRequest request,HttpServletResponse response,String exportName) throws IOException;
-	public boolean exportHouse(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
-	public boolean exportStop(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
-	public boolean exportHot(HttpServletRequest request, HttpServletResponse response, String string)throws IOException;
 	
+    /**
+	 * 导出分词数据到文本文件
+	 * @param pathName
+	 * @return
+	 * @throws IOException
+	 */
+    public boolean exportParticiple(HttpServletResponse response, String fileName, List<String> list)throws IOException;	
+
+    /**
+     *将status置0
+     * @param status
+     * @return
+     * @throws Exception
+     */
+    public int setExported();
+    
+    /**
+     *根据status获取分词数据（只要名称）
+     * @param status == 1
+     * @return
+     * @throws Exception
+     */
+    public List<String> getParticiplesByStatus(int status)throws Exception;
 }
