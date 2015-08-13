@@ -190,7 +190,7 @@ public class ParticipleManagerController {
 			List<Participle> list = participleManagerService.getParticipleList(0);
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
-			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
+			//System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
 			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
 						
 		}catch(Exception e){
