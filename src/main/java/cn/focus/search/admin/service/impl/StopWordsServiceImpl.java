@@ -1,5 +1,7 @@
 package cn.focus.search.admin.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
@@ -111,14 +113,17 @@ public class StopWordsServiceImpl implements StopWordsService{
 	}
 
 	@Override
-	public boolean exportStop(HttpServletResponse response, String fileName, List<String> list)
+	public boolean exportStop(String path, String fileName, List<String> list)
 			throws IOException {
 		// TODO Auto-generated method stub
-		response.reset();
-		response.setContentType("application/vnd.ms-txt");
-		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+		File file = new File(path);
+		if (!file.exists())
+		{
+			file.mkdir();
+		}
+		file = new File(path+File.separator+fileName);
 		OutputStream os = null;
-		os = response.getOutputStream();
+		os = new FileOutputStream(file);
 		
 		// 第二步，将文件存到指定位置
 		try {

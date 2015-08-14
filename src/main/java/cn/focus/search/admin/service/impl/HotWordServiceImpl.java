@@ -1,10 +1,13 @@
 package cn.focus.search.admin.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -99,13 +102,19 @@ public class HotWordServiceImpl implements HotWordService{
 	}
 	
 	@Override
-	public boolean exportHot(HttpServletResponse response, String fileName, List<String> list) throws IOException {
+	public boolean exportHot(String path, String fileName, List<String> list) throws IOException {
 		
-		response.reset();
+		/*response.reset();
 		response.setContentType("application/vnd.ms-txt");
-		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");*/
+		File file = new File(path);
+		if (!file.exists())
+		{
+			file.mkdir();
+		}
+		file = new File(path+File.separator+fileName);
 		OutputStream os = null;
-		os = response.getOutputStream();
+		os = new FileOutputStream(file);
 		
 		// 第二步，将文件存到指定位置
 		try {

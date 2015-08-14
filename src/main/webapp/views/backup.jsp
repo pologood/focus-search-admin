@@ -153,9 +153,27 @@ function formatAction(value,row,index){
 $(function(){
 	$("#exportParticipleDic").click(function(){
 		//alert("功能暂未开放！");
-		var url= rootpath+"/admin/pm/exportParticiple"
-		$("#exportForm").attr("action",url); 
-		$("#exportForm").submit();
+		var isExport = confirm("确认导出分词?");
+		if (isExport == true){
+			$.ajax({
+				url:rootpath+"/admin/pm/exportParticiple",
+				type:"post",
+				dataType:"json",
+				cache:false,
+				success:function(response){
+					//$.messager.progress('close');
+					if(response.errorCode == 0){
+						//$('#modifyDiv').dialog('close');
+						$.messager.alert('成功',response.errorMsg,'info');						
+					}else{
+						 $.messager.alert('错误',response.errorMsg,'error');
+					}
+				},
+				error:function(e){					
+					$.messager.alert('错误','导出失败2!','error');
+				}
+		});
+		}
 	});
 });
 
@@ -198,9 +216,10 @@ $(function(){
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
 			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" iconCls="icon-search">更新词库</a>
-			<form id="exportForm"  method="get" style="float:right">
 			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>
-			</form>
+			<!-- <form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>
+			</form> -->
 		</div>
 	</div>
 	

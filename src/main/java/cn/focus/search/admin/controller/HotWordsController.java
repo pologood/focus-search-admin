@@ -1,5 +1,6 @@
 package cn.focus.search.admin.controller;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,6 +94,7 @@ public class HotWordsController {
 				return JSONUtils.badResult("failed");
 			List<HotWord> hotList = new LinkedList<HotWord>();
 			hotList = stopWordsUtil.getHotList(type, hotWords, editor, 1);
+			System.out.println("@@@@@@@@@@@hotlist大小："+hotList.size());
 			for (HotWord hw : hotList)
 			{
 				//System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
@@ -113,8 +115,13 @@ public class HotWordsController {
 				}
 			}
 			int len = existWord.length();
-			existWord = existWord.substring(0, len-1);
-			existWord += "等词词库中已经存在，其它词已经添加成功";
+			if (len < 2)
+				existWord = "添加成功！";
+			else
+			{
+				existWord = existWord.substring(0, len-1);
+				existWord += "等词词库中已经存在，其它词已经添加成功";
+			}
 			return JSONUtils.ok(existWord);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
@@ -170,24 +177,27 @@ public class HotWordsController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="exportHot",method=RequestMethod.GET)
+	@RequestMapping(value="exportHot",method=RequestMethod.POST)
 	@ResponseBody
-	public String exportHotWords(HttpServletRequest request, HttpServletResponse response)
+	public String exportHotWords(HttpServletRequest request)
 	{
 		//System.out.println("QQQQQ!!!!!!!!");		
 		try{
 			List<String> hotlist = new LinkedList<String>();
 			hotlist = hotWordService.getHotWordnameByStatus(1);
 			if (hotlist.size() == 0)
-				return "没有符合导出的数据！";
+				return JSONUtils.badResult("没有热词可供导出！");
 			logger.info("hotlist: " + hotlist.get(hotlist.size()-1));
+			String path = "D:"+File.separator+"dic";			
 			String fileName = "hot-words.dic";
-			hotWordService.exportHot(response, fileName, hotlist);
+			logger.info("fileName: "+fileName);
+			hotWordService.exportHot(path, fileName, hotlist);
 			//pmService.exportHot(request, response, fileName);
 			hotWordService.setExported();
+			return JSONUtils.ok("词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("没有热词可供导出！");
 		}
-		return null;
 	}
 }

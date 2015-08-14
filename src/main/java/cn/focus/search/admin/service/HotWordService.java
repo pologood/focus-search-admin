@@ -64,7 +64,7 @@ public interface HotWordService {
      * @return
      * @throws Exception
      */
-    public boolean exportHot(HttpServletResponse response, String string, List<String> list)throws IOException;
+    public boolean exportHot(String path, String fileName, List<String> list)throws IOException;
 
     /**
      *将status置0

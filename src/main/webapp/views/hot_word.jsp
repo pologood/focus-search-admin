@@ -225,9 +225,30 @@ $(function(){
 $(function(){
 	$("#exportHotDic").click(function(){
 		//alert("功能暂未开放！");
-		var url= rootpath+"/hot/exportHot"
+		var isExport = confirm("确认导出热词?");
+		if (isExport == true){
+			$.ajax({
+				url:rootpath+"/hot/exportHot",
+				type:"post",
+				dataType:"json",
+				cache:false,
+				success:function(response){
+					//$.messager.progress('close');
+					if(response.errorCode == 0){
+						//$('#modifyDiv').dialog('close');
+						$.messager.alert('成功',response.errorMsg,'info');						
+					}else{
+						 $.messager.alert('错误',response.errorMsg,'error');
+					}
+				},
+				error:function(e){					
+					$.messager.alert('错误','导出失败2!','error');
+				}
+		});
+		}
+		/* var url= rootpath+"/hot/exportHot"
 		$("#exportForm").attr("action",url); 
-		$("#exportForm").submit();
+		$("#exportForm").submit(); */
 	});
 });
 
@@ -274,9 +295,10 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
 			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新热词词库</a>
-			<form id="exportForm"  method="get" style="float:right">
 			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			</form>			
+			<!-- <form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			</form>	 -->		
 		</div>
 	</div>
 	

@@ -85,7 +85,7 @@ public interface ParticipleManagerService {
 	 * @return
 	 * @throws IOException
 	 */
-    public boolean exportParticiple(HttpServletResponse response, String fileName, List<String> list)throws IOException;	
+    public boolean exportParticiple(String path, String fileName, List<String> list)throws IOException;	
 
     /**
      *将status置0
