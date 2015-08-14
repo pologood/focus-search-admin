@@ -26,7 +26,7 @@
 	<!-- 将status置0 -->
 	<update id="setExported"  flushCache="true">
         update stop_words
-        set status=0
+        set status=2
         where status=1
     </update>
 
@@ -90,6 +90,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from stop_words
+		where status=1
 	</select>
 	
 	<delete id="delStopWordsById" parameterType="java.lang.Integer" statementType="PREPARED">

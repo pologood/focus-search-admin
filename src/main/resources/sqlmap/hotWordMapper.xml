@@ -26,7 +26,7 @@
 	<!-- 更新热词status -->
 	<update id="setExported"  flushCache="true">
         update hot_word
-        set status=0
+        set status=2
         where status=1
     </update>
 	
@@ -83,6 +83,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from hot_word
+		where status=1
 	</select>
 	
 	<!-- 根据ID删除热词 -->

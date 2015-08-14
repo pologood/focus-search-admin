@@ -19,7 +19,7 @@ public class IkScheduledTaskImpl  implements IkScheduledTask {
 	@Autowired
 	private ParticipleManagerService pmService;
 	
-    @Scheduled(cron="0 0 23 * * ?")
+    @Scheduled(cron="0 0 23 ? * FRI")
     @Override
     public void doTasks() {
         //System.out.println("==================333");
