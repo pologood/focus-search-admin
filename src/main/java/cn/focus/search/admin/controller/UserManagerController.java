@@ -64,10 +64,10 @@ public class UserManagerController {
 		try{
 			List<UserInfo> list = userManagerService.getUserList();
 			int size = list.size();			
-			System.out.println("UserList的大小是"+size);
+
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
-			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
+
 			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
 						
 		}catch(Exception e){
@@ -87,7 +87,7 @@ public class UserManagerController {
 	public String updateUserInfo(HttpServletRequest request){
 		try{
 			String sId = request.getParameter("id");
-			System.out.println("！用户ID："+sId);
+
 			if(StringUtils.isBlank(sId)){
 				return JSONUtils.badResult("failed");
 			}
@@ -120,9 +120,9 @@ public class UserManagerController {
 			userInfo.setCreateTime(cTime);
 			
 			int result = userManagerService.updateUserInfo(userInfo);
-			System.out.println("！result："+result);
+
 			if(result<1){//更新失败
-				System.out.println("更新失败！result："+result);
+
 				return JSONUtils.badResult("failed");
 			}
 			return JSONUtils.ok();
@@ -145,7 +145,7 @@ public class UserManagerController {
 			String userName = request.getParameter("name");
 			String oPw = request.getParameter("oPw");
 			String nPw = request.getParameter("nPw");
-			System.out.println("userName:"+userName+" nPw: "+nPw);
+
 			
 			if(StringUtils.isBlank(userName) || StringUtils.isBlank(oPw) || StringUtils.isBlank(nPw)){
 				return JSONUtils.badResult("failed");
@@ -165,9 +165,8 @@ public class UserManagerController {
 			userInfo.setCreateTime(cUserInfo.getCreateTime());
 			
 			int result = userManagerService.updateUserInfo(userInfo);
-			System.out.println("！result："+result);
+
 			if(result<1){//更新失败
-				System.out.println("更新失败！result："+result);
 				return JSONUtils.badResult("failed");
 			}
 			return JSONUtils.ok();			
@@ -188,7 +187,6 @@ public class UserManagerController {
 		try{
 			String userName = request.getParameter("name");
 			String password = request.getParameter("password");
-			System.out.println("新用户：userName:"+userName+" password: "+password);
 			
 			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
 				return JSONUtils.badResult("failed");
@@ -203,9 +201,7 @@ public class UserManagerController {
 			Date d =new Date();
 			userInfo.setCreateTime(d);		
 			int result = userManagerService.addNewUser(userInfo);
-			System.out.println("！result："+result);
 			if(result<1){//更新失败
-				System.out.println("更新失败！result："+result);
 				return JSONUtils.badResult("failed");
 			}
 			return JSONUtils.ok();			
