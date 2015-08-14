@@ -1,5 +1,6 @@
 package cn.focus.search.admin.controller;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -155,22 +156,24 @@ public class StopWordsController {
 		}
 	}
 
-	@RequestMapping(value="exportStop",method=RequestMethod.GET)
+	@RequestMapping(value="exportStop",method=RequestMethod.POST)
 	@ResponseBody
-	public String exportStop(HttpServletRequest request, HttpServletResponse response){
+	public String exportStop(HttpServletResponse response){
 		try{
 			List<String> stoplist = new LinkedList<String>();
 			stoplist = stopWordsService.getStopWordnameByStatus(1);
 			if (stoplist.size() == 0)
-				return "没有符合导出的数据！";
+				return JSONUtils.badResult("没有停止词可供导出！");
 			logger.info("stoplist: " + stoplist.get(stoplist.size()-1));
+			String path = "D:"+File.separator+"dic";
 			String fileName = "stop-words.dic";
-			stopWordsService.exportStop(response, fileName, stoplist);
+			stopWordsService.exportStop(path, fileName, stoplist);
 			//pmService.exportHot(request, response, fileName);
 			stopWordsService.setExported();
+			return JSONUtils.ok("停止词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("没有停止词可供导出！");
 		}
-		return null;
 	}
 }

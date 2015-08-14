@@ -213,10 +213,29 @@ $(function(){
 $(function(){
 	$("#exportStopDic").click(function(){
 		//alert("功能暂未开放！");
-		var url= rootpath+"/stop/exportStop"
-		$("#exportForm").attr("action",url);
-		$("#exportForm").submit();
-	});
+		var isExport = confirm("确认导出停止词?");
+		if (isExport == true){
+			$.ajax({
+				url:rootpath+"/stop/exportStop",
+				type:"post",
+				dataType:"json",
+				cache:false,
+				success:function(response){
+					//$.messager.progress('close');
+					if(response.errorCode == 0){
+						//$('#modifyDiv').dialog('close');
+						$.messager.alert('成功',response.errorMsg,'info');						
+					}else{
+						 $.messager.alert('错误',response.errorMsg,'error');
+					}
+				},
+				error:function(e){					
+					$.messager.alert('错误','导出失败2!','error');
+				}
+		});
+		}
+
+	})
 });
 
 $(function(){
@@ -262,9 +281,10 @@ $(function(){
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加停止词</a>
 			<a href="javascript:void(0)" id="updateStopDic" class="easyui-linkbutton" iconCls="icon-add">更新停止词词库</a>
-			<form id="exportForm"  method="get" style="float:right">
 			<a href="javascript:void(0)" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			</form>	
+			<!-- <form id="exportForm"  method="get" style="float:right">
+			<a href="javascript:void(0)" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			</form>	 -->
 		</div>
 	</div>
 	

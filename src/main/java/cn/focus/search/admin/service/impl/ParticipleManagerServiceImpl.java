@@ -6,6 +6,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.Update;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -486,10 +487,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 			String value=list.get(i).getParticiples();
 			String[] words = value.split("[, ， ]");//以全角或半角逗号或空格作为分隔符。
 			for(int j=0;j<words.length;j++){
-				if(!isDuplicate(words[j])){//判断该词是否已经已经在词库中。
 					str.append(words[j]);
 					str.append("\n");
-				}
 
 			}
 		}
@@ -578,10 +577,8 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		for(int i=0;i<list.size();i++){
 			
 			String word=list.get(i).getName();
-			if(!isDuplicate(word)){//判断该词是否已经已经在词库中。
 					str.append(word);
 					str.append("\n");
-			}
 		}
 		strWords=str.toString();
 		// write to redis.
@@ -696,13 +693,15 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
     }
 	
 	@Override
-	public boolean exportParticiple(HttpServletResponse response, String fileName, List<String> list)
-			throws IOException {
-		response.reset();
-		response.setContentType("application/vnd.ms-txt");
-		response.addHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+	public boolean exportParticiple(String path, String fileName, List<String> list)throws IOException {
+		File file = new File(path);
+		if (!file.exists())
+		{
+			file.mkdir();
+		}
+		file = new File(path+File.separator+fileName);
 		OutputStream os = null;
-		os = response.getOutputStream();
+		os = new FileOutputStream(file);
 		
 		// 第二步，将文件存到指定位置
 		try {

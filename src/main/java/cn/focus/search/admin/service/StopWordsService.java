@@ -64,7 +64,7 @@ public interface StopWordsService {
      * @return
      * @throws Exception
      */
-	public boolean exportStop(HttpServletResponse response, String string, List<String> list)throws IOException;
+	public boolean exportStop(String path, String fileName, List<String> list)throws IOException;
 	
 	public int setExported()throws Exception;
 }

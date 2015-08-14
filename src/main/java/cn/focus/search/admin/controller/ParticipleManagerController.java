@@ -1,5 +1,6 @@
 package cn.focus.search.admin.controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -318,22 +319,24 @@ public class ParticipleManagerController {
 		return null;
 	}
 	
-	@RequestMapping(value="exportParticiple",method=RequestMethod.GET)
+	@RequestMapping(value="exportParticiple",method=RequestMethod.POST)
 	@ResponseBody
-	public String exportParticiple(HttpServletRequest request, HttpServletResponse response){
+	public String exportParticiple(HttpServletResponse response){
 		try{
 			List<String> parlist = new LinkedList<String>();
 			parlist = participleManagerService.getParticiplesByStatus(1);
 			if (parlist.size() == 0)
-				return "没有符合导出的数据！";
+				return JSONUtils.badResult("没有分词可供导出！");
 			logger.info("parlist: " + parlist.get(parlist.size()-1));
+			String path = "D:"+File.separator+"dic";
 			String fileName = "participle-words.dic";
-			participleManagerService.exportParticiple(response, fileName, parlist);
+			participleManagerService.exportParticiple(path, fileName, parlist);
 			participleManagerService.setExported();
+			return JSONUtils.ok("分词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("没有分词可供导出！");
 		}
-		return null;
 	}
 	
 	public static void main(String args[]){
