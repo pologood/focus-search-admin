@@ -2,6 +2,7 @@ package cn.focus.search.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -184,16 +185,36 @@ public class ParticipleManagerController {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(value="select4new",method=RequestMethod.POST)
 	@ResponseBody
 	public String selectNewPartList(HttpServletRequest request){
 		try{
-			List<Participle> list = participleManagerService.getParticipleList(0);
+			int pageSize = 10;
+			int pageNo = 1;
+			
+			if(StringUtils.isNotBlank(request.getParameter("page"))){
+				pageNo = Integer.valueOf(request.getParameter("page"));
+			}
+			if(StringUtils.isNotBlank(request.getParameter("rows"))){
+				pageSize = Integer.valueOf(request.getParameter("rows"));
+			}
+			List<Participle> listTotal = participleManagerService.getParticipleList(0);
+			List<Participle> list = new LinkedList<Participle>();
+			int start = (pageNo-1)*pageSize;
+			int end = pageNo*pageSize-1;
+			if(end > listTotal.size()-1){
+				end  =  listTotal.size()-1;
+			}
+			for(int i=start;i<=end;i++){
+				list.add(listTotal.get(i));
+			}
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
-			//System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
-			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
-						
+			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)+","+"\"total\":"+listTotal.size()+"}";
+			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
+			System.out.println(result);
+			return result;
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
