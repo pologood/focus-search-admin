@@ -26,6 +26,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -395,18 +396,13 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
         }
         return rs;
     }
-    
-
-    
-
-    
 
 
 	@Override
-	public List<Participle> getParticipleList(int status) {
+	public List<Participle> getParticipleList(int status, RowBounds rowBounds) {
 		List<Participle> list = new LinkedList<Participle>();
 		try {
-			list = participleDao.getParticipleList(status);
+			list = participleDao.getParticipleList(status, rowBounds);
 		} catch (Exception e) {
 			logger.error("获取未分词数据异常!", e);
 		}
@@ -762,5 +758,17 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
             logger.error("删除停止词数据异常!", e);
         }
         return s;
+	}
+
+	@Override
+	public int getTotalNum(int status) throws Exception {
+		// TODO Auto-generated method stub
+		int s = 0;
+		try {
+			s = participleDao.getTotalNum(status);
+		} catch (Exception e) {
+			logger.error("获取未分词数据异常!", e);
+		}
+		return s;
 	}
 }

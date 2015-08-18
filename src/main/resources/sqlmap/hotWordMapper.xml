@@ -30,7 +30,7 @@
         where status=1
     </update>
 	
-		<!-- 获取热词列表 -->
+	<!-- 获取热词列表 -->
     <select id="getHotWordList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
         select
         <include refid="Base_Column_List"/>
@@ -99,4 +99,9 @@
 		from hot_word
 		where status=#{status}
 	</select>
+	
+	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
+        select	count(id)
+        from hot_word
+    </select>
 </mapper>

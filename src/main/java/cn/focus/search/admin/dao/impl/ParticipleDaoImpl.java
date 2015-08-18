@@ -2,6 +2,7 @@ package cn.focus.search.admin.dao.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,8 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	}
 
 	@Override
-	public List<Participle> getParticipleList(int status) throws Exception {
-		return sqlSession.selectList("ParticipleDao.getParticipleList",status);
+	public List<Participle> getParticipleList(int status, RowBounds rowBounds) throws Exception {
+		return sqlSession.selectList("ParticipleDao.getParticipleList",status,rowBounds);
 	}
 	@Override
 	public List<Participle> getDayFinalHouseParticipleList() throws Exception {
@@ -52,6 +53,12 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	public int delParticipleWordsByPid(int pid) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("ParticipleDao.delParticipleWordsByPid", pid);
+	}
+
+	@Override
+	public int getTotalNum(int status) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("ParticipleDao.getTotalNum", status);
 	}
 
 }

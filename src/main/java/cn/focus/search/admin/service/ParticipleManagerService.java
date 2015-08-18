@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
+
 import cn.focus.search.admin.model.Participle;
 
 import com.alibaba.fastjson.JSONObject;
@@ -54,7 +57,15 @@ public interface ParticipleManagerService {
 	 * @param participles
 	 * @return
 	 */
-	public List<Participle> getParticipleList(int status);
+	public List<Participle> getParticipleList(int status, RowBounds rowBounds);
+	
+	/**
+     * 批量获取全部未分词数据
+     * @param status=0
+     * @return
+     * @throws Exception
+     */
+    public int getTotalNum(@Param("status")int status)throws Exception;
 	
 	public int updateParticiple(Participle participle);
 	

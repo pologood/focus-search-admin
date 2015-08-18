@@ -63,6 +63,12 @@
         where status = #{status} and ISNULL(participles)
     </select>
 	
+	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
+        select	count(1)
+        from participle
+        where status = #{status} and ISNULL(participles)
+    </select>
+	
 	<!-- 根据status获取分词 -->
 	<select id="getParticiplesByStatus" parameterType="java.lang.Integer" 
 	 resultType="java.lang.String" statementType="PREPARED"><!-- resultMap="BaseResultMap"  -->

@@ -2,6 +2,7 @@ package cn.focus.search.admin.dao.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,9 +28,9 @@ public class HotWordDaoImpl implements HotWordDao{
     }
 
     @Override
-    public List<HotWord> getHotWordList()throws Exception
+    public List<HotWord> getHotWordList(RowBounds rowBounds)throws Exception
     {
-    	return sqlSession.selectList("HotWordDao.getHotWordList");
+    	return sqlSession.selectList("HotWordDao.getHotWordList", "", rowBounds);
     }
     
     @Override
@@ -61,5 +62,11 @@ public class HotWordDaoImpl implements HotWordDao{
 	public List<String> getHotWordnameByStatus(int status) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("HotWordDao.getHotWordnameByStatus",status);
+	}
+
+	@Override
+	public int getTotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("HotWordDao.getTotalNum");
 	}
 }

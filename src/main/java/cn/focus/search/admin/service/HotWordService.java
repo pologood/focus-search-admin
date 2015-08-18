@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.RowBounds;
+
 import cn.focus.search.admin.model.HotWord;
 
 public interface HotWordService {
@@ -32,7 +34,9 @@ public interface HotWordService {
      * @return
      * @throws Exception
      */
-    public List<HotWord> getHotWordList()throws Exception;
+    public List<HotWord> getHotWordList(RowBounds rowBounds)throws Exception;
+    
+    public int getTotalNum()throws Exception;
     
     /**
      *根据热词名获取热词数据

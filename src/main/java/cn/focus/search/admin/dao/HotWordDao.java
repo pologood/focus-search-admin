@@ -5,6 +5,8 @@ package cn.focus.search.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
+
 import cn.focus.search.admin.model.HotWord;
 
 /**
@@ -35,7 +37,9 @@ public interface HotWordDao {
      * @return
      * @throws Exception
      */
-    public List<HotWord> getHotWordList()throws Exception;
+    public List<HotWord> getHotWordList(RowBounds rowBounds)throws Exception;
+    
+    public int getTotalNum()throws Exception;
     
     /**
      *根据日期获取需要添加到热词词库的热词数据

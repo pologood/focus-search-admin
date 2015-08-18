@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,20 +201,14 @@ public class ParticipleManagerController {
 			if(StringUtils.isNotBlank(request.getParameter("rows"))){
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
-			List<Participle> listTotal = participleManagerService.getParticipleList(0);
-			List<Participle> list = new LinkedList<Participle>();
-			int start = (pageNo-1)*pageSize;
-			int end = pageNo*pageSize-1;
-			if(end > listTotal.size()-1){
-				end  =  listTotal.size()-1;
-			}
-			for(int i=start;i<=end;i++){
-				list.add(listTotal.get(i));
-			}
+			RowBounds rowBounds=new RowBounds(pageNo,pageSize);
+			List<Participle> list = participleManagerService.getParticipleList(0, rowBounds);
+			int totalNum = participleManagerService.getTotalNum(0);
+
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
 			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
-							+","+"\"total\":"+listTotal.size()+"}";
+							+","+"\"total\":"+totalNum+"}";
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
 			System.out.println(result);
 			return result;

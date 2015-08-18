@@ -3,6 +3,7 @@ package cn.focus.search.admin.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import cn.focus.search.admin.model.Participle;
 
@@ -19,12 +20,20 @@ public interface ParticipleDao {
 
 
     /**
-     * 批量获取未分词数据
-     * @param Id
+     * 批量获取未分词数据(10为一批)
+     * @param status=0
      * @return
      * @throws Exception
      */
-    public List<Participle> getParticipleList(@Param("status")int  status)throws Exception;
+    public List<Participle> getParticipleList(@Param("status")int status, RowBounds rowBounds)throws Exception;
+    
+    /**
+     * 批量获取全部未分词数据的数量
+     * @param status=0
+     * @return
+     * @throws Exception
+     */
+    public int getTotalNum(@Param("status")int status)throws Exception;
 
     /**
      * 获取当天已经人工干预过分词的数据

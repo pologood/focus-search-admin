@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,11 @@ public class HotWordServiceImpl implements HotWordService{
 	}
 
 	@Override
-	public List<HotWord> getHotWordList() throws Exception {
+	public List<HotWord> getHotWordList(RowBounds rowBounds) throws Exception {
 		// TODO Auto-generated method stub
 		List<HotWord> list=new LinkedList<HotWord>();
         try {
-            list = hotWordDao.getHotWordList();
+            list = hotWordDao.getHotWordList(rowBounds);
         } catch (Exception e) {
             logger.error("获取热词数据异常!", e);
         }
@@ -146,5 +147,15 @@ public class HotWordServiceImpl implements HotWordService{
         return s;
 	}
 
-	
+	@Override
+	public int getTotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = hotWordDao.getTotalNum();
+        } catch (Exception e) {
+            logger.error("获取数据异常!", e);
+        }
+        return s;
+	}	
 }

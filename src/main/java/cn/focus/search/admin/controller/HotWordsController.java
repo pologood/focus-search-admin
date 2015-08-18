@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,25 +64,15 @@ public class HotWordsController {
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
 			
-			JSONObject json = new JSONObject();
+			RowBounds rowBounds=new RowBounds(pageNo,pageSize);
 			List<HotWord> list = new LinkedList<HotWord>();
-			list = hotWordService.getHotWordList();
-			int size = list.size();
-			
-			List<HotWord> nlist = new LinkedList<HotWord>();
-			int start = (pageNo-1)*pageSize;
-			int end = pageNo*pageSize-1;
-			if(end > list.size()-1){
-				end  =  list.size()-1;
-			}
-			for(int i=start;i<=end;i++){
-				nlist.add(list.get(i));
-			}
-			//System.out.println("list的大小是"+size);
+			list = hotWordService.getHotWordList(rowBounds);
+			int totalNum = hotWordService.getTotalNum();
+			System.out.println("@@@@@@@@totalNum: "+totalNum);
 			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(nlist);
+			jsArray.addAll(list);
 			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
-							+","+"\"total\":"+list.size()+"}";
+							+","+"\"total\":"+totalNum+"}";
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
 			//return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
 			return result;
