@@ -97,4 +97,9 @@
 		delete from stop_words
 		where id=#{id}
 	</delete>
+	
+	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
+        select count(id)
+        from stop_words
+    </select>
 </mapper>

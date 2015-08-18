@@ -121,4 +121,11 @@ public interface ParticipleManagerService {
      * @throws Exception
      */
     public int delParticipleWordsByPid(int pid)throws Exception;
+
+	public boolean updateParticiple(String groupId, String manualWords, String userName);
+	public List<Participle> searchProjToMidify(int i, int pageSize);
+	public List<Participle> searchProjToMidify(String groupId, String projName, int i, int pageSize);
+	public int searchProjToMidifyNum();
+	public int searchProjToMidifyNum(String groupId, String projName);
+
 }

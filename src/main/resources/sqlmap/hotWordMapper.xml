@@ -101,7 +101,7 @@
 	</select>
 	
 	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
-        select	count(id)
+        select count(id)
         from hot_word
     </select>
 </mapper>

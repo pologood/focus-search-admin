@@ -2,6 +2,7 @@ package cn.focus.search.admin.dao.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,9 +23,9 @@ public class StopWordsDaoImpl implements StopWordsDao{
     }
 
     @Override
-    public List<StopWords> getStopWordsList()throws Exception
+    public List<StopWords> getStopWordsList(RowBounds rowBounds)throws Exception
     {
-    	return sqlSession.selectList("StopWordsDao.getStopWordsList");
+    	return sqlSession.selectList("StopWordsDao.getStopWordsList", "", rowBounds);
     }
     
     @Override
@@ -61,5 +62,11 @@ public class StopWordsDaoImpl implements StopWordsDao{
 	public List<String> getStopWordnameByStatus(int status) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("StopWordsDao.getStopWordnameByStatus", status);
+	}
+
+	@Override
+	public int getTotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("StopWordsDao.getTotalNum");
 	}
 }

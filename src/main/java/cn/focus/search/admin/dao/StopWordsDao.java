@@ -2,6 +2,8 @@ package cn.focus.search.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
+
 import cn.focus.search.admin.model.StopWords;
 
 public interface StopWordsDao {
@@ -20,7 +22,9 @@ public interface StopWordsDao {
      * @return
      * @throws Exception
      */
-    public List<StopWords> getStopWordsList()throws Exception;
+    public List<StopWords> getStopWordsList(RowBounds rowBounds)throws Exception;
+    
+    public int getTotalNum()throws Exception;
     
     /**
      *根据停止词名获取停止词数据

@@ -62,6 +62,33 @@ public class ParticipleManagerController {
 		}
 	}
 	
+/*	@RequestMapping(value="modifyP",method =RequestMethod.GET)
+	public String modifyP(){
+		try{
+			String ikurl = participleManagerService.getIkUrl();
+			return "modify_proj";
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return "error";
+		}
+	}*/
+	
+	
+	@RequestMapping(value="modifyP",method =RequestMethod.GET)
+	public ModelAndView modifyP(){ 
+		try{
+			ModelAndView mv = new ModelAndView("modify_proj"); 
+			String ikurl = participleManagerService.getIkUrl();
+			System.out.println("ikurl:"+ikurl);
+			mv.addObject("ikurl", ikurl);
+		    return mv;
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			ModelAndView mv = new ModelAndView("error"); 
+			return mv;
+		}
+	}
+	
 	@RequestMapping(value="backup",method =RequestMethod.GET)
 	public ModelAndView dataBackup(){ 
 		try{
@@ -182,16 +209,68 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	
+	/**
+	 * modify_proj.jsp中修改楼盘分词。。。搜索待修改楼盘列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="proj_query",method=RequestMethod.POST)
+	@ResponseBody
+	public String queryProjListToMidify(HttpServletRequest request){
+		try{
+			JSONObject json = new JSONObject();
+            String groupId = request.getParameter("groupId");
+            String projName = request.getParameter("projName");
+			int pageSize = 3;
+			int pageNo = 1;
+			
+            
+
+			if(StringUtils.isNotBlank(request.getParameter("page"))){
+				pageNo = Integer.valueOf(request.getParameter("page"));
+			}
+			if(StringUtils.isNotBlank(request.getParameter("rows"))){
+				pageSize = Integer.valueOf(request.getParameter("rows"));
+			}
+            
+			List<Participle> list=null;
+			int total=0;
+            if(StringUtils.isBlank(projName) && StringUtils.isBlank(groupId)){
+            	list = participleManagerService.searchProjToMidify((pageNo-1)*pageSize, pageSize);
+            	total= participleManagerService.searchProjToMidifyNum();
+            	//System.out.println("@@@@@@@@total"+total);
+            }else {
+            	list = participleManagerService.searchProjToMidify(groupId, projName, (pageNo-1)*pageSize, pageSize);
+            	total= participleManagerService.searchProjToMidifyNum(groupId,projName);
+            }		
+            
+            JSONArray ja=new JSONArray();
+            ja.addAll(list);
+			
+			json.put("total", String.valueOf(total));
+			json.put("rows", ja);
+			
+			System.out.println(JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
 	/***
 	 * 批量获取新加的待分词的数据
 	 * @param request
 	 * @return
 	 */
-	@SuppressWarnings("null")
 	@RequestMapping(value="select4new",method=RequestMethod.POST)
 	@ResponseBody
 	public String selectNewPartList(HttpServletRequest request){
 		try{
+			JSONObject json = new JSONObject();
 			int pageSize = 10;
 			int pageNo = 1;
 			
@@ -201,17 +280,19 @@ public class ParticipleManagerController {
 			if(StringUtils.isNotBlank(request.getParameter("rows"))){
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
-			RowBounds rowBounds=new RowBounds(pageNo,pageSize);
+			RowBounds rowBounds=new RowBounds((pageNo-1)*pageSize, pageSize);
 			List<Participle> list = participleManagerService.getParticipleList(0, rowBounds);
 			int totalNum = participleManagerService.getTotalNum(0);
+			//System.out.println("@@@@@@@@total"+totalNum);
 
-			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(list);
-			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
-							+","+"\"total\":"+totalNum+"}";
-			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
-			System.out.println(result);
-			return result;
+			JSONArray ja=new JSONArray();
+            ja.addAll(list);
+			
+			json.put("total", String.valueOf(totalNum));
+			json.put("rows", ja);
+			
+			System.out.println(JSON.toJSONString(ja,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
@@ -347,6 +428,39 @@ public class ParticipleManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
+	
+	
+	/**
+	 * 修改人工分词
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modify_proj",method=RequestMethod.POST)
+	@ResponseBody
+	public String modifyParticiple(HttpServletRequest request){
+		try{
+			String groupId = request.getParameter("groupId");
+			String manualWords = request.getParameter("manualWords");
+			UserInfo user = (UserInfo)request.getSession().getAttribute("user");
+			
+			
+			if(StringUtils.isBlank(groupId)){
+				return JSONUtils.badResult("failed");
+			}
+			
+			boolean flg = participleManagerService.updateParticiple(groupId, manualWords,user.getUserName());
+			if(!flg){
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
+	
 	
 	/**
 	 * 导出数据

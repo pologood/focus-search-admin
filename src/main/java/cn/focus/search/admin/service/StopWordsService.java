@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.RowBounds;
+
 import cn.focus.search.admin.model.StopWords;
 
 public interface StopWordsService {
@@ -24,7 +26,9 @@ public interface StopWordsService {
      * @return
      * @throws Exception
      */
-	public List<StopWords> getStopWordsList();
+	public List<StopWords> getStopWordsList(RowBounds rowBounds);
+	
+	public int getTotalNum()throws Exception;
 	
     /**
      *根据停止词名获取停止词数据

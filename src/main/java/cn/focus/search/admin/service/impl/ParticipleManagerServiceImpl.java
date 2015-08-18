@@ -771,4 +771,40 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		}
 		return s;
 	}
+
+
+	@Override
+	public boolean updateParticiple(String groupId, String manualWords, String userName) {
+		// TODO Auto-generated method stub
+		boolean flag=false;
+	    if (participleDao.updateParticiples(Integer.valueOf(groupId),manualWords,userName)>0)
+	    	flag=true;
+		return flag;
+	}
+
+	@Override
+	public List<Participle> searchProjToMidify(int i, int pageSize) {
+		// TODO Auto-generated method stub
+		List<Participle> list = participleDao.getPorjList(i,pageSize);
+		return list;
+	}
+
+	@Override
+	public List<Participle> searchProjToMidify(String groupId, String projName, int i, int pageSize) {
+		// TODO Auto-generated method stub
+		List<Participle> list = participleDao.getPorjListSearch(groupId,projName,i,pageSize);
+		return list;
+	}
+
+	@Override
+	public int searchProjToMidifyNum() {
+		// TODO Auto-generated method stub
+		return participleDao.getPorjListNum();
+	}
+
+	@Override
+	public int searchProjToMidifyNum(String groupId, String projName) {
+		// TODO Auto-generated method stub
+		return participleDao.getPorjListSearchNum(groupId,projName);
+	}
 }

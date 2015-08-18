@@ -257,7 +257,7 @@ function del(index,id){  //删除操作
 
 <body>
 
-	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
+	<table class="easyui-datagrid" id="projTab" style="width:95%;height:497px"
 			url="<%=basePath %>/user/um/showAllUsers" 
 			title="查看用户列表" toolbar="#tb" fitColumns="true" pagination="true">
 		<thead>

@@ -13,7 +13,6 @@ href="/static/images/login/User_Login.css" type=text/css rel=stylesheet>
 <script>
 
 </script>
-
 </HEAD>
 
 
@@ -42,7 +41,10 @@ href="/static/images/login/User_Login.css" type=text/css rel=stylesheet>
       <LI class=user_main_text>密 码： </LI>
       <LI class=user_main_input><INPUT class=TxtPasswordCssClass id=TxtPassword 
       type=password name=password> </LI></UL>
-    <UL></UL></DIV></LI>
+    <UL>
+      <LI class=user_main_text> </LI>
+      <LI class=user_main_input>${flag}</LI></UL>
+    </DIV></LI>
     
   <LI class=user_main_r><INPUT class=IbtnEnterCssClass id=IbtnEnter 
     style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px" 

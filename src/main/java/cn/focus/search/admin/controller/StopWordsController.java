@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class StopWordsController {
 	@ResponseBody
 	public String getStopWordsList(HttpServletRequest request){
 		try{
+			JSONObject json = new JSONObject();
 			int pageSize = 10;
 			int pageNo = 1;
 			
@@ -60,29 +62,20 @@ public class StopWordsController {
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
 			
-			JSONObject json = new JSONObject();
+			RowBounds rowBounds=new RowBounds((pageNo-1)*pageSize, pageSize);
 			List<StopWords> list = new LinkedList<StopWords>();
-			list = stopWordsService.getStopWordsList();
-			int size = list.size();
+			list = stopWordsService.getStopWordsList(rowBounds);
+			int totalNum = stopWordsService.getTotalNum();
+			System.out.println("@@@@@@@@totalNum: "+totalNum);
 			
-			List<StopWords> nlist = new LinkedList<StopWords>();
-			int start = (pageNo-1)*pageSize;
-			int end = pageNo*pageSize-1;
-			if(end > list.size()-1){
-				end  =  list.size()-1;
-			}
-			for(int i=start;i<=end;i++){
-				nlist.add(list.get(i));
-			}
+			JSONArray ja=new JSONArray();
+            ja.addAll(list);
 			
-			logger.info("list的大小是"+size);
-			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(nlist);
-			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
-							+","+"\"total\":"+list.size()+"}";
-			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
-			//return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
-			return result;			
+			json.put("total", String.valueOf(totalNum));
+			json.put("rows", ja);
+			
+			System.out.println(JSON.toJSONString(ja,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();

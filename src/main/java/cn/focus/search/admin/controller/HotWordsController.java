@@ -54,6 +54,7 @@ public class HotWordsController {
 	@ResponseBody
 	public String getStopWordsList(HttpServletRequest request){
 		try{
+			JSONObject json = new JSONObject();
 			int pageSize = 10;
 			int pageNo = 1;
 			
@@ -64,18 +65,20 @@ public class HotWordsController {
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
 			
-			RowBounds rowBounds=new RowBounds(pageNo,pageSize);
+			RowBounds rowBounds=new RowBounds((pageNo-1)*pageSize, pageSize);
 			List<HotWord> list = new LinkedList<HotWord>();
 			list = hotWordService.getHotWordList(rowBounds);
 			int totalNum = hotWordService.getTotalNum();
 			System.out.println("@@@@@@@@totalNum: "+totalNum);
-			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(list);
-			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
-							+","+"\"total\":"+totalNum+"}";
-			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
-			//return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
-			return result;
+			
+			JSONArray ja=new JSONArray();
+            ja.addAll(list);
+			
+			json.put("total", String.valueOf(totalNum));
+			json.put("rows", ja);
+			
+			System.out.println(JSON.toJSONString(ja,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();

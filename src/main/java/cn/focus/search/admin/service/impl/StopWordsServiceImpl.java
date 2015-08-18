@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class StopWordsServiceImpl implements StopWordsService{
 	}
 	
 	@Override
-	public List<StopWords> getStopWordsList()
+	public List<StopWords> getStopWordsList(RowBounds rowBounds)
 	{
 		List<StopWords> list=new LinkedList<StopWords>();
         try {
-            list = stopWordsDao.getStopWordsList();
+            list = stopWordsDao.getStopWordsList(rowBounds);
         } catch (Exception e) {
             logger.error("获取停止词数据异常!", e);
         }
@@ -140,5 +141,17 @@ public class StopWordsServiceImpl implements StopWordsService{
 			}finally{
 				os.close();
 			}
+	}
+
+	@Override
+	public int getTotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = stopWordsDao.getTotalNum();
+        } catch (Exception e) {
+            logger.error("插入停止词数据异常!", e);
+        }
+        return s;
 	}
 }

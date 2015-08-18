@@ -62,11 +62,13 @@ public class IndexController {
 			System.out.println("userName:"+userName+" password: "+password);
 			
 			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
+				//request.setAttribute("flag","请输入登录信息并登录！");
 				return "login";
 			}
 			
 			UserInfo userInfo = loginService.getUser(userName, password);
 			if(userInfo == null||userInfo.getStatus() == 0){
+				request.setAttribute("flag","用户名或者密码错误！");
 				return "login";
 			}
 			
