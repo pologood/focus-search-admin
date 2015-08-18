@@ -66,11 +66,9 @@ public class StopWordsController {
 			List<StopWords> list = new LinkedList<StopWords>();
 			list = stopWordsService.getStopWordsList(rowBounds);
 			int totalNum = stopWordsService.getTotalNum();
-			System.out.println("@@@@@@@@totalNum: "+totalNum);
 			
 			JSONArray ja=new JSONArray();
-            ja.addAll(list);
-			
+            ja.addAll(list);			
 			json.put("total", String.valueOf(totalNum));
 			json.put("rows", ja);
 			
