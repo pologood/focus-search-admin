@@ -61,6 +61,33 @@ public class ParticipleManagerController {
 		}
 	}
 	
+/*	@RequestMapping(value="modifyP",method =RequestMethod.GET)
+	public String modifyP(){
+		try{
+			String ikurl = participleManagerService.getIkUrl();
+			return "modify_proj";
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return "error";
+		}
+	}*/
+	
+	
+	@RequestMapping(value="modifyP",method =RequestMethod.GET)
+	public ModelAndView modifyP(){ 
+		try{
+			ModelAndView mv = new ModelAndView("modify_proj"); 
+			String ikurl = participleManagerService.getIkUrl();
+			System.out.println("ikurl:"+ikurl);
+			mv.addObject("ikurl", ikurl);
+		    return mv;
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			ModelAndView mv = new ModelAndView("error"); 
+			return mv;
+		}
+	}
+	
 	@RequestMapping(value="backup",method =RequestMethod.GET)
 	public ModelAndView dataBackup(){ 
 		try{
@@ -173,6 +200,58 @@ public class ParticipleManagerController {
 			
 			System.out.println(json.toJSONString());
 			return json.toJSONString();
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
+	
+	/**
+	 * modify_proj.jsp中修改楼盘分词。。。搜索待修改楼盘列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="proj_query",method=RequestMethod.POST)
+	@ResponseBody
+	public String queryProjListToMidify(HttpServletRequest request){
+		try{
+			JSONObject json = new JSONObject();
+            String groupId = request.getParameter("groupId");
+            String projName = request.getParameter("projName");
+			int pageSize = 3;
+			int pageNo = 1;
+			
+            
+
+			if(StringUtils.isNotBlank(request.getParameter("page"))){
+				pageNo = Integer.valueOf(request.getParameter("page"));
+			}
+			if(StringUtils.isNotBlank(request.getParameter("rows"))){
+				pageSize = Integer.valueOf(request.getParameter("rows"));
+			}
+            
+			List<Participle> list=null;
+			int total=0;
+            if(StringUtils.isBlank(projName) && StringUtils.isBlank(groupId)){
+            	list = participleManagerService.searchProjToMidify((pageNo-1)*pageSize, pageSize);
+            	total= participleManagerService.searchProjToMidifyNum();
+            	System.out.println("@@@@@@@@total"+total);
+            }else {
+            	list = participleManagerService.searchProjToMidify(groupId, projName, (pageNo-1)*pageSize, pageSize);
+            	total= participleManagerService.searchProjToMidifyNum(groupId,projName);
+            }		
+            
+            JSONArray ja=new JSONArray();
+            ja.addAll(list);
+			
+			json.put("total", String.valueOf(total));
+			json.put("rows", ja);
+			
+			System.out.println(JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat));
+			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 			
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
@@ -320,6 +399,39 @@ public class ParticipleManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
+	
+	
+	
+	/**
+	 * 修改人工分词
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="modify_proj",method=RequestMethod.POST)
+	@ResponseBody
+	public String modifyParticiple(HttpServletRequest request){
+		try{
+			String groupId = request.getParameter("groupId");
+			String manualWords = request.getParameter("manualWords");
+			UserInfo user = (UserInfo)request.getSession().getAttribute("user");
+			
+			
+			if(StringUtils.isBlank(groupId)){
+				return JSONUtils.badResult("failed");
+			}
+			
+			boolean flg = participleManagerService.updateParticiple(groupId, manualWords,user.getUserName());
+			if(!flg){
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			return JSONUtils.badResult("failed");
+		}
+	}
+	
 	
 	
 	/**

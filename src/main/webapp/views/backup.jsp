@@ -134,17 +134,17 @@ function formatAction(value,row,index){
 			error:function(e){
 				$.messager.alert('错误','编辑失败3!','error');
 			}
-	});  		
+	     });  		
   				
-  				$("#IdInput").val(row.pid);
-				$("#nameInput").val(row.name);
-				$("#aNameInput").val(row.aliasName);
-				$("#rId").val(row.id);
-				$("#rType").val(row.type);
-				$("#cTime").val(row.createTime);
+  		$("#IdInput").val(row.pid);
+		$("#nameInput").val(row.name);
+		$("#aNameInput").val(row.aliasName);
+		$("#rId").val(row.id);
+		$("#rType").val(row.type);
+		$("#cTime").val(row.createTime);
 				
-				$("#manualWordsInput").val(row.manualWords);
-				$('#modifyDiv').dialog('open');
+		$("#manualWordsInput").val(row.manualWords);
+		$('#modifyDiv').dialog('open');
   	});
 	return a;
 }

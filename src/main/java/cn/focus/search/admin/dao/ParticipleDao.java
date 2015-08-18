@@ -52,4 +52,19 @@ public interface ParticipleDao {
      */
 	public int setExported();
 
+
+	public List<Participle> getPorjList(int i, int pageSize);
+
+
+	public List<Participle> getPorjListSearch(String groupId, String projName, int i, int pageSize);
+
+
+	public int updateParticiples(Integer pid, String manualWords, String userName);
+
+
+	public int getPorjListNum();
+
+
+	public int getPorjListSearchNum(String groupId, String projName);
+
 }
