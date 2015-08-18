@@ -37,7 +37,7 @@ $(function(){
     			title:'人工分词',
     			closed:true,//初始时不显示
 				buttons:[{
-					text:'确定',
+					text:'提交',
 					iconCls:'icon-ok',
 					handler:modifyManalWords
 				},{
@@ -109,7 +109,9 @@ function modifyManalWords(){
 
 //表格操作区域展示
 function formatAction(value,row,index){
-	a = '<a href="javascript:void(0)" id="a'+index+'">编辑</a>&nbsp;&nbsp;'
+	var a = '<a href="javascript:void(0)" id="a'+index+'">编辑</a>&nbsp;&nbsp;';
+	//var b = '<a href="javascript:void(0)" id="b'+index+'">删除</a>';
+	var b = '<a href="javascript:void(0)" onclick="del('+ index +')">删除</a>';
 	
   	$(document).delegate("#a"+index,"click",function(){
   		var result = '';
@@ -124,7 +126,7 @@ function formatAction(value,row,index){
 				result += data.tokens[0].token;
 				if(length>1){
 					for(var i=1;i<length;i++){
-						result += ',';
+						result += '｜';
 						result += data.tokens[i].token;
 					}
 				}
@@ -146,7 +148,46 @@ function formatAction(value,row,index){
 				$("#manualWordsInput").val(row.manualWords);
 				$('#modifyDiv').dialog('open');
   	});
-	return a;
+
+	return a+'/ '+b;
+}
+
+function del(index){  //删除操作  
+	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(row){
+			if(row)
+			{
+  			var selectedRow = $('#projTab').datagrid('getData').rows[index];//$('#projTab').datagrid('getSelected');  //获取选中行
+            var pid = selectedRow.pid;
+      		var name = selectedRow.name;
+      		var data = "pid="+pid+"&name="+name;
+      		//$.messager.alert(data);
+            $.ajax({
+                url:rootpath+"/admin/pm/delPar",
+                type:"post",
+  				data:data,
+  				dataType:"json",
+  				cache:false,
+                success:function(response)
+                {
+                	if(response.errorCode == 0){
+  						$.messager.alert('成功','删除成功!','info');
+  						$('#projTab').datagrid('deleteRow',index);
+  						$("#projTab").datagrid('reload');
+  					}
+  					else{
+  						 $.messager.alert('错误','删除失败!','error');
+  					}
+                	//$("#projTab").datagrid('reload');
+                },
+                error:function(e){
+  					$.messager.alert('错误','删除失败3!','error');
+  				}
+            }); 
+
+			}
+			//$("#projTab").datagrid('reload');
+		})
+	$("#projTab").datagrid('reload');
 }
 
 //exportParticipleDic
@@ -195,7 +236,7 @@ $(function(){
 
 <body>
 
-	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
+	<table class="easyui-datagrid" id="projTab" style="width:100%;height:497px"
 			url="<%=basePath %>/admin/pm/select4new" 
 			title="新加数据分词" toolbar="#tb"fitColumns="true" pagination="true">
 		<thead>
@@ -208,7 +249,7 @@ $(function(){
 				<th field="type" width="80" align="center">类型</th>
 				<th field="createTime" width="160" align="center">创建时间</th>
 				<th field="updateTime" width="160" align="center">最后更新时间</th>
-				<th field="action" width="80" align="center" formatter="formatAction">编辑</th>
+				<th field="action" width="120" align="center" formatter="formatAction">编辑</th>
 			</tr>
 		</thead>
 	</table>

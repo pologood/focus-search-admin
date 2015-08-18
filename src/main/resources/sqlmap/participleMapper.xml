@@ -87,4 +87,9 @@
 		from participle
 		where status = 1
 	</select>
+	
+	<delete id="delParticipleWordsByPid" parameterType="java.lang.Integer" statementType="PREPARED">
+		delete from participle
+		where pid=#{pid}
+	</delete>
 </mapper>

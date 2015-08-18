@@ -52,4 +52,11 @@ public interface ParticipleDao {
      */
 	public int setExported();
 
+    /**
+     *根据id删除分词
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public int delParticipleWordsByPid(int pid)throws Exception;
 }

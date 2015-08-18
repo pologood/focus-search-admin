@@ -751,4 +751,16 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
         }
         return list;
 	}
+
+	@Override
+	public int delParticipleWordsByPid(int pid) throws Exception {
+		// TODO Auto-generated method stub
+		int s = 0;
+        try {
+            s = participleDao.delParticipleWordsByPid(pid);
+        } catch (Exception e) {
+            logger.error("删除停止词数据异常!", e);
+        }
+        return s;
+	}
 }

@@ -102,4 +102,12 @@ public interface ParticipleManagerService {
      * @throws Exception
      */
     public List<String> getParticiplesByStatus(int status)throws Exception;
+    
+    /**
+     *根据id删除分词
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public int delParticipleWordsByPid(int pid)throws Exception;
 }

@@ -70,7 +70,7 @@ public class IndexController {
 				return "login";
 			}
 			
-			HttpSession session = request.getSession(); 
+			HttpSession session = request.getSession();
 			session.setMaxInactiveInterval(3600); //一个小时过期
 			session.setAttribute("user", userInfo);
 			

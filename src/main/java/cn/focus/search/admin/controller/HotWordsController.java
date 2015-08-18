@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import cn.focus.search.admin.model.HotWord;
+import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
 import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
@@ -52,17 +53,38 @@ public class HotWordsController {
 	@ResponseBody
 	public String getStopWordsList(HttpServletRequest request){
 		try{
+			int pageSize = 10;
+			int pageNo = 1;
+			
+			if(StringUtils.isNotBlank(request.getParameter("page"))){
+				pageNo = Integer.valueOf(request.getParameter("page"));
+			}
+			if(StringUtils.isNotBlank(request.getParameter("rows"))){
+				pageSize = Integer.valueOf(request.getParameter("rows"));
+			}
+			
 			JSONObject json = new JSONObject();
 			List<HotWord> list = new LinkedList<HotWord>();
 			list = hotWordService.getHotWordList();
 			int size = list.size();
 			
-			System.out.println("list的大小是"+size);
+			List<HotWord> nlist = new LinkedList<HotWord>();
+			int start = (pageNo-1)*pageSize;
+			int end = pageNo*pageSize-1;
+			if(end > list.size()-1){
+				end  =  list.size()-1;
+			}
+			for(int i=start;i<=end;i++){
+				nlist.add(list.get(i));
+			}
+			//System.out.println("list的大小是"+size);
 			JSONArray jsArray = new JSONArray();
-			jsArray.addAll(list);
+			jsArray.addAll(nlist);
+			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
+							+","+"\"total\":"+list.size()+"}";
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
-			return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
-						
+			//return JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat);
+			return result;
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();

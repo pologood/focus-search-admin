@@ -273,7 +273,7 @@ $(function(){
 		</thead>
 	</table> --%>
 	
-	<table id="projTab" class="easyui-datagrid" style="width:95%;height:600px"
+	<table id="projTab" class="easyui-datagrid" style="width:100%;height:497px"
 	 title="添加停止词" toolbar="#tb"fitColumns="true" pagination="true">
 	 </table>
 	

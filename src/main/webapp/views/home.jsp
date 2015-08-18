@@ -61,7 +61,7 @@ $(function(){
 
 $(function(){   
 	$("#loadDicBtn").click(function(){
-		var isUpdate = confirm("该操作将耗费很多服务器资源，请慎重操作！");
+		var isUpdate = confirm('该操作将耗费很多服务器资源，请慎重操作！');
 		if (isUpdate == true)
 		{
 			//ajax 异步提交

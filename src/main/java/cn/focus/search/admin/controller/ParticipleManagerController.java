@@ -212,7 +212,8 @@ public class ParticipleManagerController {
 			}
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);
-			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)+","+"\"total\":"+listTotal.size()+"}";
+			String result = "{"+"\"rows\":"+JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat)
+							+","+"\"total\":"+listTotal.size()+"}";
 			System.out.println(JSON.toJSONString(jsArray,SerializerFeature.WriteDateUseDateFormat));
 			System.out.println(result);
 			return result;
@@ -321,6 +322,36 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	/***
+	 * 删除分词
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="delPar",method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteHotDic(HttpServletRequest request){
+		
+		try{
+			String sid = request.getParameter("pid");
+			if(StringUtils.isBlank(sid)){
+				return JSONUtils.badResult("failed");
+			}
+			int pid = Integer.parseInt(sid);
+			String name = request.getParameter("name");
+			System.out.println("@@@@@@@@@@@@@@@@@@id:"+pid +"@@@@@@@@@@@@@@@@@@name:"+name);
+			int result = participleManagerService.delParticipleWordsByPid(pid);
+			if(result<1){
+				logger.info(pid + "删除失败!");
+				return JSONUtils.badResult("failed");
+			}
+			return JSONUtils.ok();
+						
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+			return JSONUtils.badResult("failed");
+		}
+	}
 	
 	/**
 	 * 导出数据

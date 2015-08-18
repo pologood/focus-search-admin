@@ -48,4 +48,10 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		return sqlSession.selectList("ParticipleDao.getParticiplesByStatus", status);
 	}
 
+	@Override
+	public int delParticipleWordsByPid(int pid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("ParticipleDao.delParticipleWordsByPid", pid);
+	}
+
 }
