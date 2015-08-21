@@ -109,12 +109,14 @@ function modifyManalWords(){
 
 //表格操作区域展示
 function formatAction(value,row,index){
-	var a = '<a href="javascript:void(0)" id="a'+index+'">编辑</a>&nbsp;&nbsp;';
-	//var b = '<a href="javascript:void(0)" id="b'+index+'">删除</a>';
+	var a = '<a href="javascript:void(0)" onclick="edi('+ index +')">编辑</a>&nbsp;&nbsp;';
 	var b = '<a href="javascript:void(0)" onclick="del('+ index +')">删除</a>';
-	
-  	$(document).delegate("#a"+index,"click",function(){
+	return a+'/ '+b;
+}
+
+function edi(index){
   		var result = '';
+		var row = $('#projTab').datagrid('getData').rows[index];		
   		var URL = "${ikurl}"+row.name+row.aliasName;
   		$.ajax({
 			url:URL,
@@ -147,16 +149,11 @@ function formatAction(value,row,index){
 				
 		$("#manualWordsInput").val(row.manualWords);
 		$('#modifyDiv').dialog('open');
-  	});
-
-	return a+'/ '+b;
+  	
 }
-
 function del(index){  //删除操作  
-	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(row){
-			if(row)
-			{
-  			var selectedRow = $('#projTab').datagrid('getData').rows[index];//$('#projTab').datagrid('getSelected');  //获取选中行
+	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(flag){
+  			var selectedRow = $('#projTab').datagrid('getData').rows[index];
             var pid = selectedRow.pid;
       		var name = selectedRow.name;
       		var data = "pid="+pid+"&name="+name;
@@ -171,23 +168,18 @@ function del(index){  //删除操作
                 {
                 	if(response.errorCode == 0){
   						$.messager.alert('成功','删除成功!','info');
-  						$('#projTab').datagrid('deleteRow',index);
+  						//$('#projTab').datagrid('deleteRow',index);
   						$("#projTab").datagrid('reload');
   					}
   					else{
   						 $.messager.alert('错误','删除失败!','error');
   					}
-                	//$("#projTab").datagrid('reload');
                 },
                 error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
             }); 
-
-			}
-			//$("#projTab").datagrid('reload');
 		})
-	$("#projTab").datagrid('reload');
 }
 
 //exportParticipleDic
