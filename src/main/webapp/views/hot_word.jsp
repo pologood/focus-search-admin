@@ -268,7 +268,17 @@ $(function(){
 </script>
 </head>
 
-<body>
+<body onload="hideExport()">
+<script>window.onload=hideExport</script>
+<script language="javascript" for="window" event="onload">
+function hideExport() {       
+	var name = "${user.userName}";
+	if(name != "admin1")
+	{
+		$("#exportHotDic").hide();
+	}
+};
+</script>
 
 	<!-- 
 	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"

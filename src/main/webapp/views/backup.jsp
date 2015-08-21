@@ -234,7 +234,17 @@ $(function(){
 </script>
 </head>
 
-<body>
+<body onload="hideExport()">
+<script>window.onload=hideExport</script>
+<script language="javascript" for="window" event="onload">
+function hideExport() {       
+	var name = "${user.userName}";
+	if(name != "admin1")
+	{
+		$("#exportParticipleDic").hide();
+	}
+};
+</script>
 
 	<table class="easyui-datagrid" id="projTab" style="width:100%;height:497px"
 			url="<%=basePath %>/admin/pm/select4new" 
@@ -271,7 +281,7 @@ $(function(){
 		<br/>
 		<p>别&nbsp;&nbsp;&nbsp;&nbsp;名:&nbsp;&nbsp;<label id="aNameLabel"></label><input  id="aNameInput" style="width:180px" readonly="true" /></p>
 		<br/>
-		<p>机器分词:<input id="manualWordsInput_ik" style="width:320px" readonly="true"/></p>
+		<p style="color:#008800">机器分词:<input id="manualWordsInput_ik" style="width:320px;color:#008800" readonly="true"/></p><!-- style="color:red" -->
 		<br/>
 		<p>人工分词:<input id="manualWordsInput" style="width:320px"/></p>
 		<p><input id="rId" style="width:10px;display:none;"readonly="true"/></p>

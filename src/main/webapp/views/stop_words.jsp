@@ -252,9 +252,34 @@ $(function(){
 });
 
 </script>
+
+<!-- <script language="javascript" for="window" event="onload">   
+    function openTheIndexPage() {       
+    	var name = "${cUserName}";
+    	if(name!= "admin1")
+    	{
+    		$("#exportStopDic").hide();
+    	}
+    };  
+    if(document.readyState=="complete"){  
+        openTheIndexPage();
+    }   
+</script> -->
+
 </head>
 
-<body>
+<body onload="hideExport()">
+<script>window.onload=hideExport</script>
+<script language="javascript" for="window" event="onload">
+function hideExport() {       
+	var name = "${user.userName}";
+	//$.messager.alert("", name);
+	if(name != "admin1")
+	{
+		$("#exportStopDic").hide();
+	}
+};
+</script>
 
 <%-- 	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
 			url="<%=basePath %>/stop/loadStop" 

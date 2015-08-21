@@ -1,7 +1,5 @@
 package cn.focus.search.admin.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +72,7 @@ public class StopWordsUtil {
 	
 	public static void main(String[] args)
 	{
+		char[] b = new char[10];
 /*		Date now=new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowt = sdf.format(now);

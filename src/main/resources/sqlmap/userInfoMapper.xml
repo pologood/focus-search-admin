@@ -20,12 +20,11 @@
 		access_token as accessToken,
 		status as status,
 		create_time as createTime,
-		update_time as
-		updateTime
+		update_time as updateTime
 
 	</sql>
 
-	<select id="getUserInfo" resultType="UserInfo" parameterType="UserInfo"
+	<select id="getUserInfo" resultMap="BaseResultMap" parameterType="UserInfo"
 		statementType="PREPARED">
 		select
 		<include refid="Base_Column_List" />

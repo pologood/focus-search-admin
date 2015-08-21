@@ -18,7 +18,7 @@ $(function(){
     			title:'更改 人工分词',
     			closed:true,//初始时不显示
 				buttons:[{
-					text:'确定',
+					text:'提交',
 					iconCls:'icon-ok',
 					handler:modifyManalWords
 				},{
@@ -106,7 +106,7 @@ function formatAction(value,row,index){
 				result += data.tokens[0].token;
 				if(length>1){
 					for(var i=1;i<length;i++){
-						result += ',';
+						result += '｜';
 						result += data.tokens[i].token;
 					}
 				}
@@ -181,7 +181,7 @@ $(function(){
 	    &nbsp;&nbsp;&nbsp;&nbsp;
 		<p>楼盘  名称:<label id="projNameLabel"></label><input  id="projNameInput" style="width:180px" readonly="trye" /></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	    <p>机器分词:<input id="manualWordsInput_ik" style="width:320px" readonly="true"/></p>
+	    <p style="color:#008800">机器分词:<input id="manualWordsInput_ik" style="width:320px;color:#008800" readonly="true"/></p>
 	    &nbsp;&nbsp;&nbsp;&nbsp;
 		<p>人工 分词:<input id="manualWordsInput" style="width:320px"/></p>
 		
