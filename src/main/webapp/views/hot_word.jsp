@@ -42,7 +42,7 @@ function del(index){  //删除操作
             var aid = selectedRow.id;
       		var name = selectedRow.name;
       		var data = "id="+aid+"&name="+name;
-      		//$.messager.alert(data);
+      		$.messager.alert(data);
             $.ajax({  
                 url:rootpath+"/hot/delHot",
                 type:"post",
@@ -65,11 +65,9 @@ function del(index){  //删除操作
   					$.messager.alert('错误','删除失败3!','error');
   				}
             });
-            //$('#projTab').datagrid('deleteRow',index);
-            //$("#projTab").datagrid('reload');
         }  
     }) 
-    $("#projTab").datagrid('reload');
+    //$("#projTab").datagrid('reload');
   } 
 
 $(function(){   

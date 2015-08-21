@@ -112,10 +112,12 @@ function formatAction(value,row,index){
 	var a = '<a href="javascript:void(0)" id="a'+index+'">编辑</a>&nbsp;&nbsp;';
 	//var b = '<a href="javascript:void(0)" id="b'+index+'">删除</a>';
 	var b = '<a href="javascript:void(0)" onclick="del('+ index +')">删除</a>';
-	
+	var name = row.name;
+	var aliasName = row.aliasName;
   	$(document).delegate("#a"+index,"click",function(){
   		var result = '';
   		var URL = "${ikurl}"+row.name+row.aliasName;
+
   		$.ajax({
 			url:URL,
 			type:"get",
@@ -153,14 +155,13 @@ function formatAction(value,row,index){
 }
 
 function del(index){  //删除操作  
-	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(row){
-			if(row)
+	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(row1){
+			if(row1)
 			{
   			var selectedRow = $('#projTab').datagrid('getData').rows[index];//$('#projTab').datagrid('getSelected');  //获取选中行
             var pid = selectedRow.pid;
       		var name = selectedRow.name;
       		var data = "pid="+pid+"&name="+name;
-      		//$.messager.alert(data);
             $.ajax({
                 url:rootpath+"/admin/pm/delPar",
                 type:"post",
@@ -187,7 +188,7 @@ function del(index){  //删除操作
 			}
 			//$("#projTab").datagrid('reload');
 		})
-	$("#projTab").datagrid('reload');
+	//$("#projTab").datagrid('reload');
 }
 
 //exportParticipleDic
