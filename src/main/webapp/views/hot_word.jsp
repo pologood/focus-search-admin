@@ -321,7 +321,7 @@ function hideExport() {
 		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>
 		<br/>
-		<p><font size="2" color="blue">注:多个停用词请用英文逗号空格或中文逗号空格连接  如:万科,北京,金科</font></p>
+		<p><font size="2" color="blue">注:多个热词请用英文逗号空格或中文逗号空格连接  如:万科,北京,金科</font></p>
 	</div>
 </body>
 </html>
