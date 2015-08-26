@@ -30,10 +30,10 @@ public class RemoteDicTest {
 	public ParticipleManagerService participleManagerService;
 	
 	@Test
-	public void testStopword(){
+	public void testStopword() throws Exception{
 		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
-		logger.info(""+participleManagerService.searchProjToMidifyNum());
-		logger.info(""+participleManagerService.searchProjToMidifyNum("","王"));
+		logger.info(""+participleManagerService.getRemoteFinalHouseWord());
+	/*	logger.info(""+participleManagerService.searchProjToMidifyNum("","王"));*/
 /*		JSONObject json = new JSONObject();
 		List<Participle> list=null;*/
 		//logger.info(participleManagerService.searchProjToMidify(0,10));

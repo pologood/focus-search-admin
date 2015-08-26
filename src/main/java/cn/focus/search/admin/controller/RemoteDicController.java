@@ -31,6 +31,8 @@ public class RemoteDicController {
  		response.setCharacterEncoding("UTF-8");
  		
   		long temp=request.getDateHeader("If-Modified-Since");
+  		logger.info("temp "+temp);
+  		logger.info("LastTime.final_house_lTime"+LastTime.final_house_lTime);
   		if (temp==LastTime.final_house_lTime) return "";
   		else return participleManagerService.getRemoteFinalHouseWord();
 		

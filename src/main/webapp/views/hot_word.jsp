@@ -67,7 +67,7 @@ function del(index){  //删除操作
             });
         }  
     }) 
-    //$("#projTab").datagrid('reload');
+    $("#projTab").datagrid('reload');
   } 
 
 $(function(){   
