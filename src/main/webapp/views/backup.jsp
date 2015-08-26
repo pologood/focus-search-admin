@@ -5,9 +5,6 @@
 <head>
 <%@ include file="/common/common.jsp"%>
 <title>新加数据分词</title>	
-<link rel="stylesheet" type="text/css" href="http://developer.amap.com/Public/css/demo.Default.css" /> 
-<script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=8089bac0001203d3175a245d7db66ef5"></script>
-
 <script language="javascript">
 
 $(function(){   
