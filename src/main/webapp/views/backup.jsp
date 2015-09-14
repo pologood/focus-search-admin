@@ -152,6 +152,7 @@ function edi(index){
 }
 function del(index){  //删除操作  
 	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(flag){
+		if(flag){
   			var selectedRow = $('#projTab').datagrid('getData').rows[index];
             var pid = selectedRow.pid;
       		var name = selectedRow.name;
@@ -176,7 +177,8 @@ function del(index){  //删除操作
                 error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
-            }); 
+            });
+		}
 		})
 
 }
