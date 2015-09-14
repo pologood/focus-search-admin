@@ -42,7 +42,7 @@ function del(index){  //删除操作
             var aid = selectedRow.id;
       		var name = selectedRow.name;
       		var data = "id="+aid+"&name="+name;
-      		$.messager.alert(data);
+      		//$.messager.alert(data);
             $.ajax({  
                 url:rootpath+"/hot/delHot",
                 type:"post",

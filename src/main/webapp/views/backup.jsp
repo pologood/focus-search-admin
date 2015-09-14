@@ -269,19 +269,14 @@ function hideExport() {
 	
 	<div id="modifyDiv"  style="padding:5px;width:420px;height:320px;">
 	    <p>记录Id:&nbsp;&nbsp;<label id="IdLabel"></label><input  id="IdInput" style="width:150px" readonly="true"/></p>
-	    <br/>
 		<p>名&nbsp;&nbsp;&nbsp;&nbsp;称:&nbsp;&nbsp;<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
-		<br/>
 		<p>别&nbsp;&nbsp;&nbsp;&nbsp;名:&nbsp;&nbsp;<label id="aNameLabel"></label><input  id="aNameInput" style="width:180px" readonly="true" /></p>
-		<br/>
 		<p style="color:#008800">机器分词:<input id="manualWordsInput_ik" style="width:320px;color:#008800" readonly="true"/></p><!-- style="color:red" -->
-		<br/>
 		<p>人工分词:<input id="manualWordsInput" style="width:320px"/></p>
 		<p><input id="rId" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>
-		<br/>
-		<p><font size="2" color="blue">注:多个分词请用英文逗号连接  如:万科,北京,金科</font></p>
+		<p><font size="2" color="blue">注:多个分词请用中文或英文逗号连接  如:万科,北京,金科</font></p>
 	</div>
 </body>
 </html>
