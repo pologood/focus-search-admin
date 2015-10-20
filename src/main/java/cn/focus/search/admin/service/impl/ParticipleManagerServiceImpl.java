@@ -427,6 +427,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		//System.out.println("！！！updateIK");
 		String flag="failed";
 		if (LastTime.setlTime()==1) flag="success";
+		logger.info("yanzheng 1. "+LastTime.getFinal_house_lTime());
 		return flag;
 	}
 	

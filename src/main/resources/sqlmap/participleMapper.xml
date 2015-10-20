@@ -140,7 +140,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from participle
-		where status = 1
+		where status = 1 and !ISNULL(participles)
 	</select>
 	
 	<delete id="delParticipleWordsByPid" parameterType="java.lang.Integer" statementType="PREPARED">

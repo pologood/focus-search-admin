@@ -81,12 +81,13 @@
 	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->	
 	<mvc:default-servlet-handler/>
 	
-	<!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果 -->
+<!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
 		<property name="exceptionMappings">  
 			<props>  
 				<prop key="java.lang.Throwable">error</prop>
             </props>  
 		</property>  
-    </bean>
+    </bean> 
+    -->
 </beans>
