@@ -43,7 +43,7 @@ href="/static/images/login/User_Login.css" type=text/css rel=stylesheet>
       type=password name=password> </LI></UL>
     <UL>
       <LI class=user_main_text> </LI>
-      <LI class=user_main_input>${flag}</LI></UL>
+      <LI class=user_main_input style="color:red">${flag}</LI></UL>
     </DIV></LI>
     
   <LI class=user_main_r><INPUT class=IbtnEnterCssClass id=IbtnEnter 

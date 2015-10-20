@@ -81,6 +81,22 @@
              <property name="maxActive" value="${jdbc.maxActive}"/>
              <!--初始大小 -->
              <property name="initialSize" value="${jdbc.initialSize}"/>
+             <!-- 用于验证连接是否成功的查询SQL语句 -->
+             <property name="validationQuery" value="SELECT 1"></property>
+             <!-- 空闲时是否进行验证，检查对象是否有效 -->
+			 <property name="testWhileIdle" value="true"></property>
+			 <!-- 取得对象时是否进行验证，检查对象是否有效 -->
+			 <property name="testOnBorrow" value="true"></property>
+			 <!-- 失效检查线程运行时间间隔，如果小于等于0，不会启动检查线程 -->
+			 <property name="timeBetweenEvictionRunsMillis" value="3600"></property>
+			 <!-- 设定在进行后台对象清理时,每次检查几个对象 -->
+			 <property name="numTestsPerEvictionRun" value="3"></property>
+			 <!-- 将对象限制时间超过14400的销毁掉 -->
+			 <property name="minEvictableIdleTimeMillis" value="14400"></property>
+			 <!-- 是否自我中断 -->
+			 <property name="removeAbandoned" value="true"/>
+			 <!-- 28800据连接会自动断开 -->
+			 <property name="removeAbandonedTimeout" value="28800"/>
          </bean>
 
          <!-- 使用JDBC事物 -->

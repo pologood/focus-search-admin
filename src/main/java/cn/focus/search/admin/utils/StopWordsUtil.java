@@ -1,8 +1,11 @@
 package cn.focus.search.admin.utils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.springframework.stereotype.Service;
 
@@ -84,11 +87,31 @@ public class StopWordsUtil {
 			e.printStackTrace();
 			// TODO Auto-generated catch block
 		}*/
-		String ss = "a,b c，d，";
+		List<String> list = new ArrayList<String>();	
+		list.add("a");list.add("b");list.add("c");
+		Iterator<String> it = list.iterator();
+		while(it.hasNext())
+		{	
+			String str = (String)it.next();			
+			it.remove();
+			//System.out.println(str);
+		}
+		ListIterator<String> its = list.listIterator();
+		
+		its.add("d");
+		its.hasPrevious();
+		its.previous();
+		its.set("e");
+		while(its.hasNext())
+		{	
+			String str = (String)its.next();
+			System.out.println(str);
+		}
+/*		String ss = "a,b c，d，";
 		int len = ss.length();
 		System.out.println(ss.substring(0, len-1));
 		String[] stop = ss.split("[, ，]");
 		for (int i = 0; i < stop.length; i++)
-			System.out.println(stop[i]);
+			System.out.println(stop[i]);*/
 	}
 }

@@ -65,8 +65,6 @@ function del(index){  //删除操作
   					$.messager.alert('错误','删除失败3!','error');
   				}
             });
-            //$('#projTab').datagrid('deleteRow',index);
-            //$("#projTab").datagrid('reload');
         }  
     }) 
     $("#projTab").datagrid('reload');

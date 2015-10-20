@@ -108,6 +108,7 @@ function modifyManalWords(){
 function formatAction(value,row,index){
 	var a = '<a href="javascript:void(0)" onclick="edi('+ index +')">编辑</a>&nbsp;&nbsp;';
 	var b = '<a href="javascript:void(0)" onclick="del('+ index +')">删除</a>';
+
 	return a+'/ '+b;
 }
 
@@ -115,6 +116,7 @@ function edi(index){
   		var result = '';
 		var row = $('#projTab').datagrid('getData').rows[index];		
   		var URL = "${ikurl}"+row.name+row.aliasName;
+
   		$.ajax({
 			url:URL,
 			type:"get",
@@ -150,11 +152,11 @@ function edi(index){
 }
 function del(index){  //删除操作  
 	$.messager.confirm('确认','此删除为物理删除，删除后不可恢复，请谨慎选择是否删除?',function(flag){
+		if(flag){
   			var selectedRow = $('#projTab').datagrid('getData').rows[index];
             var pid = selectedRow.pid;
       		var name = selectedRow.name;
       		var data = "pid="+pid+"&name="+name;
-      		//$.messager.alert(data);
             $.ajax({
                 url:rootpath+"/admin/pm/delPar",
                 type:"post",
@@ -175,8 +177,10 @@ function del(index){  //删除操作
                 error:function(e){
   					$.messager.alert('错误','删除失败3!','error');
   				}
-            }); 
+            });
+		}
 		})
+
 }
 
 //exportParticipleDic
@@ -265,19 +269,14 @@ function hideExport() {
 	
 	<div id="modifyDiv"  style="padding:5px;width:420px;height:320px;">
 	    <p>记录Id:&nbsp;&nbsp;<label id="IdLabel"></label><input  id="IdInput" style="width:150px" readonly="true"/></p>
-	    <br/>
 		<p>名&nbsp;&nbsp;&nbsp;&nbsp;称:&nbsp;&nbsp;<label id="nameLabel"></label><input  id="nameInput" style="width:180px" readonly="true" /></p>
-		<br/>
 		<p>别&nbsp;&nbsp;&nbsp;&nbsp;名:&nbsp;&nbsp;<label id="aNameLabel"></label><input  id="aNameInput" style="width:180px" readonly="true" /></p>
-		<br/>
 		<p style="color:#008800">机器分词:<input id="manualWordsInput_ik" style="width:320px;color:#008800" readonly="true"/></p><!-- style="color:red" -->
-		<br/>
 		<p>人工分词:<input id="manualWordsInput" style="width:320px"/></p>
 		<p><input id="rId" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="rType" style="width:10px;display:none;"readonly="true"/></p>
 		<p><input id="cTime" style="width:10px;display:none;"readonly="true"/></p>
-		<br/>
-		<p><font size="2" color="blue">注:多个分词请用英文逗号连接  如:万科,北京,金科</font></p>
+		<p><font size="2" color="blue">注:多个分词请用中文或英文逗号连接  如:万科,北京,金科</font></p>
 	</div>
 </body>
 </html>

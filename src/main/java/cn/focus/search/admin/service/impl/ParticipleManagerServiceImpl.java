@@ -462,7 +462,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		strWords=redisService.getRedis(key);
 		if(strWords!=null){
 			logger.info("readed FinalHouseWord from redis.");
-			return strWords;	
+			return strWords;
 		}
 
 
