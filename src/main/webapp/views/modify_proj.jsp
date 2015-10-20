@@ -13,6 +13,28 @@ $(function(){
     //搜索按钮点击事件
     $("#searchBtn").click(searchBtnClick);
     
+    //点击按钮，更新词库
+    $("#updateBtn").click(function(){
+    	//ajax 异步提交
+    		$.ajax({
+    				url:rootpath+"/admin/pm/updateIK",
+    				type:"post",
+    				dataType:"text",
+    				cache:false,
+    				success:function(data){
+    					if(data == "success"){
+    						$.messager.alert('成功','更新成功!','info');
+    						//重新加载数据
+    					}else{
+    						 $.messager.alert('错误','更新失败!','error');
+    					}
+    				},
+    				error:function(e){
+    					$.messager.alert('错误','更新失败!','error');
+    				}
+    		});
+    	})
+    
     //更改弹出框
     $('#modifyDiv').dialog({
     			title:'更改 人工分词',
@@ -173,6 +195,7 @@ $(function(){
 			<input type="text" id="projNameText" style="width:130px" ></input>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="javascript:void(0)" id="searchBtn" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" >更新词库</a>
 		</div>
 	</div>
 	
