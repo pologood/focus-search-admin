@@ -9,6 +9,15 @@ public class LastTime {
 	public static long hotword_lTime;
 	public static long stopword_lTime;
 	
+	static{
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MILLISECOND, 0);
+		long now=cal.getTime().getTime();
+		final_house_lTime = now;
+		hotword_lTime=now;
+		stopword_lTime=now;
+	}
+	
 	//修改finalhouse时间，成功返回1，失败返回0.
 	public static int setlTime(){
 		int flag=0;
