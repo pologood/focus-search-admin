@@ -426,7 +426,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		//System.out.println("！！！updateIK");
 		String flag="failed";
-		if (LastTime.setlTime()==1) flag="success";
+		if (LastTime.setReloadTime()==1) flag="success";
 		logger.info("yanzheng 1. "+LastTime.getFinal_house_lTime());
 		return flag;
 	}
@@ -438,7 +438,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		//System.out.println("@@@@@@updateStop");
 		String flag="failed";
-		if (LastTime.setStopwordlTime()==1) flag="success";
+		if (LastTime.setReloadTime()==1) flag="success";
 		return flag;
 	}
 	
@@ -449,7 +449,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		//System.out.println("######updateHot");
 		String flag="failed";
-		if (LastTime.setHotwordlTime()==1) flag="success";
+		if (LastTime.setReloadTime()==1) flag="success";
 		return flag;
 	}
 	

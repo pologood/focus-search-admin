@@ -29,14 +29,14 @@ public class RemoteDicController {
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
- 		
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==LastTime.final_house_lTime) return "";
   		else {
   			String str=participleManagerService.getRemoteFinalHouseWord();
+  			logger.info("*************"+request.getRemoteAddr()+"*****************");
+  			logger.info("es server house If-Modified-Since: "+temp);
+  			logger.info("sce client house Last-Modified: "+LastTime.final_house_lTime);
   			logger.info("adding houseword words: "+"\n"+str);
-  			logger.info("es server house word time: "+temp);
-  			logger.info("client house word time: "+LastTime.final_house_lTime);
   			return str;
   		}
   		//return participleManagerService.getRemoteFinalHouseWord();
@@ -56,9 +56,10 @@ public class RemoteDicController {
   		if (temp==LastTime.stopword_lTime) return "";
   		else {
   			String str=participleManagerService.getRemoteStopword();
+  			logger.info("*************"+request.getRemoteAddr()+"*****************");
+  			logger.info("es server stop If-Modified-Since time: "+temp);
+  			logger.info("sce client stop Last-Modified: "+LastTime.stopword_lTime);
   			logger.info("adding stopword words: "+"\n"+str);
-  			logger.info("es server stop word time: "+temp);
-  			logger.info("client stop word time: "+LastTime.stopword_lTime);
   			return str;
   		}
 		
@@ -77,9 +78,10 @@ public class RemoteDicController {
   		if (temp==LastTime.hotword_lTime) return "";
   		else {
   			String str=participleManagerService.getRemoteHotword();
-  			logger.info("adding hot words: "+str);
-  			logger.info("es server hot word time: "+"\n"+temp);
-  			logger.info("client hot word time: "+LastTime.hotword_lTime);
+  			logger.info("*************"+request.getRemoteAddr()+"*****************");
+  			logger.info("es server hot If-Modified-Since: "+temp);
+  			logger.info("sce client hot Last-Modified: "+LastTime.hotword_lTime);
+  			logger.info("adding hot words: "+"\n"+str);
   			return str;	
   		}
 		
