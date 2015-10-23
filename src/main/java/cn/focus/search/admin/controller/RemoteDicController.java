@@ -19,25 +19,30 @@ import cn.focus.search.admin.utils.JSONUtils;
 public class RemoteDicController {
 	@Autowired
 	private ParticipleManagerService participleManagerService;
+	@Autowired
+	private LastTime lastTime;
 	
 	@RequestMapping("remote_final_house.dic")
 	@ResponseBody
 	public String getRemoteFinalHouseDic(HttpServletResponse response,HttpServletRequest request){
 	    // first time through - set last modified time to now 
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
- 		response.setDateHeader("Last-Modified", LastTime.final_house_lTime);
+		long last=lastTime.getHouseword_lTime();
+ 		response.setDateHeader("Last-Modified",last );
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp==LastTime.final_house_lTime) return "";
+  		if (temp==last) return "";
   		else {
+  			
+  			logger.info("******************************");
   			String str=participleManagerService.getRemoteFinalHouseWord();
-  			logger.info("*************"+request.getRemoteAddr()+"*****************");
   			logger.info("es server house If-Modified-Since: "+temp);
-  			logger.info("sce client house Last-Modified: "+LastTime.final_house_lTime);
+  			logger.info("sce client house Last-Modified: "+last);
   			logger.info("adding houseword words: "+"\n"+str);
   			return str;
+  			
   		}
   		//return participleManagerService.getRemoteFinalHouseWord();
 		
@@ -47,20 +52,23 @@ public class RemoteDicController {
 	@ResponseBody
 	public String getRemoteStopwordDic(HttpServletResponse response,HttpServletRequest request){
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
- 		response.setDateHeader("Last-Modified", LastTime.stopword_lTime);
+		long last=lastTime.getStopword_lTime();
+ 		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
 
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp==LastTime.stopword_lTime) return "";
+  		if (temp==last) return "";
   		else {
+  			
+  			logger.info("******************************");
   			String str=participleManagerService.getRemoteStopword();
-  			logger.info("*************"+request.getRemoteAddr()+"*****************");
   			logger.info("es server stop If-Modified-Since time: "+temp);
-  			logger.info("sce client stop Last-Modified: "+LastTime.stopword_lTime);
+  			logger.info("sce client stop Last-Modified: "+last);
   			logger.info("adding stopword words: "+"\n"+str);
   			return str;
+  			
   		}
 		
 	}
@@ -69,18 +77,19 @@ public class RemoteDicController {
 	@ResponseBody
 	public String getRemoteHotwordDic(HttpServletResponse response,HttpServletRequest request){
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
- 		response.setDateHeader("Last-Modified", LastTime.hotword_lTime);
+		long last=lastTime.getHotword_lTime();
+ 		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
  		response.setCharacterEncoding("UTF-8");
 
   		long temp=request.getDateHeader("If-Modified-Since");
-  		if (temp==LastTime.hotword_lTime) return "";
+  		if (temp==last) return "";
   		else {
+  			logger.info("******************************");
   			String str=participleManagerService.getRemoteHotword();
-  			logger.info("*************"+request.getRemoteAddr()+"*****************");
   			logger.info("es server hot If-Modified-Since: "+temp);
-  			logger.info("sce client hot Last-Modified: "+LastTime.hotword_lTime);
+  			logger.info("sce client hot Last-Modified: "+last);
   			logger.info("adding hot words: "+"\n"+str);
   			return str;	
   		}

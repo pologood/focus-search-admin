@@ -169,7 +169,7 @@ function searchBtnClick(){
 function addStopWords(){
 	var type = $("#typeInput").val();
 	var stopWords = $("#stopWordsInput").val();
-	
+	stopWords = stopWords.replace("+", "%2B");
 	var data = "type="+type+"&stopWords="+stopWords;
 	var win = $.messager.progress({
         title:'Please waiting',

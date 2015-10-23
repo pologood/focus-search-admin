@@ -71,8 +71,10 @@ function modifyManalWords(){
 	var type = $("#rType").val();
 	var createTime = $("#cTime").val();
 	var manualWords = $("#manualWordsInput").val();
+	manualWords=manualWords.replace("+", "%2B");
 	
 	var data = "Id="+Id+"&pid="+pid+"&name="+name+"&aliasName="+aliasName+"&type="+type+"&createTime="+createTime+"&manualWords="+manualWords;
+	data=data.replace("+", "%2B");
 	var win = $.messager.progress({
         title:'Please waiting',
         msg:'Loading data...'
@@ -116,7 +118,8 @@ function edi(index){
   		var result = '';
 		var row = $('#projTab').datagrid('getData').rows[index];		
   		var URL = "${ikurl}"+row.name+row.aliasName;
-
+  		URL=URL.replace("+", "%2B");
+  		
   		$.ajax({
 			url:URL,
 			type:"get",

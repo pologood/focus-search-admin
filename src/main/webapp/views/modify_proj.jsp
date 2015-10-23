@@ -80,6 +80,8 @@ function modifyManalWords(){
 	var manualWords = $("#manualWordsInput").val();
 	
 	var data = "groupId="+groupId+"&manualWords="+manualWords
+	data=data.replace("+", "%2B");
+	
 	var win = $.messager.progress({
         title:'Please waiting',
         msg:'Loading data...'

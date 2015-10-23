@@ -83,6 +83,24 @@ public class RedisService {
             }
         }
     }
+    public int exists(String key) {
+    	//存在，返回1，不存在，返回0，出错，返回-1.
+        ShardedJedis jedis = null;
+        try {
+            jedis = shardedRWRedisPool.borrowWriteResource();
+            int flag=0;
+            if(jedis.exists(key)) flag=1;
+            return flag;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return -1;
+        } finally {
+            if (jedis != null) {
+                // ! 这里还回一个写链接 【请注意一定要区分，还回链接的类型】
+                shardedRWRedisPool.returnReadResource(jedis);
+            }
+        }
+    }
 
     public void setRedis(String prefix, String key, String value, boolean isExpired, int time) {
         ShardedJedis jedis = null;
@@ -134,14 +152,12 @@ public class RedisService {
      * @param key1
      * @param key2
      */
-    public void setRedis(String key1, String key2) {
+    public void setRedis(String key, String value) {
         ShardedJedis jedis = null;
         try {
             // ! 这里申请一个写链接
             jedis = shardedRWRedisPool.borrowWriteResource();
-            long leftSeconds = jedis.ttl(key1);
-            jedis.setex(key2, (int) leftSeconds, key2);
-
+            jedis.set(key,value);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
@@ -151,6 +167,7 @@ public class RedisService {
             }
         }
     }
+
     /**
      * 从list类型的value中删除指定对象
      *
