@@ -27,6 +27,7 @@
 		<mvc:message-converters register-defaults="true">
 			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
 		    	<constructor-arg value="UTF-8" />
+		    	<property name="writeAcceptCharset" value="false"/>
 			</bean>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="prettyPrint" value="true"/>

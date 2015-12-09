@@ -51,11 +51,11 @@
             <property name="sceAPIUrl"
                       value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}"/>
             <!-- sceRedisUId 修改为Redis的UID -->
-            <property name="sceRedisUId" value="1369"/>
+            <property name="sceRedisUId" value="2132"/>
             <!-- masterPassport 修改为Redis的密码 -->
-            <property name="masterPassport" value="69a04a74420f762333c5bcb053b41c4c"/>
+            <property name="masterPassport" value="dd630c9a599850ad19a953909529daf6"/>
             <!-- slavePassport 修改为Redis的密码 -->
-            <property name="slavePassport" value="69a04a74420f762333c5bcb053b41c4c"/>
+            <property name="slavePassport" value="dd630c9a599850ad19a953909529daf6"/>
             <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
             <property name="restTemplate" ref="restTemplate"/>
         </bean>
@@ -68,11 +68,11 @@
             <property name="sceAPIUrl"
                       value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}"/>
             <!-- sceRedisUId 修改为Redis的UID -->
-            <property name="sceRedisUId" value="1370"/>
+            <property name="sceRedisUId" value="2133"/>
             <!-- masterPassport 修改为Redis的密码 -->
-            <property name="masterPassport" value="5444ce4591b248c52198a7f19328b145"/>
+            <property name="masterPassport" value="73dc31eb05ab19be456fd31e6ac3bf2e"/>
             <!-- slavePassport 修改为Redis的密码 -->
-            <property name="slavePassport" value="5444ce4591b248c52198a7f19328b145"/>
+            <property name="slavePassport" value="73dc31eb05ab19be456fd31e6ac3bf2e"/>
             <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
             <property name="restTemplate" ref="restTemplate"/>
         </bean>

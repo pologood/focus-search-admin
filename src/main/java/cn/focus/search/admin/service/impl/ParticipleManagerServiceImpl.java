@@ -85,6 +85,9 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
     @Value("${redis.expiredTime}")
     private int expireTime;
+    
+	@Autowired
+	private LastTime lastTime;
 	
 	@Autowired
 	private ManualPleDao manualPleDao;
@@ -424,11 +427,14 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateIK() {
 		// TODO Auto-generated method stub
-		//System.out.println("！！！updateIK");
-		String flag="failed";
-		if (LastTime.setlTime()==1) flag="success";
-		logger.info("yanzheng 1. "+LastTime.getFinal_house_lTime());
-		return flag;
+		try {
+			lastTime.setLastModifiedTime();
+			return "success";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "failed";
+		}
 	}
 	
 
@@ -436,10 +442,15 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateStopwordIK() {
 		// TODO Auto-generated method stub
-		//System.out.println("@@@@@@updateStop");
-		String flag="failed";
-		if (LastTime.setStopwordlTime()==1) flag="success";
-		return flag;
+
+		try {
+			lastTime.setLastModifiedTime();
+			return "success";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "failed";
+		}
 	}
 	
 
@@ -447,16 +458,20 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	@Override
 	public String updateHotwordIK() {
 		// TODO Auto-generated method stub
-		//System.out.println("######updateHot");
-		String flag="failed";
-		if (LastTime.setHotwordlTime()==1) flag="success";
-		return flag;
+		try {
+			lastTime.setLastModifiedTime();
+			return "success";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "failed";
+		}
 	}
 	
 	public String getRemoteFinalHouseWord(){
 		StringBuffer str=new StringBuffer();
 		String strWords=null;
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(LastTime.getFinal_house_lTime());
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteFinalHouseWord"+Long.toString(lastTime.getHouseword_lTime());
 		
 		// read from redis firstly.
 		strWords=redisService.getRedis(key);
@@ -506,7 +521,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		// TODO Auto-generated method stub
 		StringBuffer str=new StringBuffer();
 		String strWords=null;
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(LastTime.getStopword_lTime());
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteStopword"+Long.toString(lastTime.getStopword_lTime());
 		// read from redis firstly.
 		
 			
@@ -552,7 +567,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 		StringBuffer str=new StringBuffer();
 		
 		// read from redis firstly.
-		String key="cn.focus.search.admin.RemoteDicController.getRemoteHotword"+Long.toString(LastTime.getHotword_lTime());
+		String key="cn.focus.search.admin.RemoteDicController.getRemoteHotword"+Long.toString(lastTime.getHotword_lTime());
 		String strWords=redisService.getRedis(key);
 		if(strWords!=null){
 			
@@ -611,7 +626,7 @@ public class ParticipleManagerServiceImpl implements ParticipleManagerService{
 	
 	//重新加载所有远程词库。
 	public boolean reloadRemoteDic(){
-	    if(LastTime.setReloadTime()==1) return true;
+	    if(1==1) return true;
 	    else return false;
 	}
 	

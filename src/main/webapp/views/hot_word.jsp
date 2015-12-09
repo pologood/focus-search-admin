@@ -179,6 +179,8 @@ function addHotWords(){
 	var type = $("#typeInput").val();
 	var stopWords = $("#hotWordsInput").val();
 	
+	stopWords = stopWords.replace("+", "%2B");
+	
 	var data = "type="+type+"&hotWords="+stopWords;
 	var win = $.messager.progress({
         title:'Please waiting',

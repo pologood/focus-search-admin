@@ -71,8 +71,10 @@ function modifyManalWords(){
 	var type = $("#rType").val();
 	var createTime = $("#cTime").val();
 	var manualWords = $("#manualWordsInput").val();
+	manualWords=manualWords.replace("+", "%2B");
 	
 	var data = "Id="+Id+"&pid="+pid+"&name="+name+"&aliasName="+aliasName+"&type="+type+"&createTime="+createTime+"&manualWords="+manualWords;
+	data=data.replace("+", "%2B");
 	var win = $.messager.progress({
         title:'Please waiting',
         msg:'Loading data...'
@@ -116,7 +118,8 @@ function edi(index){
   		var result = '';
 		var row = $('#projTab').datagrid('getData').rows[index];		
   		var URL = "${ikurl}"+row.name+row.aliasName;
-
+  		URL=URL.replace("+", "%2B");
+  		
   		$.ajax({
 			url:URL,
 			type:"get",
@@ -259,7 +262,7 @@ function hideExport() {
 	
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
-			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" >更新词库</a>
+			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" >立即更新词库</a>
 			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>
 			<!-- <form id="exportForm"  method="get" style="float:right">
 			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出分词词库</a>

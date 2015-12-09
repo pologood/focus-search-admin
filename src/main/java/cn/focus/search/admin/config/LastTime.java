@@ -3,111 +3,57 @@ package cn.focus.search.admin.config;
 import java.util.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import cn.focus.search.admin.service.RedisService;
+
+@Component
 public class LastTime {
-	public static long final_house_lTime;
-	public static long hotword_lTime;
-	public static long stopword_lTime;
+
+	Logger logger=LoggerFactory.getLogger(LastTime.class);
 	
-	//修改finalhouse时间，成功返回1，失败返回0.
-	public static int setlTime(){
-		int flag=0;
-		Logger logger=LoggerFactory.getLogger(LastTime.class);
-		
- 		try {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MILLISECOND, 0);
-			long now=cal.getTime().getTime();
-			final_house_lTime = now;
-			flag=1;
-			logger.info("final_house_lTime is setted to "+Long.toString(now));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("set lastTime failed!", e);
-			e.printStackTrace();
-		}
- 		
- 		return flag;
-	} 
+	@Autowired
+	public RedisService redisService;
+	public String key="Last-Modified";
 	
-	
-	//修改停用词最后修改时间，成功返回1，失败返回0.
-	public static int setStopwordlTime(){
-		int flag=0;
-		Logger logger=LoggerFactory.getLogger(LastTime.class);
-		
- 		try {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MILLISECOND, 0);
-			long now=cal.getTime().getTime();
-			stopword_lTime = now;
-			flag=1;
-			logger.info("stopword_lTime is setted to "+Long.toString(now));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("set stopword lastTime failed!", e);
-			e.printStackTrace();
-		}
- 		
- 		return flag;
-	} 
-	//修改临时加的热词最后修改时间，成功返回1，失败返回0.
-	public static int setHotwordlTime(){
-		int flag=0;
-		Logger logger=LoggerFactory.getLogger(LastTime.class);
-		
- 		try {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MILLISECOND, 0);
-			long now=cal.getTime().getTime();
-			hotword_lTime = now;
-			flag=1;
-			logger.info("hotword_lTime is setted to "+Long.toString(now));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("set hot word lastTime failed!", e);
-			e.printStackTrace();
-		}
- 		
- 		return flag;
+	public long getNow(){
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime().getTime();
 	}
 	
-	//修改所有远程词库最后修改时间，成功返回1，失败返回0.
-	public static int setReloadTime(){
-		int flag=0;
-		Logger logger=LoggerFactory.getLogger(LastTime.class);
-		
- 		try {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MILLISECOND, 0);
-			long now=cal.getTime().getTime();
-			hotword_lTime = now;
-			stopword_lTime = now;
-			final_house_lTime = now;
-			flag=1;
-			logger.info("ready to reload all remote word.");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error("set reload Time failed!", e);
-			e.printStackTrace();
+	//将所有远程词库最后修改时间设置为当前时间，成功返回1，失败返回0.
+	public void setLastModifiedTime(){
+	
+			long now=getNow();
+ 			redisService.setRedis(key, String.valueOf(now));
+ 			logger.info("Last-Modified is setted : "+now);
+ 			
+	}
+	public long getLastModifiedTime(){
+		//key存在则返回value值，否则将当前时间写入该key，并且返回当前时间。
+		if(redisService.exists(key)==0){
+			setLastModifiedTime();
+			return getNow();
+		}else {
+			return Long.parseLong(redisService.getRedis(key));
 		}
- 		
- 		return flag;
 	}
 
 
-	public static long getFinal_house_lTime() {
-		return final_house_lTime;
+	public  long getHouseword_lTime() {
+		return getLastModifiedTime();
 	}
 
 
-	public static long getHotword_lTime() {
-		return hotword_lTime;
+	public  long getHotword_lTime() {
+		return getLastModifiedTime();
 	}
 
 
-	public static long getStopword_lTime() {
-		return stopword_lTime;
+	public  long getStopword_lTime() {
+		return getLastModifiedTime();
 	} 
 	
 
