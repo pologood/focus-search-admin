@@ -336,6 +336,12 @@
 
 					<!-- <webAppConfig> <contextPath>/${project.artifactId}</contextPath> 
 						</webAppConfig> -->
+						<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>80</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
 				</configuration>
 								<executions>
 					<execution>
@@ -359,10 +365,6 @@
 	<profiles>
 		<profile>
 			<id>local</id>
-			<activation>
-				<!--设为默认部署环境 -->
-				<activeByDefault>false</activeByDefault>
-			</activation>
 			<properties>
 				<deploy.surfix>local</deploy.surfix>
 			</properties>
@@ -377,12 +379,19 @@
 
 		<profile>
 			<id>test_sce</id>
+			<properties>
+				<deploy.surfix>test_sce</deploy.surfix>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>test</id>
 			<activation>
 				<!--设为默认部署环境 -->
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<deploy.surfix>test_sce</deploy.surfix>
+				<deploy.surfix>test</deploy.surfix>
 			</properties>
 		</profile>
 	</profiles>

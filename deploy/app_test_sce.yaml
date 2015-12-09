@@ -1,6 +1,12 @@
 appid: 11301
-install: [jetty,jdk1.7.0]
-start: $JETTY_START
+start: $SERVER_START
+setenv: {'JAVA_HOME': '/opt/apps/logstash/lib/jdk',JVM_ARGS: '-Dspring.profiles.active=test_sce  -Dfile.encoding=UTF-8 -Dzookeeper.focus.cn=zk.inner.focus.cn:2181 -Dserver_name=focus-search-admin-test -server -Xms4200m -Xmx4200m -Xmn1500m -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=10 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:/opt/logs/gc.log -XX:+UseParNewGC -XX:ParallelGCThreads=3 -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=5  -XX:MaxPermSize=256m -XX:PermSize=128m'}
+tryRestart: 
+    enable: true
+    fail: 10
 webHealth: true
-success: [200,403,302]
-setenv: {JVM_ARGS: '-Dspring.profiles.active=test_sce -Dlog_path=/opt/logs/ -Dappid=11301 -Dfile.encoding=UTF-8 -XX:MaxPermSize=128m -XX:PermSize=128m'}
+webHealthConf: 
+    path: /
+    timeout: 2000ms
+    success: [200,201,403,301,302]
+tcpHealth: false
