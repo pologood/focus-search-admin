@@ -19,7 +19,7 @@
 	<repositories>
 		<repository>
 			<id>nexus_public</id>
-			<url>http://10.10.90.156/nexus/content/groups/public/</url>
+			<url>http://nexus.inner.focus.cn/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 
