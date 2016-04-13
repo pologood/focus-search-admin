@@ -8,12 +8,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 
 <!-- jQuery库 -->
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/themes/gray/easyui.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/themes/default/easyui.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/themes/icon.css" />" />
-<script type="text/javascript" src="<c:url value="/static/js/jquery.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/static/js/jquery.easyui.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/static/js/locale/easyui-lang-zh_CN.js" />"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/themes/gray/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/themes/icon.css" />
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/static/js/locale/easyui-lang-zh_CN.js"></script>
 <link rel="icon" href="http://src.focus.cn/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
 var rootpath ="<%=path%>";

@@ -1,12 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<parent>
-		<groupId>com.sohu</groupId>
-		<artifactId>focus-root-pom</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.focus</groupId>
 	<artifactId>focus-search-admin</artifactId>
@@ -133,15 +127,43 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			</dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl-api</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jstl-impl</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp.jstl</groupId>
+                    <artifactId>jstl-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 		<!-- LOGGING begin -->
 
 	    <dependency>
@@ -241,11 +263,6 @@
  			<artifactId>sce-jedis-support</artifactId>
   			<version>1.0-SNAPSHOT</version>
         </dependency>
-	<dependency>
-		<groupId>org.mortbay.jetty</groupId>
-		<artifactId>jsp-2.1</artifactId>
-		<version>6.0.0</version>
-	</dependency>
 	</dependencies>
 
 

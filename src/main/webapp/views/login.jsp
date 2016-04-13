@@ -6,7 +6,7 @@
 href="/static/images/login/Default.css" type=text/css rel=stylesheet><LINK 
 href="/static/images/login/xtree.css" type=text/css rel=stylesheet><LINK 
 href="/static/images/login/User_Login.css" type=text/css rel=stylesheet>
-<script type="text/javascript" src="<c:url value="/static/js/login.js" />"></script>
+<script type="text/javascript" src="/static/js/login.js"></script>
 <META http-equiv=Content-Type content="text/html; charset=utf-8">
 <META content="MSHTML 6.00.6000.16674" name=GENERATOR>
 

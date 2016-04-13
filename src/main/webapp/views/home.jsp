@@ -113,7 +113,7 @@ $(function(){
 	<div region="center" title="搜索后台管理系统" style="overflow:hidden;" id="menuTitle">
 		<div id="tt" tools="#tab-tools" class="easyui-tabs" fit="true" border="false">
 			<div title="欢迎页面" style="padding:20px;overflow:hidden;" id="tabContent"> 
-				<iframe frameborder='0' width='100%' height='100%' src='<c:url value="/views/welcome.jsp" />'></iframe>
+				<iframe frameborder='0' width='100%' height='100%' src='/views/welcome.jsp'></iframe>
 			</div>
 		</div>
 	</div>

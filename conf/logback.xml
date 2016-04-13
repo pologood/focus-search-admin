@@ -33,7 +33,7 @@
             <level>ERROR</level>
         </filter>
 
-        <File>../../logs/focus-housesearch.error.log</File>
+        <File>../../logs/focus-search-admin.error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>../../logs/history/%d{yyyy-MM,aux}/focus-search-admin.log_%d</FileNamePattern>
             <maxHistory>90</maxHistory>

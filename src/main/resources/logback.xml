@@ -7,9 +7,9 @@
 	</appender>
 	
 	<appender name="consoleAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log_path}stdout_${appid}.log</file>
+		<file>../../logs/focus-search-admin.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log_path}stdout_${appid}_%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>../../logs/history/%d{yyyy-MM,aux}/focus-search-admin.log_%d</fileNamePattern>
 		</rollingPolicy>
 		<encoder>
 			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -22,9 +22,9 @@
 	</appender> 
 	
     <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">  
-        <file>${log_path}stderr_${appid}.log</file>  
+        <file>../../logs/focus-search-admin.error.log</file>  
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
-            <fileNamePattern>${log_path}stderr_${appid}_%d{yyyy-MM-dd}.log</fileNamePattern>  
+            <fileNamePattern>../../logs/history/%d{yyyy-MM,aux}/focus-search-admin.log_%d</fileNamePattern>  
         </rollingPolicy>  
         <encoder>  
             <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>  
