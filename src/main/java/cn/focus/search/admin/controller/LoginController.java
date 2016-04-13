@@ -11,7 +11,7 @@ public class LoginController {
 	
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
-	@RequestMapping("")
+	@RequestMapping("login")
 	public String toLogin(){
 		try{
 			return "login";
