@@ -1,64 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d [%thread] %-5level %logger{68} %line - logId[%X{client}] - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <appender name="infoAppender"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-
-        <File>../../logs/focus-search-admin.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily -->
-            <fileNamePattern>
-                <fileNamePattern>../../logs/history/%d{yyyy-MM,aux}/focus-search-admin.log_%d</fileNamePattern>
-            </fileNamePattern>
-            <maxHistory>90</maxHistory>
+	<appender name="console" class="ch.qos.logback.core.appAppender">
+		<encoder>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="appAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/app.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/app.log.%d{yyyyMMdd}</fileNamePattern>
+			<maxHistory>7</maxHistory>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
-        </rollingPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印业务日志 -->  
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter>  
+	</appender> 
+	
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <file>${LOG_DIR}/stderr.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <fileNamePattern>${LOG_DIR}/stderr.log.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart> 
+        </rollingPolicy>  
+        <encoder>  
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>  
+        </encoder>  
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->  
+            <level>ERROR</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter>  
+    </appender>  
 
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d [%thread] %-5level %logger{68} %line - logId[%X{client}] - %msg%n</pattern>
-        </encoder>
-    </appender>
 
-    <appender name="errorAppender"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-
-        <File>../../logs/focus-search-admin.error.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>../../logs/history/%d{yyyy-MM,aux}/focus-search-admin.log_%d</FileNamePattern>
-            <maxHistory>90</maxHistory>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-        </rollingPolicy>
-        <encoder>
-            <charset>UTF-8</charset>
-            <Pattern>%d [%thread] %-5level %logger{68} %line - logId[%X{client}] - %msg%n</Pattern>
-        </encoder>
-    </appender>
-
-
-    <logger name="cn.focus" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="infoAppender"/>
-        <appender-ref ref="errorAppender"/>
-    </logger>
-
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="infoAppender"/>
-        <appender-ref ref="errorAppender"/>
-    </root>
-
+	<root level="INFO">
+		<appender-ref ref="appAppender" /> 
+		<appender-ref ref="errorAppender" /> 
+	</root>
+	
 </configuration>
-
-
