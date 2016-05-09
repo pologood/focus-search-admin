@@ -1,0 +1,54 @@
+2016-05-10 11:30:49.396 [qtp539779829-32] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: wanggang
+2016-05-10 11:30:49.401 [qtp539779829-32] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 11:31:07.759 [qtp539779829-33] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 万科
+2016-05-10 11:31:07.760 [qtp539779829-33] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 15:12:40.466 [qtp1301213900-32] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 薛庆元
+2016-05-10 15:12:40.469 [qtp1301213900-32] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 16:08:01.980 [qtp1301213900-33] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 薛庆元
+2016-05-10 16:08:01.981 [qtp1301213900-33] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 16:14:59.891 [qtp1301213900-36] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 薛庆元
+2016-05-10 16:14:59.891 [qtp1301213900-36] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 16:15:33.505 [qtp1301213900-33] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - status: 1
+2016-05-10 16:15:33.506 [qtp1301213900-33] INFO  c.f.s.a.c.ParticipleManagerController - stoplist: 薛庆元
+2016-05-10 17:02:53.680 [qtp1676039899-32] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 王钢强
+2016-05-10 17:02:53.685 [qtp1676039899-32] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 17:03:20.459 [qtp1676039899-37] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 王钢强
+2016-05-10 17:03:20.459 [qtp1676039899-37] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 17:03:32.177 [qtp1676039899-35] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 薛庆元
+2016-05-10 17:03:32.177 [qtp1676039899-35] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 17:03:35.787 [qtp1676039899-35] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - status: 0
+2016-05-10 17:03:35.787 [qtp1676039899-35] INFO  c.f.s.a.c.ParticipleManagerController - stoplist: 薛庆元
+2016-05-10 17:04:55.822 [qtp1676039899-32] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 薛庆元
+2016-05-10 17:04:55.822 [qtp1676039899-32] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 17:05:07.609 [qtp1676039899-32] INFO  c.f.s.a.s.impl.StopWordsServiceImpl - wordname: 王钢强
+2016-05-10 17:05:07.609 [qtp1676039899-32] INFO  c.f.s.a.c.ParticipleManagerController - list大小： 0
+2016-05-10 17:05:29.047 [qtp1676039899-35] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 韩雷钧
+2016-05-10 17:05:29.047 [qtp1676039899-35] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 17:05:41.174 [qtp1676039899-33] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 段卫东
+2016-05-10 17:05:41.174 [qtp1676039899-33] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 17:05:47.148 [qtp1676039899-37] INFO  c.f.s.a.s.impl.HotWordServiceImpl - status: 0
+2016-05-10 17:05:47.148 [qtp1676039899-37] INFO  c.f.s.a.c.HotWordsController - hotlist: 段卫东
+2016-05-10 17:05:47.148 [qtp1676039899-37] INFO  c.f.s.a.c.HotWordsController - fileName: hot-words.dic
+2016-05-10 17:06:03.719 [qtp1676039899-34] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 段卫东
+2016-05-10 17:06:03.719 [qtp1676039899-34] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 17:06:12.279 [qtp1676039899-37] INFO  c.f.s.a.s.impl.HotWordServiceImpl - wordname: 韩雷钧
+2016-05-10 17:06:12.280 [qtp1676039899-37] INFO  c.f.s.a.c.HotWordsController - list大小： 0
+2016-05-10 17:06:59.739 [qtp1676039899-34] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - status: 0
+2016-05-10 17:06:59.739 [qtp1676039899-34] INFO  c.f.s.a.c.ParticipleManagerController - parlist: 森林里,绿岛四季度假村
+2016-05-10 17:30:58.481 [main] INFO  dic.RedisTest - ranran
+2016-05-10 17:30:58.493 [main] INFO  dic.RedisTest - ranren
+2016-05-10 19:36:43.251 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 19:46:32.160 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 19:54:14.345 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 20:01:07.866 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 20:15:14.884 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 20:20:54.101 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed FinalHouseWord from mysql
+2016-05-10 20:20:54.311 [main] INFO  dic.RemoteDicTest - 679
+2016-05-10 20:20:56.645 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed RemoteHotWord from mysql
+2016-05-10 20:20:56.645 [main] INFO  dic.RemoteDicTest - 段卫东
+韩雷钧
+
+2016-05-10 20:20:56.648 [main] INFO  c.f.s.a.s.i.ParticipleManagerServiceImpl - readed RemoteStopWord from mysql
+2016-05-10 20:20:56.648 [main] INFO  dic.RemoteDicTest - 薛庆元
+王钢强
+

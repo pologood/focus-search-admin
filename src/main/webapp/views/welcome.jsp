@@ -13,9 +13,8 @@
             <li>陆景浩</li>
             <li>eamil:jinghaolu@sohu-inc.com</li>
             <li>技术支持</li>
-            <li>唐雪明</li>
-            <li>email:xuemingtang@sohu-inc.com</li>
-            <!-- <li>tel:  010-56602976</li> -->
+            <li>薛庆元</li>
+            <li>email:qingyuanxue@sohu-inc.com</li>
         </ul>
     </div>
 </body>

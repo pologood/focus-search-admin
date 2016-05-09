@@ -31,21 +31,21 @@ public class RemoteDicTest {
 	
 	@Test
 	public void testStopword() throws Exception{
-		/*Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
-		logger.info(""+participleManagerService.getRemoteFinalHouseWord());
-		logger.info(""+participleManagerService.searchProjToMidifyNum("","王"));*/
-/*		JSONObject json = new JSONObject();
-		List<Participle> list=null;*/
+		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
+		System.out.println(""+participleManagerService.getRemoteFinalHouseWord());
+		logger.info(""+participleManagerService.searchProjToMidifyNum("","王"));
+		JSONObject json = new JSONObject();
+		List<Participle> list=null;
 		//logger.info(participleManagerService.searchProjToMidify(0,10));
-/*		list=participleManagerService.searchProjToMidify(0, 10);
+		list=participleManagerService.searchProjToMidify(0, 10);
 		JSONArray ja=new JSONArray();
 		ja.addAll(list);
 		json.put("total", String.valueOf(list.size()));
 		json.put("rows", ja);
 		
-		System.out.println(JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat));*/
-		/*		logger.info(participleManagerService.getRemoteHotword());
-		logger.info(participleManagerService.getRemoteStopword());*/	
+		System.out.println(JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat));
+				logger.info(participleManagerService.getRemoteHotword());
+		logger.info(participleManagerService.getRemoteStopword());	
 		//logger.info(String.valueOf(participleManagerService.getParticipleList(0).size()));
 	}
 

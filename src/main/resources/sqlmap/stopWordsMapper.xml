@@ -23,11 +23,11 @@
 		update_time
 	</sql>
 	
-	<!-- 将status置0 -->
+	<!-- 将status置0 ,这里应该和导出动作结合，最好使用事务，下一个版本更新。-->
 	<update id="setExported"  flushCache="true">
         update stop_words
-        set status=2
-        where status=1
+        set status=1
+        where status=0
     </update>
 
 	<!-- 获取停用词列表 -->
@@ -90,7 +90,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from stop_words
-		where status=1
+		where status=0
 	</select>
 	
 	<delete id="delStopWordsById" parameterType="java.lang.Integer" statementType="PREPARED">

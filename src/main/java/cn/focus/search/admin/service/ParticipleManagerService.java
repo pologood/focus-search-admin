@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.model.PplResult;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -26,47 +27,13 @@ public interface ParticipleManagerService {
 	 * @return
 	 */
 	public Map<String,Object> getIkWords(int pageNo,int pageSize,String words);
-	/**
-	 * 
-	 * @param groupId
-	 * @param projName
-	 * @param from
-	 * @param size
-	 * @return
-	 */
-	public JSONObject searchProj(String groupId,String projName,int from,int size);
-	/**
-	 * 
-	 * @param groupId
-	 * @param manualWord
-	 * @return
-	 */
-	public boolean updateManualWords(String groupId,String manualWords,String userName)throws Exception;
-	
+
 
 	/**
 	 * 
 	 * @return
 	 */
 	public int getWordMapSize();
-	
-	
-
-	/***
-	 * 批量获取未分词数据
-	 * @param participles
-	 * @return
-	 */
-	public List<Participle> getParticipleList(int status, RowBounds rowBounds);
-	
-	/**
-     * 批量获取全部未分词数据
-     * @param status=0
-     * @return
-     * @throws Exception
-     */
-    public int getTotalNum(@Param("status")int status)throws Exception;
-	
 	public int updateParticiple(Participle participle);
 	
 	public String updateIK();//更新final_house词库。
@@ -127,5 +94,14 @@ public interface ParticipleManagerService {
 	public List<Participle> searchProjToMidify(String groupId, String projName, int i, int pageSize);
 	public int searchProjToMidifyNum();
 	public int searchProjToMidifyNum(String groupId, String projName);
+
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月9日下午8:33:23
+	 * @description 对新加入数据库的楼盘进行初步分词。
+	 */
+	public void updateParticiple();
+	public PplResult getPplWord(String word);
 
 }

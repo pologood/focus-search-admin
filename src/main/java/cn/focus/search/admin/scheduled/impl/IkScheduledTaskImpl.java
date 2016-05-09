@@ -21,17 +21,17 @@ public class IkScheduledTaskImpl  implements IkScheduledTask {
 	
     @Scheduled(cron="0 0 23 ? * FRI")
     @Override
-    public void doTasks() {
-        //System.out.println("==================333");
-    	String isUpdateIk;
-    	String isUpdateHot;
-    	String isUpdateStop;
-    	isUpdateIk = pmService.updateIK();
-    	isUpdateHot = pmService.updateHotwordIK();
-        isUpdateStop = pmService.updateStopwordIK();
-        log.info("IK" + isUpdateIk);
-        log.info("HotWordIk" + isUpdateHot);
-        log.info("StopWordIk" + isUpdateStop);
-        //System.out.println("==================1111");
+    public void doUpdateDic() {
+    	
+    	log.info("更新词库。");
+    	pmService.updateIK();
+  
+    }
+    
+    @Scheduled(cron="0 0 10 ? * *")
+    @Override
+    public void doUpdateParticiple(){
+    	log.info("对新进入数据库的楼盘进行初步分词。");
+    	pmService.updateParticiple();
     }
 }

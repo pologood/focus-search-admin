@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.model.HotWord;
 import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
@@ -96,7 +97,6 @@ public class HotWordsController {
 		try{
 			String existWord = "";
 			String stype = request.getParameter("type");
-			//System.out.println("！停止词TYPE："+stype);
 			if(StringUtils.isBlank(stype)){
 				return JSONUtils.badResult("failed");
 			}
@@ -107,11 +107,9 @@ public class HotWordsController {
 			if (hotWords == null || hotWords =="" || type < 1 || type > 2)
 				return JSONUtils.badResult("failed");
 			List<HotWord> hotList = new LinkedList<HotWord>();
-			hotList = stopWordsUtil.getHotList(type, hotWords, editor, 1);
-			System.out.println("@@@@@@@@@@@hotlist大小："+hotList.size());
+			hotList = stopWordsUtil.getHotList(type, hotWords, editor, Constants.ORI_STATUS);
 			for (HotWord hw : hotList)
 			{
-				//System.out.println("sw: "+ hw.getName()+"  "+hw.getType()+"  "+hw.getEditor()+hw.getCreateTime());
 				List<HotWord> list = new LinkedList<HotWord>();
 				list = hotWordService.getHotWordListByName(hw.getName());
 				logger.info("list大小： " + list.size());
@@ -171,7 +169,6 @@ public class HotWordsController {
 			}
 			int id = Integer.parseInt(sid);
 			String name = request.getParameter("name");
-			//System.out.println("!!!!!!@@@@@id:"+id +"  name:"+name);
 			int result = hotWordService.delHotWordById(id);
 			if(result<1){
 				logger.info("wordId: " + id + "删除失败!");
@@ -195,10 +192,9 @@ public class HotWordsController {
 	@ResponseBody
 	public String exportHotWords(HttpServletRequest request)
 	{
-		//System.out.println("QQQQQ!!!!!!!!");		
 		try{
 			List<String> hotlist = new LinkedList<String>();
-			hotlist = hotWordService.getHotWordnameByStatus(1);
+			hotlist = hotWordService.getHotWordnameByStatus(Constants.ORI_STATUS);
 			if (hotlist.size() == 0)
 				return JSONUtils.badResult("没有热词可供导出！");
 			logger.info("hotlist: " + hotlist.get(hotlist.size()-1));
@@ -206,7 +202,6 @@ public class HotWordsController {
 			String fileName = "hot-words.dic";
 			logger.info("fileName: "+fileName);
 			hotWordService.exportHot(path, fileName, hotlist);
-			//pmService.exportHot(request, response, fileName);
 			hotWordService.setExported();
 			return JSONUtils.ok("词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){

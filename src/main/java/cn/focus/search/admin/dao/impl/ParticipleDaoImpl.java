@@ -1,5 +1,6 @@
 package cn.focus.search.admin.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,15 +21,6 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	@Override
 	public int updateParticiple(Participle participle) throws Exception {
 		return sqlSession.update("ParticipleDao.updateParticiple",participle);	
-	}
-
-	@Override
-	public List<Participle> getParticipleList(int status, RowBounds rowBounds) throws Exception {
-		return sqlSession.selectList("ParticipleDao.getParticipleList",status,rowBounds);
-	}
-	@Override
-	public List<Participle> getDayFinalHouseParticipleList() throws Exception {
-		return sqlSession.selectList("ParticipleDao.getDayFinalHouseParticipleList");
 	}
 
 	@Override
@@ -56,12 +48,7 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		return sqlSession.delete("ParticipleDao.delParticipleWordsByPid", pid);
 	}
 
-	@Override
-	public int getTotalNum(int status) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("ParticipleDao.getTotalNum", status);
-	}
-	
+
 	@Override
 	public List<Participle> getPorjList(int i, int pageSize) {
 		// TODO Auto-generated method stub
@@ -80,18 +67,6 @@ public class ParticipleDaoImpl implements ParticipleDao {
 	}
 
 	@Override
-	public int updateParticiples(Integer pid, String manualWords, String userName) {
-		// TODO Auto-generated method stub
-		Participle temp=new Participle();
-		temp.setPid(pid);
-		temp.setParticiples(manualWords);
-		temp.setEditor(userName);
-		temp.setUpdateTime(new Date());
-		
-		return sqlSession.update("ParticipleDao.updateParticiples", temp);
-	}
-
-	@Override
 	public int getPorjListNum() {
 		// TODO Auto-generated method stub		
 		return sqlSession.selectOne("ParticipleDao.getPorjListNum");
@@ -104,6 +79,15 @@ public class ParticipleDaoImpl implements ParticipleDao {
 		if(!groupId.equals("")) temp.setPid(Integer.valueOf(groupId));
 		temp.setName(projName);
 		return sqlSession.selectOne("ParticipleDao.getPorjListSearchNum",temp);
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.dao.ParticipleDao#getProjNew()
+	 */
+	@Override
+	public List<Participle> getProjListNew() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("ParticipleDao.getProjListNew");
 	}
 
 }

@@ -40,21 +40,4 @@ public class LastTime {
 			return Long.parseLong(redisService.getRedis(key));
 		}
 	}
-
-
-	public  long getHouseword_lTime() {
-		return getLastModifiedTime();
-	}
-
-
-	public  long getHotword_lTime() {
-		return getLastModifiedTime();
-	}
-
-
-	public  long getStopword_lTime() {
-		return getLastModifiedTime();
-	} 
-	
-
 }

@@ -119,26 +119,17 @@ function formatAction(value,row,index){
   	$(document).delegate("#a"+index,"click",function(){
  
   		var result = '';
-  		var URL = "${ikurl}"+row.name+row.aliasName;
+  		var URL = rootpath+"/admin/pm/query_participle?text="+row.name+row.aliasName;
   		$.ajax({
 			url:URL,
 			type:"get",
-			dataType:"json",
+			dataType:"text",
 			cache:false,
-			success:function(data){
-				var length = data.tokens.length;
-				result += data.tokens[0].token;
-				if(length>1){
-					for(var i=1;i<length;i++){
-						result += '｜';
-						result += data.tokens[i].token;
-					}
-				}
-				
-				$("#manualWordsInput_ik").val(result);
+			success:function(data){				
+				$("#manualWordsInput_ik").val(data);
 			},
 			error:function(e){
-				$.messager.alert('错误','编辑失败3!','error');
+				$.messager.alert('错误','编辑失败3!'+e,'error');
 			}
 	     });  		
   		$("#groupIdInput").val(row.pid);
@@ -148,7 +139,30 @@ function formatAction(value,row,index){
   	});
 	return a;
 }
-
+//exportParticipleDic
+$(function(){
+	$("#exportParticipleDic").click(function(){
+		var isExport = confirm("确认导出分词?");
+		if (isExport == true){
+			$.ajax({
+				url:rootpath+"/admin/pm/exportParticiple",
+				type:"post",
+				dataType:"json",
+				cache:false,
+				success:function(response){
+					if(response.errorCode == 0){
+						$.messager.alert('成功',response.errorMsg,'info');						
+					}else{
+						 $.messager.alert('错误',response.errorMsg,'error');
+					}
+				},
+				error:function(e){					
+					$.messager.alert('错误','导出失败2!','error');
+				}
+		});
+		}
+	});
+});
 
 $(function(){
 	$('#pp1').tooltip({
@@ -165,8 +179,18 @@ $(function(){
 
 </script>
 </head>
-
 <body>
+<!-- <body onload="hideExport()">
+<script>window.onload=hideExport</script>
+<script language="javascript" for="window" event="onload">
+function hideExport() {       
+ 	var name = "${user.userName}";
+	if(name != "admin1")
+	{
+		$("#exportHotDic").hide();
+	} 
+};
+</script> -->
 
 	<table class="easyui-datagrid" id="projTab" style="width:100%;height:497px"
 			url="<%=basePath %>/admin/pm/proj_query" 
@@ -198,6 +222,7 @@ $(function(){
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="javascript:void(0)" id="searchBtn" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 			<a href="javascript:void(0)" id="updateBtn" class="easyui-linkbutton" >更新词库</a>
+			<a href="javascript:void(0)" id="exportParticipleDic" class="easyui-linkbutton" iconCls="icon-export">导出楼盘词库</a>
 		</div>
 	</div>
 	

@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.model.Participle;
 import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
@@ -105,7 +106,7 @@ public class StopWordsController {
 			if (stopWords == null || stopWords =="" || type < 1 || type > 2)
 				return JSONUtils.badResult("failed");
 			List<StopWords> stopList = new LinkedList<StopWords>();
-			stopList = stopWordsUtil.getStopList(type, stopWords, editor, 1);
+			stopList = stopWordsUtil.getStopList(type, stopWords, editor, Constants.ORI_STATUS);
 			for (StopWords sw : stopList)
 			{
 				//System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
@@ -175,7 +176,7 @@ public class StopWordsController {
 	public String exportStop(HttpServletResponse response){
 		try{
 			List<String> stoplist = new LinkedList<String>();
-			stoplist = stopWordsService.getStopWordnameByStatus(1);
+			stoplist = stopWordsService.getStopWordnameByStatus(Constants.ORI_STATUS);
 			if (stoplist.size() == 0)
 				return JSONUtils.badResult("没有停止词可供导出！");
 			logger.info("stoplist: " + stoplist.get(stoplist.size()-1));

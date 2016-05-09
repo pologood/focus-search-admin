@@ -4,8 +4,20 @@ package cn.focus.search.admin.scheduled;
  * Created by zhaozhaozhang on 2015/8/5.
  */
 public interface IkScheduledTask {
-    /**
-     * 定时扫描IK词库
-     */
-    public void doTasks();
+
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月9日下午8:28:00
+	 * @description 定时更新字典
+	 */
+	void doUpdateDic();
+
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月9日下午8:29:28
+	 * @description 
+	 */
+	void doUpdateParticiple();
 }

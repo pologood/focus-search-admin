@@ -246,9 +246,6 @@ $(function(){
 				}
 		});
 		}
-		/* var url= rootpath+"/hot/exportHot"
-		$("#exportForm").attr("action",url); 
-		$("#exportForm").submit(); */
 	});
 });
 
@@ -272,43 +269,22 @@ $(function(){
 <script>window.onload=hideExport</script>
 <script language="javascript" for="window" event="onload">
 function hideExport() {       
-	var name = "${user.userName}";
+/* 	var name = "${user.userName}";
 	if(name != "admin1")
 	{
 		$("#exportHotDic").hide();
-	}
+	} */
 };
 </script>
 
-	<!-- 
-	<table class="easyui-datagrid" id="projTab" style="width:95%;height:600px"
-			url="<%=basePath %>/hot/loadHot" 
-			title="添加热词" toolbar="#tb"fitColumns="true" pagination="true">
-		<thead>
-			<tr>
-				<th field="id" width="80" align="center">id</th>
-				<th field="name" width="160" align="center" id="projName">名称</th>
-				<th field="type" width="80" align="center">类型</th>
-				<th field="status" width="80" align="center">状态</th>
-				<th field="editor" width="80" align="center">编辑者</th>
-				<th field="createTime" width="160" align="center">创建时间</th>
-				<th field="updateTime" width="160" align="center">最后更新时间</th>
-				<th field="action" width="80" align="center" formatter="formatAction">删除</th>
-			</tr>
-		</thead>
-	</table>
-	 -->
 	 <table id="projTab" class="easyui-datagrid" style="width:100%;height:497px"
 	 title="添加热词" toolbar="#tb"fitColumns="true" pagination="true">
 	 </table>
 	<div id="tb" style="padding:5px;height:auto">
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
-			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新热词词库</a>
+			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新词库</a>
 			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			<!-- <form id="exportForm"  method="get" style="float:right">
-			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			</form>	 -->		
 		</div>
 	</div>
 	

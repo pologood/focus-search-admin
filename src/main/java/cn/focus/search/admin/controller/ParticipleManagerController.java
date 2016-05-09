@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.model.PplResult;
 import cn.focus.search.admin.model.UserInfo;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.utils.JSONUtils;
@@ -42,38 +44,6 @@ public class ParticipleManagerController {
 	@Autowired
 	private ParticipleManagerService participleManagerService;
 	
-	@RequestMapping(value="ptindex",method =RequestMethod.GET)
-	public String ptCheckIndex(){
-		try{
-			return "ptcheck";
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			return "error";
-		}
-	}
-	
-	@RequestMapping(value="mindex",method =RequestMethod.GET)
-	public String manualPtIndex(){
-		try{
-			return "manualpt";
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			return "error";
-		}
-	}
-	
-/*	@RequestMapping(value="modifyP",method =RequestMethod.GET)
-	public String modifyP(){
-		try{
-			String ikurl = participleManagerService.getIkUrl();
-			return "modify_proj";
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			return "error";
-		}
-	}*/
-	
-	
 	@RequestMapping(value="modifyP",method =RequestMethod.GET)
 	public ModelAndView modifyP(){ 
 		try{
@@ -89,21 +59,17 @@ public class ParticipleManagerController {
 		}
 	}
 	
-	@RequestMapping(value="backup",method =RequestMethod.GET)
-	public ModelAndView dataBackup(){ 
+	//分词效果。
+	@RequestMapping(value="ptindex",method =RequestMethod.GET)
+	public String ptCheckIndex(){
 		try{
-			ModelAndView mv = new ModelAndView("backup"); 
-			String ikurl = participleManagerService.getIkUrl();
-			System.out.println("ikurl:"+ikurl);
-			mv.addObject("ikurl", ikurl);
-		    return mv;
+			return "ptcheck";
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
-			ModelAndView mv = new ModelAndView("error"); 
-			return mv;
+			return "error";
 		}
 	}
-	
+
 	@RequestMapping(value="stop",method =RequestMethod.GET)
 	public String stopWords(){
 		try{
@@ -148,8 +114,6 @@ public class ParticipleManagerController {
 				pageSize = Integer.valueOf(request.getParameter("rows"));
 			}
 			
-//			System.out.println("words: "+words+" page:"+request.getParameter("page")+" rows"+ request.getParameter("rows"));
-
 			
 			Map<String,Object> map = participleManagerService.getIkWords(pageNo,pageSize,words);
 			
@@ -166,49 +130,6 @@ public class ParticipleManagerController {
 			return JSONUtils.badResult("failed");
 		}
 	}
-	
-	/**
-	 * 搜索的楼盘列表
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="query",method=RequestMethod.POST)
-	@ResponseBody
-	public String queryProjList(HttpServletRequest request){
-		try{
-			JSONObject json = new JSONObject();
-            String groupId = request.getParameter("groupId");
-            String projName = request.getParameter("projName");
-			int pageSize = 10;
-			int pageNo = 1;
-			
-            
-            if(StringUtils.isBlank(projName) && StringUtils.isBlank(groupId)){
-            	return JSONUtils.badResult("groupId or projName can not be empty");
-            }
-			if(StringUtils.isNotBlank(request.getParameter("page"))){
-				pageNo = Integer.valueOf(request.getParameter("page"));
-			}
-			if(StringUtils.isNotBlank(request.getParameter("rows"))){
-				pageSize = Integer.valueOf(request.getParameter("rows"));
-			}
-            
-            JSONObject js = participleManagerService.searchProj(groupId, projName, pageNo-1, pageSize);
-			
-			
-			json.put("total", js.getIntValue("total"));
-			json.put("rows", JSONObject.toJSON(js.get("projList")));
-			
-			System.out.println(json.toJSONString());
-			return json.toJSONString();
-			
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
-			return JSONUtils.badResult("failed");
-		}
-	}
-	
 	
 	/**
 	 * modify_proj.jsp中修改楼盘分词。。。搜索待修改楼盘列表
@@ -239,7 +160,6 @@ public class ParticipleManagerController {
             if(StringUtils.isBlank(projName) && StringUtils.isBlank(groupId)){
             	list = participleManagerService.searchProjToMidify((pageNo-1)*pageSize, pageSize);
             	total= participleManagerService.searchProjToMidifyNum();
-            	//System.out.println("@@@@@@@@total"+total);
             }else {
             	list = participleManagerService.searchProjToMidify(groupId, projName, (pageNo-1)*pageSize, pageSize);
             	total= participleManagerService.searchProjToMidifyNum(groupId,projName);
@@ -254,45 +174,6 @@ public class ParticipleManagerController {
 			System.out.println(JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat));
 			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 			
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
-			return JSONUtils.badResult("failed");
-		}
-	}
-	
-	/***
-	 * 批量获取新加的待分词的数据
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="select4new",method=RequestMethod.POST)
-	@ResponseBody
-	public String selectNewPartList(HttpServletRequest request){
-		try{
-			JSONObject json = new JSONObject();
-			int pageSize = 10;
-			int pageNo = 1;
-			
-			if(StringUtils.isNotBlank(request.getParameter("page"))){
-				pageNo = Integer.valueOf(request.getParameter("page"));
-			}
-			if(StringUtils.isNotBlank(request.getParameter("rows"))){
-				pageSize = Integer.valueOf(request.getParameter("rows"));
-			}
-			RowBounds rowBounds=new RowBounds((pageNo-1)*pageSize, pageSize);
-			List<Participle> list = participleManagerService.getParticipleList(0, rowBounds);
-			int totalNum = participleManagerService.getTotalNum(0);
-			//System.out.println("@@@@@@@@total"+totalNum);
-
-			JSONArray ja=new JSONArray();
-            ja.addAll(list);
-			
-			json.put("total", String.valueOf(totalNum));
-			json.put("rows", ja);
-			
-			System.out.println(JSON.toJSONString(ja,SerializerFeature.WriteDateUseDateFormat));
-			return JSON.toJSONString(json,SerializerFeature.WriteDateUseDateFormat);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
@@ -367,37 +248,6 @@ public class ParticipleManagerController {
 		}
 	}
 	
-	/**
-	 * 修改人工分词
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="manual",method=RequestMethod.POST)
-	@ResponseBody
-	public String modifyManualWords(HttpServletRequest request){
-		try{
-			String groupId = request.getParameter("groupId");
-			String manualWords = request.getParameter("manualWords");
-			UserInfo user = (UserInfo)request.getSession().getAttribute("user");
-			
-			System.out.println("groupId:"+groupId+" manualWords:"+manualWords);
-			
-			if(StringUtils.isBlank(groupId)){
-				return JSONUtils.badResult("failed");
-			}
-			
-			boolean flg = participleManagerService.updateManualWords(groupId, manualWords,user.getUserName());
-			if(!flg){
-				return JSONUtils.badResult("failed");
-			}
-			return JSONUtils.ok();
-			
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			return JSONUtils.badResult("failed");
-		}
-	}
-	
 	/***
 	 * 删除分词
 	 * @param request
@@ -460,6 +310,20 @@ public class ParticipleManagerController {
 		}
 	}
 	
+	/**
+	 * 查询es端目前分词情况，采用ik模式。
+	 * 主要是为了解决modify_proj.jsp 中，跨域访问问题。（http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource）
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="query_participle",method=RequestMethod.GET)
+	@ResponseBody
+	public String queryParticiple(HttpServletRequest request){
+		String text = request.getParameter("text");
+		PplResult pplResult=participleManagerService.getPplWord(text);
+		return pplResult.getIndexPplWord();
+	}
+	
 	
 	
 	/**
@@ -485,7 +349,7 @@ public class ParticipleManagerController {
 	public String exportParticiple(HttpServletResponse response){
 		try{
 			List<String> parlist = new LinkedList<String>();
-			parlist = participleManagerService.getParticiplesByStatus(1);
+			parlist = participleManagerService.getParticiplesByStatus(Constants.ORI_STATUS);
 			if (parlist.size() == 0)
 				return JSONUtils.badResult("没有分词可供导出！");
 			logger.info("parlist: " + parlist.get(parlist.size()-1));

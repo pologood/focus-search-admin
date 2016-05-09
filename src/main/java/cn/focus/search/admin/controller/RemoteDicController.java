@@ -26,8 +26,9 @@ public class RemoteDicController {
 	@ResponseBody
 	public String getRemoteFinalHouseDic(HttpServletResponse response,HttpServletRequest request){
 	    // first time through - set last modified time to now 
+		//楼盘词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getHouseword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified",last );
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
@@ -51,8 +52,9 @@ public class RemoteDicController {
 	@RequestMapping("remote_stopword.dic")
 	@ResponseBody
 	public String getRemoteStopwordDic(HttpServletResponse response,HttpServletRequest request){
+		//停用词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getStopword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
@@ -76,8 +78,9 @@ public class RemoteDicController {
 	@RequestMapping("remote_hotword.dic")
 	@ResponseBody
 	public String getRemoteHotwordDic(HttpServletResponse response,HttpServletRequest request){
+		//热词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getHotword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
