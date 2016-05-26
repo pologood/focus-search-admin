@@ -32,7 +32,7 @@ public class RemoteDicTest {
 	@Test
 	public void testStopword() throws Exception{
 		Logger logger = LoggerFactory.getLogger(RemoteDicTest.class);
-		System.out.println(""+participleManagerService.getRemoteFinalHouseWord());
+/*		System.out.println(""+participleManagerService.getRemoteFinalHouseWord());
 		logger.info(""+participleManagerService.searchProjToMidifyNum("","王"));
 		JSONObject json = new JSONObject();
 		List<Participle> list=null;
@@ -47,7 +47,7 @@ public class RemoteDicTest {
 				logger.info(participleManagerService.getRemoteHotword());
 		logger.info(participleManagerService.getRemoteStopword());	
 		//logger.info(String.valueOf(participleManagerService.getParticipleList(0).size()));
-	}
+*/	}
 
 }
 

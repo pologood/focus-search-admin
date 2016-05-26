@@ -77,4 +77,25 @@ public interface HotWordService {
      * @throws Exception
      */
     public int setExported()throws Exception;
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日上午9:54:24
+	 * @description 
+	 */
+	public void importNewProjName();
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日上午10:18:55
+	 * @description 
+	 */
+	List<HotWord> getHotList(int type, String hotWords, String editor, int oriStatus);
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日下午1:48:31
+	 * @description 
+	 */
+	public String getHotWordToDicByType(Integer type);
 }

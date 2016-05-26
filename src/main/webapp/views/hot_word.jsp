@@ -25,7 +25,6 @@ $(function(){
           {field:'opt',title:'操作',width:100,align:'center',  
             formatter:function(value,rec,index){
                 var d = '<a href="javascript:void(0)" mce_href="#" onclick="del(\''+ index +'\')">删除</a> ';  
-               // a = '<a href="javascript:void(0)" id="a'+index+'">删除</a>&nbsp;&nbsp;'
                 return d;  
             }  
           }  

@@ -1,13 +1,10 @@
 package cn.focus.search.admin.controller;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -24,8 +21,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import cn.focus.search.admin.config.Constants;
+import cn.focus.search.admin.config.LastTime;
 import cn.focus.search.admin.model.HotWord;
-import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
 import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
@@ -43,17 +40,17 @@ public class HotWordsController {
 	
 	@Autowired
 	private ParticipleManagerService pmService;
-	
+		
 	@Autowired
-	private StopWordsUtil stopWordsUtil;
+	private LastTime lastTime;
 	/***
-	 * 批量获取停止词的数据
+	 * 获取所有热词的数据
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="loadHot",method=RequestMethod.POST)
 	@ResponseBody
-	public String getStopWordsList(HttpServletRequest request){
+	public String getHotWordsList(HttpServletRequest request){
 		try{
 			JSONObject json = new JSONObject();
 			int pageSize = 10;
@@ -86,13 +83,13 @@ public class HotWordsController {
 	}
 	
 	/***
-	 * 批量添加停止词的数据
+	 * 批量添加热词的数据
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="addHot",method=RequestMethod.POST)
 	@ResponseBody
-	public String InsertStopWords(HttpServletRequest request)
+	public String InsertHotWords(HttpServletRequest request)
 	{
 		try{
 			String existWord = "";
@@ -107,15 +104,14 @@ public class HotWordsController {
 			if (hotWords == null || hotWords =="" || type < 1 || type > 2)
 				return JSONUtils.badResult("failed");
 			List<HotWord> hotList = new LinkedList<HotWord>();
-			hotList = stopWordsUtil.getHotList(type, hotWords, editor, Constants.ORI_STATUS);
+			hotList = hotWordService.getHotList(type, hotWords, editor, Constants.ORI_STATUS);
 			for (HotWord hw : hotList)
 			{
 				List<HotWord> list = new LinkedList<HotWord>();
 				list = hotWordService.getHotWordListByName(hw.getName());
-				logger.info("list大小： " + list.size());
 				if (list.size() > 0)
 					continue;
-				if (pmService.isDuplicate(hw.getName()))
+				if (pmService.isDuplicate(hw.getName(),type))
 				{
 					existWord += hw.getName()+",";
 					continue;
@@ -150,7 +146,7 @@ public class HotWordsController {
 	@ResponseBody
 	public String updateHotDic(HttpServletRequest request){
 		
-		return pmService.updateHotwordIK();
+		return lastTime.setLastModifiedTime();
 	}
 	
 	/***
@@ -168,7 +164,6 @@ public class HotWordsController {
 				return JSONUtils.badResult("failed");
 			}
 			int id = Integer.parseInt(sid);
-			String name = request.getParameter("name");
 			int result = hotWordService.delHotWordById(id);
 			if(result<1){
 				logger.info("wordId: " + id + "删除失败!");

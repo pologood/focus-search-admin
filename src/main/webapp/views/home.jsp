@@ -98,11 +98,9 @@ $(function(){
 			<div title="分词管理" style="padding:10px">
 			    <p class="clickBefore" src="/user/um/userList">用户信息管理</p>
 				<p class="clickBefore" src="/admin/pm/ptindex">分词效果</p>
-				<p class="clickBefore" src="/admin/pm/modifyP">修改楼盘分词</p>
-				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
+				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" id="loadDicBtn">更新词库</p>
-
 			</div>
 		</div>
 	</div>

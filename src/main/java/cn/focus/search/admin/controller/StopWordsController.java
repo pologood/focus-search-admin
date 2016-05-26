@@ -23,10 +23,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import cn.focus.search.admin.config.Constants;
-import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.config.LastTime;
 import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.service.StopWordsService;
 import cn.focus.search.admin.utils.JSONUtils;
 import cn.focus.search.admin.utils.StopWordsUtil;
@@ -40,9 +39,9 @@ public class StopWordsController {
 	@Autowired
 	private StopWordsService stopWordsService;
 	@Autowired
-	private ParticipleManagerService pmService;
-	@Autowired
 	private StopWordsUtil stopWordsUtil;
+	@Autowired
+	private LastTime lastTime;
 	/***
 	 * 批量获取停止词的数据
 	 * @param request
@@ -137,7 +136,7 @@ public class StopWordsController {
 	@ResponseBody
 	public String updateStopDick(HttpServletRequest request)
 	{
-		return pmService.updateStopwordIK();
+		return lastTime.setLastModifiedTime();
 	}
 	
 	/***
@@ -155,8 +154,6 @@ public class StopWordsController {
 				return JSONUtils.badResult("failed");
 			}
 			int id = Integer.parseInt(sid);
-			String name = request.getParameter("name");
-			//System.out.println("id:"+id +"name:"+name);
 			int result = stopWordsService.delStopWordsById(id);
 			if(result<1){
 				logger.info(id + "删除失败!");
@@ -183,7 +180,6 @@ public class StopWordsController {
 			String path = "D:"+File.separator+"dic";
 			String fileName = "stop-words.dic";
 			stopWordsService.exportStop(path, fileName, stoplist);
-			//pmService.exportHot(request, response, fileName);
 			stopWordsService.setExported();
 			return JSONUtils.ok("停止词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){

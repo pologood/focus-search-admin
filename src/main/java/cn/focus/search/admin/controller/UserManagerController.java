@@ -63,7 +63,6 @@ public class UserManagerController {
 	public String showAllUsers(HttpServletRequest request){
 		try{
 			List<UserInfo> list = userManagerService.getUserList();
-			int size = list.size();			
 
 			JSONArray jsArray = new JSONArray();
 			jsArray.addAll(list);

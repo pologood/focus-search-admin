@@ -284,7 +284,7 @@ function del(index,id){  //删除操作
 		<br/>
 		<p>&nbsp;&nbsp;&nbsp;原&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="oPwLabel"></label><input  id="oPwInput" style="width:180px" type=password /></p>
 		<br/>
-		<p>&nbsp;&nbsp;&nbsp;新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password /></p>
+		<p>&nbsp;&nbsp;&nbsp;新&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:&nbsp;<label id="nPwLabel"></label><input  id="nPwInput" style="width:180px" type=password/></p>
 		<br/>
 		<p>&nbsp;&nbsp;&nbsp;新密码确认:<label id="nPwCfLabel"></label><input  id="nPwCfInput" style="width:180px" type=password /></p>
 		<br/>

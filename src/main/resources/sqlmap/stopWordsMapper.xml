@@ -76,6 +76,14 @@
 		where status=#{status}
 	</select>
 	
+	<!-- 根据status获取停止词 -->
+	<select id="getStopWordToDicByType" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED">
+		select name	
+		from stop_words
+		where type=#{type} and status=0;
+	</select>
+	
     <select id="getDayStopWordsList" resultMap="BaseResultMap"
 		parameterType="java.lang.String" statementType="PREPARED">
 		select

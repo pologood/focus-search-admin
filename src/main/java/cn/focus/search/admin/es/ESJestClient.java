@@ -3,8 +3,6 @@ package cn.focus.search.admin.es;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.util.Set;
@@ -12,10 +10,7 @@ import java.util.Set;
 /**
  * 返回jest客户端实例
  */
-@SuppressWarnings("rawtypes")
 public class ESJestClient implements FactoryBean<Object> {
-
-    private final Logger log = LoggerFactory.getLogger(ESJestClient.class);
 
     private boolean isMultiThreaded = true;
 

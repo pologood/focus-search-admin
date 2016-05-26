@@ -71,4 +71,11 @@ public interface StopWordsService {
 	public boolean exportStop(String path, String fileName, List<String> list)throws IOException;
 	
 	public int setExported()throws Exception;
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日下午3:36:51
+	 * @description 
+	 */
+	public String getStopWordToDicByType(Integer type);
 }

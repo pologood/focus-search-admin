@@ -69,4 +69,13 @@ public class HotWordDaoImpl implements HotWordDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("HotWordDao.getTotalNum");
 	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.dao.HotWordDao#getHotWordToDicByType(java.lang.Integer)
+	 */
+	@Override
+	public List<String> getHotWordToDicByType(Integer type) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("HotWordDao.getHotWordToDicByType",type);
+	}
 }

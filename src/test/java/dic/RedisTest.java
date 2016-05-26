@@ -18,13 +18,16 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import cn.focus.search.admin.controller.RemoteDicController;
 import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.scheduled.impl.IkScheduledTaskImpl;
+import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.service.RedisService;
+import cn.focus.search.admin.service.impl.HotWordServiceImpl;
 import cn.focus.search.admin.service.impl.ParticipleManagerServiceImpl;
 
  @RunWith(SpringJUnit4ClassRunner.class) 
  @ContextConfiguration(locations={"classpath*:applicationContext.xml"})
- @ActiveProfiles("test_sce")
+ @ActiveProfiles("test")
 public class RedisTest {
 	
 	@Autowired
@@ -32,15 +35,15 @@ public class RedisTest {
 	
 	@Autowired
 	public RedisService redisService;
+	@Autowired
+	public HotWordServiceImpl hotWordService;
+	@Autowired
+	public IkScheduledTaskImpl schedule;
 	
 	@Test
 	public void testStopword() throws Exception{
 		Logger logger = LoggerFactory.getLogger(RedisTest.class);
-		redisService.setRedis("xueqyqingyuan", "ranran");
-		logger.info(redisService.getRedis("xueqyqingyuan"));
-		redisService.setRedis("xueqyqingyuan", "ranren");
-		logger.info(redisService.getRedis("xueqyqingyuan"));
-
+		hotWordService.isExist("xueqingyuanwang",1);
 	}
 
 }

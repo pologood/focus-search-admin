@@ -13,11 +13,4 @@ public interface IkScheduledTask {
 	 */
 	void doUpdateDic();
 
-
-	/**
-	 * @author qingyuanxue@sohu-inc.com  
-	 * @date 2016年5月9日下午8:29:28
-	 * @description 
-	 */
-	void doUpdateParticiple();
 }

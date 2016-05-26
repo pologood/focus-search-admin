@@ -11,11 +11,12 @@
 <script>
 $(function(){
     //搜索按钮点击事件
-    $("#searchBtn").click(searchBtnClick);
+    $("#searchBtnProj").click(searchBtnProjClick);
+    $("#searchBtnNews").click(searchBtnNewsClick);
     $("#exportBtn").click(exportBtnClick);
 });
 
-function searchBtnClick() {
+function searchBtnClickProj() {
    var words =  $("#wordText").textbox('getText');
 
    if(words==null || words==""){
@@ -26,6 +27,7 @@ function searchBtnClick() {
 	//为loadGrid()添加参数  
    var queryParams = $('#wordTab').datagrid('options').queryParams;  
    queryParams.words = words;
+   queryParams.type =1;
 
     //查询后返回首页
    $('#wordTab').datagrid('options').pageNumber = 1;  
@@ -36,6 +38,29 @@ function searchBtnClick() {
    $("#wordTab").datagrid('reload');  
    $("#wordText").val("");//清空  
 }
+
+function searchBtnClickNews() {
+	   var words =  $("#wordText").textbox('getText');
+
+	   if(words==null || words==""){
+		   $.messager.alert('','请输入搜索query!','info');
+		   return;
+	   }
+	   
+		//为loadGrid()添加参数  
+	   var queryParams = $('#wordTab').datagrid('options').queryParams;  
+	   queryParams.words = words;
+	   queryParams.type =2;
+
+	    //查询后返回首页
+	   $('#wordTab').datagrid('options').pageNumber = 1;  
+	   var p = $('#wordTab').datagrid('getPager');
+		p.pagination({pageNumber: 1}); 
+
+	   //重新加载datagrid的数据  
+	   $("#wordTab").datagrid('reload');  
+	   $("#wordText").val("");//清空  
+	}
 
 function exportBtnClick(){
    var words =  $("#wordText").textbox('getText');
@@ -59,8 +84,9 @@ function exportBtnClick(){
 	<div style="margin:20px 0;"></div>
 	<div>
 	<input class="easyui-textbox" data-options="multiline:true" id="wordText" value="" style="width:500px;height:200px">
-    <a href="javascript:void(0)" id="searchBtn" class="easyui-linkbutton" iconCls="icon-search">提交</a>
-    <div style="margin:2px 10px 20px 500px;width:200px; height:10px;background-color:White;"><form id="hiddenForm"  method="get" ><a href="javascript:void(0)" id="exportBtn" class="easyui-linkbutton" iconCls="icon-search">导出</a></form></div>
+    <a href="javascript:void(0)" id="searchBtnProj" class="easyui-linkbutton" iconCls="icon-search">提交到楼盘集群</a>
+    <a href="javascript:void(0)" id="searchBtnNews" class="easyui-linkbutton" iconCls="icon-search">提交到新闻集群</a>
+    <!-- <form id="hiddenForm"  method="get" ><a href="javascript:void(0)" id="exportBtn" class="easyui-linkbutton" iconCls="icon-search">导出</a></form> -->
     
     </div>
     
