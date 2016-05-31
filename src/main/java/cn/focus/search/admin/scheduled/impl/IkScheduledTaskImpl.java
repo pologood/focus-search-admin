@@ -31,7 +31,7 @@ public class IkScheduledTaskImpl  implements IkScheduledTask {
 	@Autowired
 	private HotWordService hotWordService;
 	
-    @Scheduled(cron="0 0 2 * * *")
+    @Scheduled(cron="0 0 5 * * *")
     @Override
     public void doUpdateDic() {
     	if(isExecutor()){
