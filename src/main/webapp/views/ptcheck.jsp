@@ -11,8 +11,8 @@
 <script>
 $(function(){
     //搜索按钮点击事件
-    $("#searchBtnProj").click(searchBtnProjClick);
-    $("#searchBtnNews").click(searchBtnNewsClick);
+    $("#searchBtnProj").click(searchBtnClickProj);
+    $("#searchBtnNews").click(searchBtnClickNews);
     $("#exportBtn").click(exportBtnClick);
 });
 

@@ -22,6 +22,7 @@ import cn.focus.search.admin.scheduled.impl.IkScheduledTaskImpl;
 import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.service.RedisService;
+import cn.focus.search.admin.service.StopWordsService;
 import cn.focus.search.admin.service.impl.HotWordServiceImpl;
 import cn.focus.search.admin.service.impl.ParticipleManagerServiceImpl;
 
@@ -39,11 +40,17 @@ public class RedisTest {
 	public HotWordServiceImpl hotWordService;
 	@Autowired
 	public IkScheduledTaskImpl schedule;
+
+	@Autowired
+	private StopWordsService stopWordsService;
 	
 	@Test
 	public void testStopword() throws Exception{
 		Logger logger = LoggerFactory.getLogger(RedisTest.class);
-		hotWordService.isExist("xueqingyuanwang",1);
+		System.out.println(hotWordService.getHotWordToDicByType(2));
+		System.out.println("########");
+		
+		System.out.println(stopWordsService.getStopWordToDicByType(2));
 	}
 
 }
