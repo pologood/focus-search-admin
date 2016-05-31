@@ -88,25 +88,13 @@ public class StopWordsServiceImpl implements StopWordsService{
         return s;
 	}
 
-	@Override
-	public List<String> getStopWordnameByStatus(int status) {
-		// TODO Auto-generated method stub
-		List<String> list=new LinkedList<String>();
-        try {
-            list = stopWordsDao.getStopWordnameByStatus(status);
-            logger.info("status: "+status);
-        } catch (Exception e) {
-            logger.error("获取停止词数据异常!", e);
-        }
-        return list;
-	}
 
 	@Override
-	public int setExported() throws Exception {
+	public int setExported(int type) throws Exception {
 		// TODO Auto-generated method stub
 		int s = 0;
         try {
-            s = stopWordsDao.setExported();
+            s = stopWordsDao.setExported(type);
         } catch (Exception e) {
             logger.error("删除停止词数据异常!", e);
         }
@@ -168,7 +156,7 @@ public class StopWordsServiceImpl implements StopWordsService{
 		try {
 			
 			list=stopWordsDao.getStopWordToDicByType(type);
-			logger.info("readed RemoteStopWord from mysql");
+			logger.info("获取 "+list.size()+"个 type"+type+"的stop word.");
 		} catch (Exception e) {
 			logger.error("getStopWordsException",e);
 		}
@@ -181,4 +169,5 @@ public class StopWordsServiceImpl implements StopWordsService{
 		strWords=str.toString();
 		return strWords;
 	}
+
 }

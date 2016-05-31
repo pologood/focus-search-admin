@@ -53,9 +53,9 @@ public class StopWordsDaoImpl implements StopWordsDao{
 	}
 
 	@Override
-	public int setExported() {
+	public int setExported(int type) {
 		// TODO Auto-generated method stub
-		return sqlSession.update("StopWordsDao.setExported");
+		return sqlSession.update("StopWordsDao.setExported",type);
 	}
 
 	@Override

@@ -1,10 +1,16 @@
 package cn.focus.search.admin.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -13,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -183,22 +190,59 @@ public class HotWordsController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="exportHot",method=RequestMethod.POST)
+	@RequestMapping(value="exportHot",method=RequestMethod.GET)
 	@ResponseBody
-	public String exportHotWords(HttpServletRequest request)
+	public String exportHotWords(@RequestParam(value="type", required=false, defaultValue="1") Integer type,HttpServletRequest request,HttpServletResponse response)
 	{
 		try{
-			List<String> hotlist = new LinkedList<String>();
-			hotlist = hotWordService.getHotWordnameByStatus(Constants.ORI_STATUS);
-			if (hotlist.size() == 0)
-				return JSONUtils.badResult("没有热词可供导出！");
-			logger.info("hotlist: " + hotlist.get(hotlist.size()-1));
-			String path = "D:"+File.separator+"dic";			
+			String words = hotWordService.getHotWordToDicByType(type);
+			if (words.length() == 0) logger.info("没有热词可供导出！");
+			
+/*			//字节流方式下载文件，并且先在服务器端生成文件。
+ 			String path = "D:"+File.separator+"dic";			
 			String fileName = "hot-words.dic";
 			logger.info("fileName: "+fileName);
 			hotWordService.exportHot(path, fileName, hotlist);
 			hotWordService.setExported();
-			return JSONUtils.ok("词库已经导出到"+path+File.separator+fileName);
+			
+			File downloadFile=new File(path+File.separator+fileName);
+			FileInputStream inStream = new FileInputStream(downloadFile);
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setContentLength((int) downloadFile.length());
+			
+	        // forces download
+	        String headerKey = "Content-Disposition";
+	        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
+	        response.setHeader(headerKey, headerValue);
+	        
+	        // obtains response's output stream
+	        OutputStream outStream = response.getOutputStream();
+	         
+	        byte[] buffer = new byte[4096];
+	        int bytesRead = -1;
+	         
+	        while ((bytesRead = inStream.read(buffer)) != -1) {
+	            outStream.write(buffer, 0, bytesRead);
+	        }
+	         
+	        inStream.close();
+	        outStream.close(); */
+			
+			//直接写入流文件，下载文件。
+			String fileName = "hot-words.dic";
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			
+	        // forces download
+	        String headerKey = "Content-Disposition";
+	        String headerValue = String.format("attachment; filename=\"%s\"", fileName);
+	        response.setHeader(headerKey, headerValue);
+	        
+			PrintWriter pw=response.getWriter();
+			pw.append(words);
+			pw.close();
+			
+			hotWordService.setExported(type);
+			return JSONUtils.ok("词库已经导出到"+fileName);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			return JSONUtils.badResult("没有热词可供导出！");

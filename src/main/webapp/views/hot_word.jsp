@@ -221,7 +221,7 @@ $(function(){
 });
 
 //exportHotDic
-$(function(){
+/* $(function(){
 	$("#exportHotDic").click(function(){
 		//alert("功能暂未开放！");
 		var isExport = confirm("确认导出热词?");
@@ -246,7 +246,7 @@ $(function(){
 		});
 		}
 	});
-});
+}); */
 
 $(function(){
 	$('#pp1').tooltip({
@@ -283,7 +283,8 @@ function hideExport() {
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加热词</a>
 			<a href="javascript:void(0)" id="updateHotDic" class="easyui-linkbutton" iconCls="icon-add">更新词库</a>
-			<a href="javascript:void(0)" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
+			<a href="/hot/exportHot" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出楼盘类热词词库</a>
+			<a href="/hot/exportHot?type=2" id="exportHotDic" class="easyui-linkbutton" iconCls="icon-export">导出新闻类热词词库</a>
 		</div>
 	</div>
 	

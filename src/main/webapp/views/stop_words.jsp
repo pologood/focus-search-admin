@@ -209,7 +209,7 @@ $(function(){
 	});
 });
 
-//exportStopDic
+/* //exportStopDic
 $(function(){
 	$("#exportStopDic").click(function(){
 		//alert("功能暂未开放！");
@@ -236,7 +236,7 @@ $(function(){
 		}
 
 	})
-});
+}); */
 
 $(function(){
 	$('#pp1').tooltip({
@@ -277,10 +277,8 @@ function hideExport() {
 		<div>
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加停止词</a>
 			<a href="javascript:void(0)" id="updateStopDic" class="easyui-linkbutton" iconCls="icon-add">更新词库</a>
-			<a href="javascript:void(0)" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出停用词词库</a>
-			<!-- <form id="exportForm"  method="get" style="float:right">
-			<a href="javascript:void(0)" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出热词词库</a>
-			</form>	 -->
+			<a href="/stop/exportStop" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出楼盘类停用词词库</a>
+			<a href="/stop/exportStop?type=2" id="exportStopDic" class="easyui-linkbutton" iconCls="icon-export">导出新闻类停用词词库</a>
 		</div>
 	</div>
 	

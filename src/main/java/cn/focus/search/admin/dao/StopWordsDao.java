@@ -66,7 +66,7 @@ public interface StopWordsDao {
      * @return
      * @throws Exception
      */
-	public int setExported();
+	public int setExported(int type);
 
 	/**
 	 * @author qingyuanxue@sohu-inc.com  

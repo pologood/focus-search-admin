@@ -1,6 +1,8 @@
 package cn.focus.search.admin.service;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,17 +56,8 @@ public interface HotWordService {
      */
     public int delHotWordById(int id) throws Exception;
     
-    /**
-     *根据status获取热词数据（只要名称）
-     * @param status == 1
-     * @return
-     * @throws Exception
-     */
-    public List<String> getHotWordnameByStatus(int status)throws Exception;
     
     /**
-     *将status=1热词（名称）导出到文本
-     * @param status == 1
      * @return
      * @throws Exception
      */
@@ -76,7 +69,7 @@ public interface HotWordService {
      * @return
      * @throws Exception
      */
-    public int setExported()throws Exception;
+    public int setExported(int type)throws Exception;
 
 	/**
 	 * @author qingyuanxue@sohu-inc.com  
@@ -98,4 +91,7 @@ public interface HotWordService {
 	 * @description 
 	 */
 	public String getHotWordToDicByType(Integer type);
+
+
+
 }

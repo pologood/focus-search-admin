@@ -1,6 +1,7 @@
 package cn.focus.search.admin.controller;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -168,20 +170,35 @@ public class StopWordsController {
 		}
 	}
 
-	@RequestMapping(value="exportStop",method=RequestMethod.POST)
+	@RequestMapping(value="exportStop",method=RequestMethod.GET)
 	@ResponseBody
-	public String exportStop(HttpServletResponse response){
+	public String exportStop(@RequestParam(value="type", required=false, defaultValue="1") Integer type,HttpServletResponse response){
 		try{
-			List<String> stoplist = new LinkedList<String>();
-			stoplist = stopWordsService.getStopWordnameByStatus(Constants.ORI_STATUS);
-			if (stoplist.size() == 0)
-				return JSONUtils.badResult("没有停止词可供导出！");
-			logger.info("stoplist: " + stoplist.get(stoplist.size()-1));
+			String words = stopWordsService.getStopWordToDicByType(type);
+			if (words.length()== 0) logger.info("没有停止词可供导出！");
+			
+			/*			
 			String path = "D:"+File.separator+"dic";
 			String fileName = "stop-words.dic";
 			stopWordsService.exportStop(path, fileName, stoplist);
 			stopWordsService.setExported();
-			return JSONUtils.ok("停止词库已经导出到"+path+File.separator+fileName);
+			return JSONUtils.ok("停止词库已经导出到"+path+File.separator+fileName);*/
+			
+			//直接写入流文件，下载文件。
+			String fileName = "stop-words.dic";
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			
+	        // forces download
+	        String headerKey = "Content-Disposition";
+	        String headerValue = String.format("attachment; filename=\"%s\"", fileName);
+	        response.setHeader(headerKey, headerValue);
+	        
+			PrintWriter pw=response.getWriter();
+			pw.append(words);
+			pw.close();
+			
+			stopWordsService.setExported(type);
+			return JSONUtils.ok("词库已经导出到"+fileName);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			return JSONUtils.badResult("没有停止词可供导出！");

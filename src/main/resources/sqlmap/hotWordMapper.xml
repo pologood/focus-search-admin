@@ -24,10 +24,10 @@
 	</sql>
 	
 	<!-- 更新热词status -->
-	<update id="setExported"  flushCache="true">
+	<update id="setExported"  parameterType="java.lang.Integer" statementType="PREPARED" flushCache="true">
         update hot_word
         set status=1
-        where status=0
+        where status=0 and type=#{type}
     </update>
 	
 	<!-- 获取热词列表 -->

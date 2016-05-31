@@ -63,10 +63,10 @@ public class RemoteDicController {
   		if (temp==last) return "";
   		else {
   			
-  			logger.info("******************************");
+  			logger.info("**ES端开始从APP端拉取拓展停用词词典**");
+  			logger.info("ES端时间戳为 "+temp);
+  			logger.info("APP端时间戳为"+last);
   			String str=stopWordsService.getStopWordToDicByType(type);
-  			logger.info("es server stop If-Modified-Since time: "+temp);
-  			logger.info("app client stop Last-Modified: "+last);
   			logger.info("added stop words");
   			return str;
   			
@@ -88,10 +88,10 @@ public class RemoteDicController {
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==last) return "";
   		else {
-  			logger.info("******************************");
+  			logger.info("**ES端开始从APP端拉取拓展热词词典**");
+  			logger.info("ES端时间戳为 "+temp);
+  			logger.info("APP端时间戳为 "+last);
   			String str=hotWordService.getHotWordToDicByType(type);
-  			logger.info("es server hot If-Modified-Since: "+temp);
-  			logger.info("app client hot Last-Modified: "+last);
   			logger.info("added hot words");
   			return str;	
   		}

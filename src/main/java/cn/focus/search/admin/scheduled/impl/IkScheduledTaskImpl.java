@@ -39,8 +39,8 @@ public class IkScheduledTaskImpl  implements IkScheduledTask {
         	log.info("执行每日定时任务：更新词库。");
     	}
     }
-    //每日，将新增楼盘名字扫入数据库。
-    @Scheduled(cron="0 0 23 * * *")
+    //每日，将新增楼盘名字扫入数据库。时间不要轻易改变，如果需要改变请联系压redis的程序管理员更改时间,当前压索引的时间为1点。
+    @Scheduled(cron="0 0 4 * * *")
     public void getNewProj() {
     	if(isExecutor()){
         	hotWordService.importNewProjName();

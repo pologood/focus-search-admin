@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,18 +107,6 @@ public class HotWordServiceImpl implements HotWordService{
         return s;
 	}
 	
-	@Override
-	public List<String> getHotWordnameByStatus(int status) throws Exception {
-		// TODO Auto-generated method stub
-		List<String> list=new LinkedList<String>();
-        try {
-            list = hotWordDao.getHotWordnameByStatus(status);
-            logger.info("status: "+status);
-        } catch (Exception e) {
-            logger.error("获取热词数据异常!", e);
-        }
-        return list;
-	}
 	
 	@Override
 	public boolean exportHot(String path, String fileName, List<String> list) throws IOException {
@@ -152,11 +142,11 @@ public class HotWordServiceImpl implements HotWordService{
 	}
 
 	@Override
-	public int setExported() throws Exception {
+	public int setExported(int type) throws Exception {
 		// TODO Auto-generated method stub
 		int s = 0;
         try {
-            s = hotWordDao.setExported();
+            s = hotWordDao.setExported(type);
         } catch (Exception e) {
             logger.error("插入热词数据异常!", e);
         }
@@ -189,26 +179,41 @@ public class HotWordServiceImpl implements HotWordService{
 		Set<String> projNameSetYesterday=redisService.popRedisSet("projNameForPartition", keyY);
 		Set<String> projNameSetToday=redisService.popRedisSet("projNameForPartition", keyT);
 		Set<String> projNameSet=null;
-		if(projNameSetYesterday==null) projNameSet=projNameSetToday;
-		else projNameSet=redisService.sdiff(keyT, keyY);
-		Iterator<String> it = projNameSet.iterator();
-        while (it.hasNext()) {
-        	String token=it.next();
-        	if(isExist(token,1)) continue;
-			HotWord hw = new HotWord();
-			hw.setName(token);
-			hw.setType(1);
-			hw.setStatus(Constants.ORI_STATUS);
-			hw.setEditor("system");
-			Date now=new Date();
-			hw.setCreateTime(now);
-			hw.setUpdateTime(now);
-			try {
-				hotWordDao.insertHotWord(hw);
-			} catch (Exception e) {
-				logger.error("涉及插入词"+hw.getName(),e.getMessage());
-			}
-        }
+		
+		if(projNameSetYesterday==null) {
+			logger.info("projNameSetYesterday"+keyY+"为空。");
+			return;
+		}
+		if(projNameSetToday==null) {
+			logger.info("projNameSetToday"+keyT+"为空。");
+			return;
+		}
+		projNameSet=redisService.sdiff(keyT, keyY);
+		if (projNameSet.size()>100){
+			logger.info("projNameSet数量过多，当前数量为"+projNameSet.size());
+			logger.info("projNameSetYesterday，当前数量为"+projNameSetYesterday.size());
+			logger.info("projNameSetToday，当前数量为"+projNameSetToday.size());
+			return;
+		}else{
+			Iterator<String> it = projNameSet.iterator();
+	        while (it.hasNext()) {
+	        	String token=it.next();
+	        	if(isExist(token,1)) continue;
+				HotWord hw = new HotWord();
+				hw.setName(token);
+				hw.setType(1);
+				hw.setStatus(Constants.ORI_STATUS);
+				hw.setEditor("system");
+				Date now=new Date();
+				hw.setCreateTime(now);
+				hw.setUpdateTime(now);
+				try {
+					hotWordDao.insertHotWord(hw);
+				} catch (Exception e) {
+					logger.error("涉及插入词"+hw.getName(),e.getMessage());
+				}
+	        }
+		}
 	}	
 	
 	
@@ -266,7 +271,7 @@ public class HotWordServiceImpl implements HotWordService{
 		List<String> list = new LinkedList<String>();
 		try {
 		    list=hotWordDao.getHotWordToDicByType(type);
-			logger.info("total "+list.size()+" type "+type+" hot word readed from db.");
+			logger.info("获取 "+list.size()+"个 type"+type+"的hot word.");
 		} catch (Exception e) {
 			logger.error("get HotWordException",e);
 		}
@@ -278,4 +283,6 @@ public class HotWordServiceImpl implements HotWordService{
 		}
 		return str.toString();
 	}
+
+
 }

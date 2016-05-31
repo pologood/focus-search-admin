@@ -54,13 +54,6 @@ public interface StopWordsService {
      */
 	public int delStopWordsById(int id);
 	
-	/**
-     *根据status获取停止词数据（只要名称）
-     * @param status == 1
-     * @return
-     * @throws Exception
-     */
-	public List<String> getStopWordnameByStatus(int status);
 	
 	/**
      *将status=1停止词（名称）导出到文本
@@ -70,7 +63,7 @@ public interface StopWordsService {
      */
 	public boolean exportStop(String path, String fileName, List<String> list)throws IOException;
 	
-	public int setExported()throws Exception;
+	public int setExported(int type)throws Exception;
 
 	/**
 	 * @author qingyuanxue@sohu-inc.com  
@@ -78,4 +71,5 @@ public interface StopWordsService {
 	 * @description 
 	 */
 	public String getStopWordToDicByType(Integer type);
+
 }

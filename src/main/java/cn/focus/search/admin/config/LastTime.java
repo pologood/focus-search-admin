@@ -29,7 +29,7 @@ public class LastTime {
 			try {
 				long now=getNow();
 				redisService.setRedis(key, String.valueOf(now));
-				logger.info("Last-Modified is setted : "+now);
+				logger.info("APP端时间戳设定为 : "+now);
 				return "success";
 			} catch (Exception e) {
 				logger.error(e.getMessage());
