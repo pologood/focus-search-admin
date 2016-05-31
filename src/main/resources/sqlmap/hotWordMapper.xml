@@ -26,8 +26,8 @@
 	<!-- 更新热词status -->
 	<update id="setExported"  flushCache="true">
         update hot_word
-        set status=2
-        where status=1
+        set status=1
+        where status=0
     </update>
 	
 	<!-- 获取热词列表 -->
@@ -83,7 +83,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from hot_word
-		where status=1
+		where status=0
 	</select>
 	
 	<!-- 根据ID删除热词 -->
@@ -98,6 +98,14 @@
 		select name	
 		from hot_word
 		where status=#{status}
+	</select>
+	
+    <!-- 根据type获取热词 -->
+	<select id="getHotWordToDicByType" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED">
+		select name	
+		from hot_word
+		where type=#{type} and status=0
 	</select>
 	
 	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">

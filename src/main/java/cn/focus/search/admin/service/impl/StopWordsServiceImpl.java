@@ -154,4 +154,31 @@ public class StopWordsServiceImpl implements StopWordsService{
         }
         return s;
 	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.service.StopWordsService#getStopWordToDicByType(java.lang.Integer)
+	 */
+	@Override
+	public String getStopWordToDicByType(Integer type) {
+		StringBuffer str=new StringBuffer();
+		String strWords=null;
+			
+		// read from mysql.
+		List<String> list = new LinkedList<String>();
+		try {
+			
+			list=stopWordsDao.getStopWordToDicByType(type);
+			logger.info("readed RemoteStopWord from mysql");
+		} catch (Exception e) {
+			logger.error("getStopWordsException",e);
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i);
+			str.append(word);
+			str.append("\n");
+			}
+		strWords=str.toString();
+		return strWords;
+	}
 }

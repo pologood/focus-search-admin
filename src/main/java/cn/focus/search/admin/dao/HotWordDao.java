@@ -74,4 +74,11 @@ public interface HotWordDao {
      * @throws Exception
      */
 	public int setExported();
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日下午3:19:22
+	 * @description 
+	 */
+	List<String> getHotWordToDicByType(Integer type);
 }

@@ -15,7 +15,7 @@ public class LastTime {
 	
 	@Autowired
 	public RedisService redisService;
-	public String key="Last-Modified";
+	public String key="focus-search-admin.Last-Modified";
 	
 	public long getNow(){
 		Calendar cal = Calendar.getInstance();
@@ -23,12 +23,18 @@ public class LastTime {
 		return cal.getTime().getTime();
 	}
 	
-	//将所有远程词库最后修改时间设置为当前时间，成功返回1，失败返回0.
-	public void setLastModifiedTime(){
+	//将所有远程词库最后修改时间设置为当前时间.
+	public String setLastModifiedTime(){
 	
-			long now=getNow();
- 			redisService.setRedis(key, String.valueOf(now));
- 			logger.info("Last-Modified is setted : "+now);
+			try {
+				long now=getNow();
+				redisService.setRedis(key, String.valueOf(now));
+				logger.info("Last-Modified is setted : "+now);
+				return "success";
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				return "failed";			
+			}
  			
 	}
 	public long getLastModifiedTime(){
@@ -40,21 +46,4 @@ public class LastTime {
 			return Long.parseLong(redisService.getRedis(key));
 		}
 	}
-
-
-	public  long getHouseword_lTime() {
-		return getLastModifiedTime();
-	}
-
-
-	public  long getHotword_lTime() {
-		return getLastModifiedTime();
-	}
-
-
-	public  long getStopword_lTime() {
-		return getLastModifiedTime();
-	} 
-	
-
 }

@@ -4,8 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +22,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+
+import cn.focus.search.admin.config.Constants;
 import cn.focus.search.admin.dao.HotWordDao;
 import cn.focus.search.admin.model.HotWord;
 import cn.focus.search.admin.service.HotWordService;
+import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.service.RedisService;
 
 @Service
 public class HotWordServiceImpl implements HotWordService{
@@ -27,6 +38,11 @@ public class HotWordServiceImpl implements HotWordService{
 
 	@Autowired
 	private HotWordDao hotWordDao;
+	
+	@Autowired
+	private RedisService redisService;
+	@Autowired
+	private ParticipleManagerService pmService;
 	
 	@Override
 	public List<HotWord> getDayHotWordList()throws Exception
@@ -157,5 +173,109 @@ public class HotWordServiceImpl implements HotWordService{
             logger.error("获取数据异常!", e);
         }
         return s;
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.service.HotWordService#importNewProjName()
+	 * 通过对比redis中数据，得出新增楼盘名称，并将其作为新热词加入数据库。
+	 */
+	@Override
+	public void importNewProjName() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String keyT=dateFormat.format(new Date());
+		Calendar c=Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		String keyY=dateFormat.format(c.getTime());
+		Set<String> projNameSetYesterday=redisService.popRedisSet("projNameForPartition", keyY);
+		Set<String> projNameSetToday=redisService.popRedisSet("projNameForPartition", keyT);
+		Set<String> projNameSet=null;
+		if(projNameSetYesterday==null) projNameSet=projNameSetToday;
+		else projNameSet=redisService.sdiff(keyT, keyY);
+		Iterator<String> it = projNameSet.iterator();
+        while (it.hasNext()) {
+        	String token=it.next();
+        	if(isExist(token,1)) continue;
+			HotWord hw = new HotWord();
+			hw.setName(token);
+			hw.setType(1);
+			hw.setStatus(Constants.ORI_STATUS);
+			hw.setEditor("system");
+			Date now=new Date();
+			hw.setCreateTime(now);
+			hw.setUpdateTime(now);
+			try {
+				hotWordDao.insertHotWord(hw);
+			} catch (Exception e) {
+				logger.error("涉及插入词"+hw.getName(),e.getMessage());
+			}
+        }
 	}	
+	
+	
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日上午11:26:10
+	 * @description 
+	 */
+	public boolean isExist(String token,int type) {
+		boolean flag=false;
+		try {
+			List<HotWord> list=hotWordDao.getHotWordListByName(token);
+			//如果该词汇已经在数据库或者es端词库。
+			if((list.size()>0&&list!=null)||pmService.isDuplicate(token,type)) flag=true;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return flag;
+	}
+
+	public List<HotWord> getHotList(int type, String hots, String editor, int status)
+	{
+		List<HotWord> hotList = new LinkedList<HotWord>();
+		try{
+			String[] stop = hots.split("[, ， ]");
+			for (int i = 0; i < stop.length; i++)
+			{
+				HotWord hw = new HotWord();
+				hw.setName(stop[i]);
+				hw.setType(type);
+				hw.setStatus(status);
+				hw.setEditor(editor);
+				Date now=new Date();
+				hw.setCreateTime(now);
+				hw.setUpdateTime(now);
+				hotList.add(hw);
+			}
+			
+			return hotList;
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return hotList;		
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.service.HotWordService#getHotWordToDicByType()
+	 */
+	@Override
+	public String getHotWordToDicByType(Integer type) {
+		StringBuffer str=new StringBuffer();
+		
+		// read from mysql.
+		List<String> list = new LinkedList<String>();
+		try {
+		    list=hotWordDao.getHotWordToDicByType(type);
+			logger.info("total "+list.size()+" type "+type+" hot word readed from db.");
+		} catch (Exception e) {
+			logger.error("get HotWordException",e);
+		}
+		for(int i=0;i<list.size();i++){
+			
+			String word=list.get(i);
+					str.append(word);
+					str.append("\n");
+		}
+		return str.toString();
+	}
 }

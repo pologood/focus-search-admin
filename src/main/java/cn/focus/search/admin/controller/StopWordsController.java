@@ -22,10 +22,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import cn.focus.search.admin.model.Participle;
+import cn.focus.search.admin.config.Constants;
+import cn.focus.search.admin.config.LastTime;
 import cn.focus.search.admin.model.StopWords;
 import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.ParticipleManagerService;
 import cn.focus.search.admin.service.StopWordsService;
 import cn.focus.search.admin.utils.JSONUtils;
 import cn.focus.search.admin.utils.StopWordsUtil;
@@ -39,9 +39,9 @@ public class StopWordsController {
 	@Autowired
 	private StopWordsService stopWordsService;
 	@Autowired
-	private ParticipleManagerService pmService;
-	@Autowired
 	private StopWordsUtil stopWordsUtil;
+	@Autowired
+	private LastTime lastTime;
 	/***
 	 * 批量获取停止词的数据
 	 * @param request
@@ -105,7 +105,7 @@ public class StopWordsController {
 			if (stopWords == null || stopWords =="" || type < 1 || type > 2)
 				return JSONUtils.badResult("failed");
 			List<StopWords> stopList = new LinkedList<StopWords>();
-			stopList = stopWordsUtil.getStopList(type, stopWords, editor, 1);
+			stopList = stopWordsUtil.getStopList(type, stopWords, editor, Constants.ORI_STATUS);
 			for (StopWords sw : stopList)
 			{
 				//System.out.println("sw: "+ sw.getName()+"  "+sw.getType()+"  "+sw.getEditor()+sw.getCreateTime());
@@ -136,7 +136,7 @@ public class StopWordsController {
 	@ResponseBody
 	public String updateStopDick(HttpServletRequest request)
 	{
-		return pmService.updateStopwordIK();
+		return lastTime.setLastModifiedTime();
 	}
 	
 	/***
@@ -154,8 +154,6 @@ public class StopWordsController {
 				return JSONUtils.badResult("failed");
 			}
 			int id = Integer.parseInt(sid);
-			String name = request.getParameter("name");
-			//System.out.println("id:"+id +"name:"+name);
 			int result = stopWordsService.delStopWordsById(id);
 			if(result<1){
 				logger.info(id + "删除失败!");
@@ -175,14 +173,13 @@ public class StopWordsController {
 	public String exportStop(HttpServletResponse response){
 		try{
 			List<String> stoplist = new LinkedList<String>();
-			stoplist = stopWordsService.getStopWordnameByStatus(1);
+			stoplist = stopWordsService.getStopWordnameByStatus(Constants.ORI_STATUS);
 			if (stoplist.size() == 0)
 				return JSONUtils.badResult("没有停止词可供导出！");
 			logger.info("stoplist: " + stoplist.get(stoplist.size()-1));
 			String path = "D:"+File.separator+"dic";
 			String fileName = "stop-words.dic";
 			stopWordsService.exportStop(path, fileName, stoplist);
-			//pmService.exportHot(request, response, fileName);
 			stopWordsService.setExported();
 			return JSONUtils.ok("停止词库已经导出到"+path+File.separator+fileName);
 		}catch(Exception e){

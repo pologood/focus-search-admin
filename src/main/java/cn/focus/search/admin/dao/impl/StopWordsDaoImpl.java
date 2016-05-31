@@ -69,4 +69,13 @@ public class StopWordsDaoImpl implements StopWordsDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("StopWordsDao.getTotalNum");
 	}
+
+	/* (non-Javadoc)
+	 * @see cn.focus.search.admin.dao.StopWordsDao#getStopWordToDicByType()
+	 */
+	@Override
+	public List<String> getStopWordToDicByType(Integer type) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("StopWordsDao.getStopWordToDicByType", type);
+	}
 }

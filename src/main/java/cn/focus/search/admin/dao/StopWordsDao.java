@@ -67,4 +67,11 @@ public interface StopWordsDao {
      * @throws Exception
      */
 	public int setExported();
+
+	/**
+	 * @author qingyuanxue@sohu-inc.com  
+	 * @date 2016年5月26日下午3:39:40
+	 * @description 
+	 */
+	public List<String> getStopWordToDicByType(Integer type);
 }

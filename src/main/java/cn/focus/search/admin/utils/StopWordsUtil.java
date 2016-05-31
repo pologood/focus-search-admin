@@ -41,31 +41,7 @@ public class StopWordsUtil {
 		return stopList;		
 	}
 	
-	public List<HotWord> getHotList(int type, String hots, String editor, int status)
-	{
-		List<HotWord> hotList = new LinkedList<HotWord>();
-		try{
-			String[] stop = hots.split("[, ， ]");
-			for (int i = 0; i < stop.length; i++)
-			{
-				HotWord hw = new HotWord();
-				hw.setName(stop[i]);
-				hw.setType(type);
-				hw.setStatus(status);
-				hw.setEditor(editor);
-				Date now=new Date();
-				hw.setCreateTime(now);
-				hw.setUpdateTime(now);
-				hotList.add(hw);
-			}
-			
-			return hotList;
-		}catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		return hotList;		
-	}
+
 	
 	public String[] getParticiple(String par)
 	{

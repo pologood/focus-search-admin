@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.focus.search.admin.config.LastTime;
+import cn.focus.search.admin.service.HotWordService;
 import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.service.StopWordsService;
 import cn.focus.search.admin.utils.JSONUtils;
 
 @Controller
@@ -21,13 +24,18 @@ public class RemoteDicController {
 	private ParticipleManagerService participleManagerService;
 	@Autowired
 	private LastTime lastTime;
+	@Autowired
+	private HotWordService hotWordService;
+	@Autowired
+	private StopWordsService stopWordsService;
 	
 	@RequestMapping("remote_final_house.dic")
 	@ResponseBody
 	public String getRemoteFinalHouseDic(HttpServletResponse response,HttpServletRequest request){
 	    // first time through - set last modified time to now 
+		//楼盘词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getHouseword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified",last );
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
@@ -35,24 +43,17 @@ public class RemoteDicController {
   		long temp=request.getDateHeader("If-Modified-Since");
   		if (temp==last) return "";
   		else {
-  			
-  			logger.info("******************************");
-  			String str=participleManagerService.getRemoteFinalHouseWord();
-  			logger.info("es server house If-Modified-Since: "+temp);
-  			logger.info("sce client house Last-Modified: "+last);
-  			logger.info("adding houseword words: "+"\n"+str);
+  			String str="";
   			return str;
-  			
   		}
-  		//return participleManagerService.getRemoteFinalHouseWord();
-		
 	}
 	
 	@RequestMapping("remote_stopword.dic")
 	@ResponseBody
-	public String getRemoteStopwordDic(HttpServletResponse response,HttpServletRequest request){
+	public String getRemoteStopwordDic(@RequestParam(value="type", required=false, defaultValue="1") Integer type,HttpServletResponse response,HttpServletRequest request){
+		//停用词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getStopword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
@@ -63,10 +64,10 @@ public class RemoteDicController {
   		else {
   			
   			logger.info("******************************");
-  			String str=participleManagerService.getRemoteStopword();
+  			String str=stopWordsService.getStopWordToDicByType(type);
   			logger.info("es server stop If-Modified-Since time: "+temp);
-  			logger.info("sce client stop Last-Modified: "+last);
-  			logger.info("adding stopword words: "+"\n"+str);
+  			logger.info("app client stop Last-Modified: "+last);
+  			logger.info("added stop words");
   			return str;
   			
   		}
@@ -75,9 +76,10 @@ public class RemoteDicController {
 	
 	@RequestMapping("remote_hotword.dic")
 	@ResponseBody
-	public String getRemoteHotwordDic(HttpServletResponse response,HttpServletRequest request){
+	public String getRemoteHotwordDic(@RequestParam(value="type", required=false, defaultValue="1") Integer type,HttpServletResponse response,HttpServletRequest request){
+		//热词
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
-		long last=lastTime.getHotword_lTime();
+		long last=lastTime.getLastModifiedTime();
  		response.setDateHeader("Last-Modified", last);
  		response.setHeader("ETags", "etagSting");
  		response.setContentType("text/plain;charset=UTF-8");
@@ -87,10 +89,10 @@ public class RemoteDicController {
   		if (temp==last) return "";
   		else {
   			logger.info("******************************");
-  			String str=participleManagerService.getRemoteHotword();
+  			String str=hotWordService.getHotWordToDicByType(type);
   			logger.info("es server hot If-Modified-Since: "+temp);
-  			logger.info("sce client hot Last-Modified: "+last);
-  			logger.info("adding hot words: "+"\n"+str);
+  			logger.info("app client hot Last-Modified: "+last);
+  			logger.info("added hot words");
   			return str;	
   		}
 		
@@ -101,7 +103,7 @@ public class RemoteDicController {
 	public String reloadRemoteDic(HttpServletResponse response){
 		Logger logger = LoggerFactory.getLogger(RemoteDicController.class);
 		logger.info("start to reload total dic");
-		if(participleManagerService.reloadRemoteDic()) return JSONUtils.ok();
+		if(lastTime.setLastModifiedTime().equals("success")) return JSONUtils.ok();
   		else return JSONUtils.badResult("failed");
 	}
 	

@@ -280,7 +280,7 @@ public class RedisService {
      *
      * @param prefix
      * @param key
-     * @param T
+     * @param T  复杂类型，不能是int，integer，String等
      * @return
      */
     public <T> Set<T> popRedisSet(String prefix, String key, Class<?> T) {
@@ -294,6 +294,37 @@ public class RedisService {
             Iterator<String> it = set.iterator();
             while (it.hasNext()) {
                 result.add((T) JSONObject.parseObject(it.next(), T));
+            }
+            return result;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return null;
+        } finally {
+            if (jedis != null) {
+                shardedRWRedisPool.returnReadResource(jedis);
+            }
+        }
+    }
+    
+    /**
+     * 取出Set
+     *
+     * @param prefix
+     * @param key
+     * @param T  简单类型。
+     * @return
+     */
+    public <T> Set<T> popRedisSet(String prefix, String key) {
+        ShardedJedis jedis = null;
+        try {
+            key = (key == null ? "" : key);
+            Set<T> result = new HashSet<T>();
+
+            jedis = shardedRWRedisPool.borrowReadResource();
+            Set<String> set = jedis.smembers(prefix + key);
+            Iterator<String> it = set.iterator();
+            while (it.hasNext()) {
+                result.add((T) it.next());
             }
             return result;
         } catch (Exception e) {
