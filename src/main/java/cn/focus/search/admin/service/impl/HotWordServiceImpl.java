@@ -271,7 +271,7 @@ public class HotWordServiceImpl implements HotWordService{
 		List<String> list = new LinkedList<String>();
 		try {
 		    list=hotWordDao.getHotWordToDicByType(type);
-			logger.info("获取 "+list.size()+"个 type"+type+"的hot word.");
+			logger.info("getDicFromDB-获取 "+list.size()+"个 type"+type+"的hot word.");
 		} catch (Exception e) {
 			logger.error("get HotWordException",e);
 		}

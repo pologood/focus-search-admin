@@ -45,7 +45,7 @@ public class RedisService {
         } finally {
             if (jedis != null) {
                 // ! 这里还回一个写链接 【请注意一定要区分，还回链接的类型】
-                shardedRWRedisPool.returnReadResource(jedis);
+                shardedRWRedisPool.returnWriteResource(jedis);
             }
         }
     }
@@ -53,7 +53,7 @@ public class RedisService {
     public String getRedis(String prefix, String key) {
         ShardedJedis jedis = null;
         try {
-            jedis = shardedRWRedisPool.borrowWriteResource();
+            jedis = shardedRWRedisPool.borrowReadResource();
             String value = jedis.get(prefix + key);
             return value;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class RedisService {
     public String getRedis(String key) {
         ShardedJedis jedis = null;
         try {
-            jedis = shardedRWRedisPool.borrowWriteResource();
+            jedis = shardedRWRedisPool.borrowReadResource();
             String value = jedis.get(key);
             return value;
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class RedisService {
     	//存在，返回1，不存在，返回0，出错，返回-1.
         ShardedJedis jedis = null;
         try {
-            jedis = shardedRWRedisPool.borrowWriteResource();
+            jedis = shardedRWRedisPool.borrowReadResource();
             int flag=0;
             if(jedis.exists(key)) flag=1;
             return flag;

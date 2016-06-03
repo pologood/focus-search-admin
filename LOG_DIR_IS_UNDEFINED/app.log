@@ -1,0 +1,7 @@
+2016-06-03 10:39:09.342 [main] INFO  c.g.c.y.nio.impl.SelectorManager - Creating 8 reactors...
+2016-06-03 10:39:09.566 [Thread-11] INFO  c.g.c.y.core.impl.AbstractController - Controller has been stopped.
+2016-06-03 10:39:36.343 [main] INFO  c.g.c.y.nio.impl.SelectorManager - Creating 8 reactors...
+2016-06-03 10:39:36.489 [Thread-13] INFO  net.rubyeye.xmemcached.auth.AuthTask - Authentication to /10.10.40.5:11211 successfully
+2016-06-03 10:39:36.497 [Thread-14] INFO  net.rubyeye.xmemcached.auth.AuthTask - Authentication to /10.10.40.6:11211 successfully
+2016-06-03 10:39:36.504 [Thread-15] INFO  net.rubyeye.xmemcached.auth.AuthTask - Authentication to /10.16.24.1:11211 successfully
+2016-06-03 10:39:36.648 [Thread-11] INFO  c.g.c.y.core.impl.AbstractController - Controller has been stopped.
