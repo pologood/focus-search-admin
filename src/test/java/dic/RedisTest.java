@@ -1,5 +1,9 @@
 package dic;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,10 +51,8 @@ public class RedisTest {
 	@Test
 	public void testStopword() throws Exception{
 		Logger logger = LoggerFactory.getLogger(RedisTest.class);
-		System.out.println(hotWordService.getHotWordToDicByType(2));
 		System.out.println("########");
-		
-		System.out.println(stopWordsService.getStopWordToDicByType(2));
+		hotWordService.importNewProjName();
 	}
 
 }

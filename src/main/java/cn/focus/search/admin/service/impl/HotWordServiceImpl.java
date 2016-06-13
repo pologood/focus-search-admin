@@ -188,11 +188,14 @@ public class HotWordServiceImpl implements HotWordService{
 			logger.info("projNameSetToday"+keyT+"为空。");
 			return;
 		}
-		projNameSet=redisService.sdiff(keyT, keyY);
+		projNameSet=redisService.sdiff("projNameForPartition"+keyT, "projNameForPartition"+keyY);
+		
+		logger.info("projNameSet，当前数量为"+projNameSet.size());
+		logger.info("projNameSetYesterday，当前数量为"+projNameSetYesterday.size());
+		logger.info("projNameSetToday，当前数量为"+projNameSetToday.size());
+		
 		if (projNameSet.size()>100){
 			logger.info("projNameSet数量过多，当前数量为"+projNameSet.size());
-			logger.info("projNameSetYesterday，当前数量为"+projNameSetYesterday.size());
-			logger.info("projNameSetToday，当前数量为"+projNameSetToday.size());
 			return;
 		}else{
 			Iterator<String> it = projNameSet.iterator();
