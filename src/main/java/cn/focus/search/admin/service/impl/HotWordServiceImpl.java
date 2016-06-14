@@ -199,6 +199,7 @@ public class HotWordServiceImpl implements HotWordService{
 			return;
 		}else{
 			Iterator<String> it = projNameSet.iterator();
+			int count=0;
 	        while (it.hasNext()) {
 	        	String token=it.next();
 	        	if(isExist(token,1)) continue;
@@ -212,6 +213,8 @@ public class HotWordServiceImpl implements HotWordService{
 				hw.setUpdateTime(now);
 				try {
 					hotWordDao.insertHotWord(hw);
+					count++;
+					logger.info("find "+count+"new hot words,and insert them to db.");
 				} catch (Exception e) {
 					logger.error("涉及插入词"+hw.getName(),e.getMessage());
 				}
