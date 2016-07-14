@@ -47,6 +47,7 @@ public class RedisTest {
 
 	@Autowired
 	private StopWordsService stopWordsService;
+
 	
 	@Test
 	public void testStopword() throws Exception{
@@ -54,6 +55,20 @@ public class RedisTest {
 		System.out.println("########");
 		hotWordService.importNewProjName();
 	}
+	 @Test
+	 public void testRedis() throws Exception{
+		 Logger logger = LoggerFactory.getLogger(RedisTest.class);
+		 Set<String> projNameSetYesterday=redisService.popRedisSet("projNameForPartition", "2016-07-08");
+		 System.out.println("xxx");
+	 }
+
+	 @Test
+	 public void testRedisTime() throws Exception{
+		 Logger logger = LoggerFactory.getLogger(RedisTest.class);
+		 redisService.setRedis("name","yuan",true,40);
+		 Thread.sleep(10000);
+		 System.out.println(redisService.getRedis("name"));
+	 }
 
 }
 

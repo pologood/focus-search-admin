@@ -27,21 +27,21 @@
         <property name="config" ref="shardedRWRedisPoolConfig"/>
     </bean>
 
-	<beans profile="test,local">
-    	  <!-- SCE Redis 配置 -->
-    	<bean id="sceRedisServerListBuilder" class="cn.focus.dc.commons.redis.sce.SCERedisServerListBuilder">
-        <!-- sceAPIUrl为SCE统一接口样式 不需要修改 -->
-        <property name="sceAPIUrl"
-            value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}"/>
-        <!-- sceRedisUId 修改为Redis的UID -->
-        <property name="sceRedisUId" value="1369" />
-        <!-- masterPassport 修改为Redis的密码 -->
-        <property name="masterPassport" value="69a04a74420f762333c5bcb053b41c4c" />
-        <!-- slavePassport 修改为Redis的密码 -->
-        <property name="slavePassport" value="69a04a74420f762333c5bcb053b41c4c" />
-        <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
-        <property name="restTemplate" ref="restTemplate" />
-    	</bean>
+    <beans profile="test">
+        <!-- SCE Redis 配置 -->
+        <bean id="sceRedisServerListBuilder" class="cn.focus.dc.commons.redis.sce.SCERedisServerListBuilder">
+            <!-- sceAPIUrl为SCE统一接口样式 不需要修改 -->
+            <property name="sceAPIUrl"
+                      value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}" />
+            <!-- sceRedisUId 修改为Redis的UID -->
+            <property name="sceRedisUId" value="1190" />
+            <!-- masterPassport 修改为Redis的密码 -->
+            <property name="masterPassport" value="4cc452fb4f064b353350f055629db302" />
+            <!-- slavePassport 修改为Redis的密码 -->
+            <property name="slavePassport" value="4cc452fb4f064b353350f055629db302" />
+            <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
+            <property name="restTemplate" ref="restTemplate" />
+        </bean>
     </beans>
     
       <beans profile="product">
