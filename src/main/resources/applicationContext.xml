@@ -22,7 +22,6 @@
 	
 	<import resource="applicationContext-redis.xml"/>
 	<import resource="applicationContext-memcached.xml"/>
-	<import resource="sqlMapConfig.xml"/>
 	
     <!-- production环境 -->
     <beans profile="product">
@@ -48,19 +47,6 @@
             </property>
         </bean>
     </beans>
-
-    <!-- sce test环境 -->
-    <beans profile="test_sce">
-        <context:property-placeholder ignore-resource-not-found="true"
-                                      location="classpath*:/config/test_sce.properties"/>
-        <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-            <property name="locations">
-                <list>
-                    <value>classpath*:config/test_sce.properties</value>
-                </list>
-            </property>
-        </bean>
-    </beans>
     
     <!-- test环境 -->
     <beans profile="test">
@@ -76,7 +62,7 @@
     </beans>
 
     <!-- 以下是profiles共用的bean定义-->
-     <beans profile="test_sce,local,product,test">
+     <beans profile="local,product,test">
          <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
              <property name="properties" ref="configProperties"/>
          </bean>

@@ -23,7 +23,7 @@ import cn.focus.search.admin.service.impl.ParticipleManagerServiceImpl;
 
  @RunWith(SpringJUnit4ClassRunner.class) 
  @ContextConfiguration(locations={"classpath*:applicationContext.xml"})
- @ActiveProfiles("test_sce")
+ @ActiveProfiles("test")
 public class RemoteDicTest {
 	
 	@Autowired

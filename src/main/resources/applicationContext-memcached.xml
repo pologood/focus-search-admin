@@ -33,36 +33,6 @@
 
     </beans>
 
-    <beans profile="test_sce">
-
-        <!-- SCE 测试环境下 memcache 服务配置 -->
-        
-        <bean name="sceMemcachedServerListBuilder" class="cn.focus.dc.commons.memcache.SCEMemcachedServerListBuilder">
-			<property name="sceZKUrl"
-				value="http://sceapi.apps.sohuno.com/api/memcache/release?uid={uid}&amp;key={key}" />
-			<property name="sceUid" value="1093" />
-			<property name="scePassword" value="7943823911298e0f0428d6aa575fe412" />
-		</bean>
-		
-		<bean name="sceMemcachedServerListStr" factory-bean="sceMemcachedServerListBuilder" factory-method="getServerListStr"/>
-		<bean name="authInfoMap" factory-bean="sceMemcachedServerListBuilder" factory-method="getAuthInfoMap"/>
-	
-		<bean name="myMemcachedClient"
-			class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" 
-			destroy-method="shutdown"> 
-			<property name="servers" ref="sceMemcachedServerListStr" />
-			<property name="authInfoMap" ref="authInfoMap"/>
-			<property name="connectionPoolSize" value="1"></property>
-			<property name="commandFactory">
-				<bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory"></bean>
-			</property>
-			<property name="sessionLocator">
-				<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
-			</property>
-			<property name="transcoder" ref="transcoder" />
-		</bean>
-    </beans>
-
 
     <beans profile="product">
         <!-- SCE 正式环境下 memcache 服务配置 -->
