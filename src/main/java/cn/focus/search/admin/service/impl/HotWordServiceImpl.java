@@ -190,35 +190,31 @@ public class HotWordServiceImpl implements HotWordService{
 		}
 		projNameSet=redisService.sdiff("projNameForPartition"+keyT, "projNameForPartition"+keyY);
 		
-		logger.info("projNameSet，当前数量为"+projNameSet.size());
+
 		logger.info("projNameSetYesterday，当前数量为"+projNameSetYesterday.size());
 		logger.info("projNameSetToday，当前数量为"+projNameSetToday.size());
-		
-		if (projNameSet.size()>100){
-			logger.info("projNameSet数量过多，当前数量为"+projNameSet.size());
-			return;
-		}else{
-			Iterator<String> it = projNameSet.iterator();
-			int count=0;
-	        while (it.hasNext()) {
-	        	String token=it.next();
-	        	if(isExist(token,1)) continue;
-				HotWord hw = new HotWord();
-				hw.setName(token);
-				hw.setType(1);
-				hw.setStatus(Constants.ORI_STATUS);
-				hw.setEditor("system");
-				Date now=new Date();
-				hw.setCreateTime(now);
-				hw.setUpdateTime(now);
-				try {
-					hotWordDao.insertHotWord(hw);
-					count++;
-					logger.info("find "+count+"new hot words,and insert them to db.");
-				} catch (Exception e) {
-					logger.error("涉及插入词"+hw.getName(),e.getMessage());
-				}
-	        }
+		logger.info("projNameSet，当前数量为"+projNameSet.size());
+
+		Iterator<String> it = projNameSet.iterator();
+		int count=0;
+		while (it.hasNext()) {
+			String token=it.next();
+			if(isExist(token,1)) continue;
+			HotWord hw = new HotWord();
+			hw.setName(token);
+			hw.setType(1);
+			hw.setStatus(Constants.ORI_STATUS);
+			hw.setEditor("system");
+			Date now=new Date();
+			hw.setCreateTime(now);
+			hw.setUpdateTime(now);
+			try {
+				hotWordDao.insertHotWord(hw);
+				count++;
+				logger.info("find "+count+"new hot words,and insert them to db.");
+			} catch (Exception e) {
+				logger.error("涉及插入词"+hw.getName(),e.getMessage());
+			}
 		}
 	}	
 	
