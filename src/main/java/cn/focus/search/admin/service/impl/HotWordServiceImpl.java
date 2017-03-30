@@ -210,7 +210,7 @@ public class HotWordServiceImpl implements HotWordService{
 	 * @date 2016年5月26日上午11:26:10
 	 * @description 
 	 */
-	public boolean isExist(String token,int type) {
+	public boolean  isExist(String token,int type) {
 		boolean flag=false;
 		try {
 			List<HotWord> list=hotWordDao.getHotWordListByName(token);

@@ -149,8 +149,8 @@ public class RedisService {
     }
 
     /**
-     * @param key1
-     * @param key2
+     * @param key
+     * @param value
      */
     public void setRedis(String key, String value) {
         ShardedJedis jedis = null;
