@@ -1,7 +1,8 @@
 package cn.focus.search.admin.service;
 
-import java.util.List;
 import cn.focus.search.admin.model.UserInfo;
+
+import java.util.List;
 
 public interface UserManagerService {
 

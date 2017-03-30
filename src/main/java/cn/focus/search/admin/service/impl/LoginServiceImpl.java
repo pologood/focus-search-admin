@@ -1,14 +1,13 @@
 package cn.focus.search.admin.service.impl;
 
-import java.util.UUID;
-
+import cn.focus.search.admin.dao.UserInfoDao;
+import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.LoginService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.focus.search.admin.dao.UserInfoDao;
-import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.LoginService;
+import java.util.UUID;
 
 @Service
 public class LoginServiceImpl implements LoginService {

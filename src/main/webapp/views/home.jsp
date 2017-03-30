@@ -101,6 +101,8 @@ $(function(){
 				<p class="clickBefore" src="/admin/pm/hot">添加热词</p>
 				<p class="clickBefore" src="/admin/pm/stop">添加停止词</p>
 				<p class="clickBefore" id="loadDicBtn">更新词库</p>
+				<p class="clickBefore" src="/newIndex/updateIndex">更新索引</p>
+				<p class="clickBefore" src="/deleteIndex/deleteIndex">删除索引</p>
 			</div>
 		</div>
 	</div>

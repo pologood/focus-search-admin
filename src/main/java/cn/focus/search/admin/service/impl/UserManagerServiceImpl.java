@@ -1,15 +1,14 @@
 package cn.focus.search.admin.service.impl;
 
-import java.util.List;
-
+import cn.focus.search.admin.dao.UserInfoDao;
+import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.UserManagerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.focus.search.admin.dao.UserInfoDao;
-import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.UserManagerService;
+import java.util.List;
 
 @Service
 public class UserManagerServiceImpl implements UserManagerService{

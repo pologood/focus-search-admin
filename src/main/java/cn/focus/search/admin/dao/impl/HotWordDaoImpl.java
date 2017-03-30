@@ -1,14 +1,13 @@
 package cn.focus.search.admin.dao.impl;
 
-import java.util.List;
-
+import cn.focus.search.admin.dao.HotWordDao;
+import cn.focus.search.admin.model.HotWord;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import cn.focus.search.admin.dao.HotWordDao;
-import cn.focus.search.admin.model.HotWord;
+import java.util.List;
 
 @Repository
 public class HotWordDaoImpl implements HotWordDao{

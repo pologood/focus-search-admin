@@ -1,16 +1,16 @@
 package cn.focus.search.admin.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.focus.search.admin.config.Constants;
+import cn.focus.search.admin.config.LastTime;
+import cn.focus.search.admin.model.HotWord;
+import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.HotWordService;
+import cn.focus.search.admin.service.ParticipleManagerService;
+import cn.focus.search.admin.utils.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -22,19 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-
-import cn.focus.search.admin.config.Constants;
-import cn.focus.search.admin.config.LastTime;
-import cn.focus.search.admin.model.HotWord;
-import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.HotWordService;
-import cn.focus.search.admin.service.ParticipleManagerService;
-import cn.focus.search.admin.utils.JSONUtils;
-import cn.focus.search.admin.utils.StopWordsUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/hot")

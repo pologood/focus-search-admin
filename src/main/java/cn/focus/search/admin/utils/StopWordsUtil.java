@@ -1,16 +1,9 @@
 package cn.focus.search.admin.utils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
+import cn.focus.search.admin.model.StopWords;
 import org.springframework.stereotype.Service;
 
-import cn.focus.search.admin.model.HotWord;
-import cn.focus.search.admin.model.StopWords;
+import java.util.*;
 
 @Service
 public class StopWordsUtil {

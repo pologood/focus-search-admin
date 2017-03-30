@@ -1,12 +1,12 @@
 package cn.focus.search.admin.config;
 
-import java.util.Calendar;
+import cn.focus.search.admin.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cn.focus.search.admin.service.RedisService;
+import java.util.Calendar;
 
 @Component
 public class LastTime {

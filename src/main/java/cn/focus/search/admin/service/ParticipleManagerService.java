@@ -1,6 +1,7 @@
 package cn.focus.search.admin.service;
-import java.util.Map;
 import cn.focus.search.admin.model.PplResult;
+
+import java.util.Map;
 /**
  * 
  * @author xueqingyuan

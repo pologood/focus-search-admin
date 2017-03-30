@@ -1,11 +1,12 @@
 package cn.focus.search.admin.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.focus.search.admin.model.UserInfo;
+import cn.focus.search.admin.service.LoginService;
+import cn.focus.search.admin.service.UserManagerService;
+import cn.focus.search.admin.utils.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,14 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.focus.search.admin.model.UserInfo;
-import cn.focus.search.admin.service.LoginService;
-import cn.focus.search.admin.service.UserManagerService;
-import cn.focus.search.admin.utils.JSONUtils;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user/um")

@@ -18,7 +18,7 @@ $(function(){
 		$("#nPwInput").val('');
 		$("#nPwCfInput").val('');
 		$('#modifyPwDia').dialog('open');
-	})
+	});
 	
 	var name = "${cUserName}";
 	if(name!= "admin1"){

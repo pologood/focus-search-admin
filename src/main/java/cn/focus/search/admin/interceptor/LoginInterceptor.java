@@ -1,16 +1,14 @@
 package cn.focus.search.admin.interceptor;
 
-import java.util.HashMap;
-import java.util.Map;
+import cn.focus.search.admin.model.UserInfo;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
-import cn.focus.search.admin.model.UserInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 此拦截器

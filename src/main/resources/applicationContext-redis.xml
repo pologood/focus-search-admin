@@ -3,61 +3,53 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd"
-         >
+>
 
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+    </bean>
     <!-- Redis 连接池配置 -->
     <bean id="shardedRWRedisPoolConfig" class="cn.focus.dc.commons.redis.ShardedRWRedisPoolConfig">
         <!--最大分配的对象数 -->
-        <property name="maxActive" value="500"/>
+        <property name="maxActive" value="1000" />
         <!-- 最大能够保持idel状态的对象数 -->
-        <property name="maxIdle" value="200"/>
+        <property name="maxIdle" value="200" />
         <!-- 当池内没有返回对象时，最大等待时间 -->
-        <property name="maxWait" value="1000"/>
+        <property name="maxWait" value="10000" />
         <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
-        <property name="testOnBorrow" value="true"/>
-        <!-- 当idle时，检测连接是否正常 -->
-        <property name="testWhileIdle" value="true"/>
-        <!-- 当连接返还时，检测连接是否正常 -->
-        <property name="testOnReturn" value="true"/>
+        <property name="testOnBorrow" value="true" />
     </bean>
 
     <!-- RedisPool 实例工厂类配置 -->
-    <bean id="sceRWRedisPoolFactory" class="cn.focus.dc.commons.redis.sce.SCERWRedisPoolFactory">
-        <property name="sceRedisServerListBuilder" ref="sceRedisServerListBuilder"/>
-        <property name="config" ref="shardedRWRedisPoolConfig"/>
+    <bean id="rawRWRedisPoolFactory" class="cn.focus.dc.commons.redis.raw.RAWRWRedisPoolFactory">
+        <property name="rawRedisServerListBuilder" ref="rawRedisServerListBuilder" />
+        <property name="config" ref="shardedRWRedisPoolConfig" />
     </bean>
 
-    <beans profile="test">
-        <!-- SCE Redis 配置 -->
-        <bean id="sceRedisServerListBuilder" class="cn.focus.dc.commons.redis.sce.SCERedisServerListBuilder">
-            <!-- sceAPIUrl为SCE统一接口样式 不需要修改 -->
-            <property name="sceAPIUrl"
-                      value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}" />
-            <!-- sceRedisUId 修改为Redis的UID -->
-            <property name="sceRedisUId" value="1190" />
-            <!-- masterPassport 修改为Redis的密码 -->
-            <property name="masterPassport" value="4cc452fb4f064b353350f055629db302" />
-            <!-- slavePassport 修改为Redis的密码 -->
-            <property name="slavePassport" value="4cc452fb4f064b353350f055629db302" />
-            <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
-            <property name="restTemplate" ref="restTemplate" />
-        </bean>
-    </beans>
-    
-      <beans profile="product">
-    	  <!-- SCE Redis 配置 -->
-    	<bean id="sceRedisServerListBuilder" class="cn.focus.dc.commons.redis.sce.SCERedisServerListBuilder">
-        <!-- sceAPIUrl为SCE统一接口样式 不需要修改 -->
-        <property name="sceAPIUrl"
-            value="http://sceapi.apps.sohuno.com/api/redis/release?uid={sceRedisUId}" />
-        <!-- sceRedisUId 修改为Redis的UID -->
-        <property name="sceRedisUId" value="1371" />
-        <!-- masterPassport 修改为Redis的密码 -->
-        <property name="masterPassport" value="6c85cce755fd77736f9ae25862a0fd1f" />
-        <!-- slavePassport 修改为Redis的密码 -->
-        <property name="slavePassport" value="6c85cce755fd77736f9ae25862a0fd1f" />
-        <!-- 这里需要一个 RestTemplate 可以参考下面的配置 -->
-        <property name="restTemplate" ref="restTemplate" />
+    <!-- redis写库 -->
+    <bean id="focusDaminLoginWRITERedis" class="cn.focus.dc.commons.redis.raw.RedisConfig">
+        <property name="ip" value="${redis.write.ip}" />
+        <property name="port" value="${redis.write.port}" />
+        <property name="password" value="${redis.write.password}" />
     </bean>
-    </beans>
+
+    <!-- redis读库 -->
+    <bean id="focusDaminLoginREADRedis" class="cn.focus.dc.commons.redis.raw.RedisConfig">
+        <property name="ip" value="${redis.read.ip}" />
+        <property name="port" value="${redis.read.port}" />
+        <property name="password" value="${redis.read.password}" />
+    </bean>
+
+    <!-- Redis 配置 -->
+    <bean id="rawRedisServerListBuilder" class="cn.focus.dc.commons.redis.raw.RAWRedisServerListBuilder">
+        <property name="writeRedisConfigs">
+            <list>
+                <ref bean="focusDaminLoginWRITERedis" />
+            </list>
+        </property>
+        <property name="readRedisConfigs">
+            <list>
+                <ref bean="focusDaminLoginREADRedis" />
+            </list>
+        </property>
+    </bean>
 </beans>
