@@ -50,6 +50,7 @@ public class HotWordServiceImpl implements HotWordService{
 		int s = 0;
         try {
             s = hotWordDao.insertHotWord(hotWord);
+            redisService.popRedisSet("projNameForPartitio","helloworld");
         } catch (Exception e) {
             logger.error("插入热词数据异常!", e);
         }
