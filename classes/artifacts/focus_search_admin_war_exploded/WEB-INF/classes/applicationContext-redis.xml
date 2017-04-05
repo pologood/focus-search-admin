@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+    </bean>
+    <!-- Redis 连接池配置 -->
+    <bean id="shardedRWRedisPoolConfig" class="cn.focus.dc.commons.redis.ShardedRWRedisPoolConfig">
+        <!--最大分配的对象数 -->
+        <property name="maxActive" value="1000" />
+        <!-- 最大能够保持idel状态的对象数 -->
+        <property name="maxIdle" value="200" />
+        <!-- 当池内没有返回对象时，最大等待时间 -->
+        <property name="maxWait" value="10000" />
+        <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
+        <property name="testOnBorrow" value="true" />
+    </bean>
+
+    <!-- RedisPool 实例工厂类配置 -->
+    <bean id="rawRWRedisPoolFactory" class="cn.focus.dc.commons.redis.raw.RAWRWRedisPoolFactory">
+        <property name="rawRedisServerListBuilder" ref="rawRedisServerListBuilder" />
+        <property name="config" ref="shardedRWRedisPoolConfig" />
+    </bean>
+
+    <!-- redis写库 -->
+    <bean id="focusDaminLoginWRITERedis" class="cn.focus.dc.commons.redis.raw.RedisConfig">
+        <property name="ip" value="${redis.write.ip}" />
+        <property name="port" value="${redis.write.port}" />
+        <property name="password" value="${redis.write.password}" />
+    </bean>
+
+    <!-- redis读库 -->
+    <bean id="focusDaminLoginREADRedis" class="cn.focus.dc.commons.redis.raw.RedisConfig">
+        <property name="ip" value="${redis.read.ip}" />
+        <property name="port" value="${redis.read.port}" />
+        <property name="password" value="${redis.read.password}" />
+    </bean>
+
+    <!-- Redis 配置 -->
+    <bean id="rawRedisServerListBuilder" class="cn.focus.dc.commons.redis.raw.RAWRedisServerListBuilder">
+        <property name="writeRedisConfigs">
+            <list>
+                <ref bean="focusDaminLoginWRITERedis" />
+            </list>
+        </property>
+        <property name="readRedisConfigs">
+            <list>
+                <ref bean="focusDaminLoginREADRedis" />
+            </list>
+        </property>
+    </bean>
+</beans>

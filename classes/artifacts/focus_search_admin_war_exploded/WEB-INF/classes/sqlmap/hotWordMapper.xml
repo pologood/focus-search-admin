@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="HotWordDao">
+    <!--mybatis3 这个namespace 必需指定到接口上去 -->
+    <resultMap id="BaseResultMap" type="HotWord">
+        <id 	column="id" 			property="id" 			jdbcType="INTEGER"/>
+        <result column="name" 			property="name" 		jdbcType="VARCHAR"/>
+        <result column="type" 			property="type" 		jdbcType="INTEGER"/>
+        <result column="status" 		property="status" 		jdbcType="INTEGER"/>
+        <result column="editor" 		property="editor" 		jdbcType="VARCHAR"/>
+        <result column="create_time" 	property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" 	property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		name,
+		type,
+		status,
+		editor,
+		create_time,
+		update_time
+	</sql>
+	
+	<!-- 更新热词status -->
+	<update id="setExported"  parameterType="java.lang.Integer" statementType="PREPARED" flushCache="true">
+        update hot_word
+        set status=1
+        where status=0 and type=#{type}
+    </update>
+	
+	<!-- 获取热词列表 -->
+    <select id="getHotWordList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
+        select
+        <include refid="Base_Column_List"/>
+        from hot_word
+    </select>
+    
+    <!-- 根据名称获取热词列表 -->
+    <select id="getHotWordListByName" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
+        select
+        <include refid="Base_Column_List"/>
+        from hot_word
+        where name = #{wordName}
+    </select>
+	
+		<!-- 添加热词 -->
+    <insert id="insertHotWord" parameterType="HotWord" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
+        insert into hot_word(
+		name,
+		type,
+		status,
+		editor,
+		create_time,
+		update_time
+        )
+        values (
+        #{name},        
+        #{type},
+        #{status},
+        #{editor},
+        #{createTime},
+        #{updateTime}
+        )
+        <!-- <selectKey resultType="java.lang.Integer" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey> -->
+    </insert>
+	
+    <select id="getDayHotWordList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from hot_word
+		where to_days(update_time)=to_days(now())
+	</select>
+	
+	
+	
+    <select id="getTotalHotWordList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from hot_word
+		where status=0
+	</select>
+	
+	<!-- 根据ID删除热词 -->
+	<delete id="delHotWordById" parameterType="java.lang.Integer" statementType="PREPARED">
+		delete from hot_word
+		where id=#{id}
+	</delete>
+	
+	<!-- 根据status获取热词 -->
+	<select id="getHotWordnameByStatus" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED"><!-- resultMap="BaseResultMap"  -->
+		select name	
+		from hot_word
+		where status=#{status}
+	</select>
+	
+    <!-- 根据type获取热词 -->
+	<select id="getHotWordToDicByType" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED">
+		select name	
+		from hot_word
+		where type=#{type} and status=0
+	</select>
+	
+	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
+        select count(id)
+        from hot_word
+    </select>
+</mapper>

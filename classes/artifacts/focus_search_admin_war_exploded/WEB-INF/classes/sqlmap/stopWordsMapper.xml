@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="StopWordsDao">
+    <!--mybatis3 这个namespace 必需指定到接口上去 -->
+    <resultMap id="BaseResultMap" type="StopWords">
+        <id 	column="id" 			property="id" 			jdbcType="INTEGER"/>
+        <result column="name" 			property="name" 		jdbcType="VARCHAR"/>
+        <result column="type" 			property="type" 		jdbcType="INTEGER"/>
+        <result column="status" 		property="status" 		jdbcType="INTEGER"/>
+        <result column="editor" 		property="editor" 		jdbcType="VARCHAR"/>
+        <result column="create_time" 	property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" 	property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		name,
+		type,
+		status,
+		editor,
+		create_time,
+		update_time
+	</sql>
+	
+	<!-- 将status置0 ,这里应该和导出动作结合，最好使用事务，下一个版本更新。-->
+	<update id="setExported"  parameterType="java.lang.Integer" statementType="PREPARED" flushCache="true">
+        update stop_words
+        set status=1
+         where status=0 and type=#{type}
+    </update>
+
+	<!-- 获取停用词列表 -->
+    <select id="getStopWordsList" resultMap="BaseResultMap"><!--  statementType="PREPARED" -->
+        select
+        <include refid="Base_Column_List"/>
+        from stop_words
+    </select>
+    
+    <!-- 根据名称获取停用词列表 -->
+    <select id="getStopWordsListByName" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="PREPARED">
+        select
+        <include refid="Base_Column_List"/>
+        from stop_words
+        where name = #{wordName}
+    </select>
+    
+	<!-- 添加停用词 -->
+    <insert id="insertStopWords" parameterType="StopWords" flushCache="false"><!-- useGeneratedKeys="true" keyProperty="id" --> 
+        insert into stop_words(
+		name,
+		type,
+		status,
+		editor,
+		create_time,
+		update_time
+        )
+        values (
+        #{name},        
+        #{type},
+        #{status},
+        #{editor},
+        #{createTime},
+        #{updateTime}
+        )
+        <!-- <selectKey resultType="java.lang.Integer" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey> -->
+    </insert>
+    
+    <!-- 根据status获取停止词 -->
+	<select id="getStopWordnameByStatus" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED"><!-- resultMap="BaseResultMap"  -->
+		select name	
+		from stop_words
+		where status=#{status}
+	</select>
+	
+	<!-- 根据status获取停止词 -->
+	<select id="getStopWordToDicByType" parameterType="java.lang.Integer" 
+	 resultType="java.lang.String" statementType="PREPARED">
+		select name	
+		from stop_words
+		where type=#{type} and status=0;
+	</select>
+	
+    <select id="getDayStopWordsList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from stop_words
+		where to_days(update_time)=to_days(now())
+	</select>
+	
+	
+    <select id="getTotalStopWordsList" resultMap="BaseResultMap"
+		parameterType="java.lang.String" statementType="PREPARED">
+		select
+		<include refid="Base_Column_List" />
+		from stop_words
+		where status=0
+	</select>
+	
+	<delete id="delStopWordsById" parameterType="java.lang.Integer" statementType="PREPARED">
+		delete from stop_words
+		where id=#{id}
+	</delete>
+	
+	<select id="getTotalNum" resultType="java.lang.Integer"  statementType="PREPARED">
+        select count(id)
+        from stop_words
+    </select>
+</mapper>
