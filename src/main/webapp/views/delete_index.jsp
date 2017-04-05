@@ -53,7 +53,7 @@
                 $("#deleteByBaseIdDia").dialog("open");
 
             });
-            $("#deleteByCityId").click(function () {
+            $("#deleteByEndTimeStamp").click(function () {
                 $("#deleteEndTimeStampDia").dialog("open");
             });
         });
@@ -87,15 +87,26 @@
                 }
             });
         }
+        function dateToUnixTime(string) {
+
+            var f = string.split(' ', 2);
+            var d = (f[0] ? f[0] : '').split('-', 3);
+            var t = (f[1] ? f[1] : '').split(':', 3);
+            return (new Date(parseInt(d[0], 10) || null, (parseInt(d[1], 10) || 1) - 1, parseInt(d[2], 10) || null, parseInt(t[0], 10) || null, parseInt(t[1], 10) || null, parseInt(t[2], 10) || null)).getTime() / 1000;
+        }
         function useCityId() {
-            var EndTimeStampInput = $("#endTimeStampInput").val();
+            var EndTimeStampInput = $("#endTimeStampInput").datetimebox('getValue');
+            alert(EndTimeStampInput);
+            var UnixTime = dateToUnixTime(EndTimeStampInput);
+            alert(UnixTime);
             if (EndTimeStampInput == null || EndTimeStampInput == "") {
-                $.messager.alert("错误", "请选择正确的时间戳！", "error");
+
+                $.messager.alert("错误", EndTimeStampInput,"error");
                 return;
             }
-            var data = "CityId=" + CityId;
+            var data = "EndTimeStamp=" + dateToUnixTime(EndTimeStampInput);
             $.ajax({
-                url: rootpath + "/deleteIndex/deleteIndexByCityId",
+                url: rootpath + "/deleteIndex/deleteIndexByEndTimeStamp",
                 type: "post",
                 data: data,
                 dataType: "json",
@@ -104,15 +115,15 @@
                     $.messager.progress('close');
                     if (response.errorCode == 0) {
                         $('#deleteEndTimeStampDia').dialog('close');
-                        $.messager.alert('成功', '通过城市id删除条目成功!', 'info');
+                        $.messager.alert('成功', '根据时间戳删除条目成功!', 'info');
                     } else {
                         $('#deleteEndTimeStampDia').dialog('close');
-                        $.messager.alert('错误', '通过城市id删除条目失败!', 'error');
+                        $.messager.alert('错误', '根据时间戳删除条目失败!', 'error');
                     }
                 },
                 error: function (e) {
                     $('#deleteEndTimeStampDia').dialog('close');
-                    $.messager.alert('错误', '通过城市id删除条目失败!', 'error');
+                    $.messager.alert('错误', '根据时间戳删除条目失败!', 'error');
                 }
             });
         }
@@ -122,7 +133,7 @@
 <div id="tb" style="padding:5px;height:auto">
     <div>
         <a href="javascript:void(0)" id="deleteByBaseId" class="easyui-linkbutton" iconCls="icon-edit">输入楼盘id</a>
-        <a href="javascript:void(0)" id="deleteByCityId" class="easyui-linkbutton" iconCls="icon-edit">输入城市id</a>
+        <a href="javascript:void(0)" id="deleteByEndTimeStamp" class="easyui-linkbutton" iconCls="icon-edit">输入日期</a>
     </div>
 </div>
 
@@ -134,7 +145,7 @@
 </div>
 <div id="deleteEndTimeStampDia" style="padding:5px;width:250px;height:165px;">
     <br/>
-    <p>&nbsp;请输入日期:&nbsp;<label id="cityIdLabel"></label><input id="endTimeStampInput" type="text" align="center" class="easyui-datebox" required="required" style="width:120px"/>
+    <p>&nbsp;请输入时间:&nbsp;<label id="cityIdLabel"></label><input id="endTimeStampInput" align="center" class="easyui-datetimebox" data-options="required:true,showSeconds:false" style="width:120px"/>
     </p>
     <br/>
 </div>

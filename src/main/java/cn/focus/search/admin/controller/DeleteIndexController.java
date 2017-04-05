@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/deleteIndex")
 public class DeleteIndexController {
     private Logger logger = LoggerFactory.getLogger(ParticipleManagerController.class);
-
+    private String url1 = "curl -XDELETE http://10.10.24.179:9202/eco_projsearch_alias/eco_project/";
     @RequestMapping(value = "deleteIndex", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView showDeleteOption() {
@@ -39,9 +39,8 @@ public class DeleteIndexController {
     public String deleteIndexByBaseId(HttpServletRequest request) {
         try {
             String baseId = request.getParameter("BaseId");
-            /*
-                接口部分，输入BaseId，进入判断
-             */
+            String command = url1 + baseId;
+            Runtime.getRuntime().exec(command);
             if (StringUtils.isBlank(baseId)) {
                 return JSONUtils.badResult("failed");
             }
@@ -52,7 +51,7 @@ public class DeleteIndexController {
         }
     }
 
-    @RequestMapping(value = "deleteIndexByCityId", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteIndexByEndTimeStamp", method = RequestMethod.POST)
     @ResponseBody
     public String deleteIndexByCityId(HttpServletRequest request) {
         try {
