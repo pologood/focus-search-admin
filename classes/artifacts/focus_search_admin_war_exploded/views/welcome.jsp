@@ -9,12 +9,15 @@
 <body>
 <div id="p" class="easyui-panel" title="Basic Panel" style="width:700px;height:200px;padding:10px;">
         <ul>
-            <li>产品支持</li>
-            <li>陆景浩</li>
-            <li>eamil:jinghaolu@sohu-inc.com</li>
             <li>技术支持</li>
-            <li>薛庆元</li>
-            <li>email:qingyuanxue@sohu-inc.com</li>
+            <li>梁皓天</li>
+            <li>email:haotianliang@sohu-inc.com</li>
+            <br/>
+            <br/>
+            <li>补充说明：</li>
+            <li>1. &nbsp; 热词status值为0时，分词效果为不分词，若status值为1时，正常分词。</li>
+            <li>2. &nbsp; 只能导出status值为0的热词，导出之后，status值置为1。导出词典之后，需要手动将词典上传到服务器ik分词器目录下面，以保证分词效果。</li>
+            <li>3. &nbsp; 更新索引和删除索引都是对elasticsearch上已有的索引条目进行更新或者删除操作。</li>
         </ul>
     </div>
 </body>

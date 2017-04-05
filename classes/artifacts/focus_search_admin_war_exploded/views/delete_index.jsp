@@ -31,7 +31,7 @@
                     }
                 }]
             });
-            $("#deleteByCityIdDia").dialog({
+            $("#deleteEndTimeStampDia").dialog({
                 title: "基于城市id删除索引",
                 closed: true,//初始时不显示
                 buttons: [{
@@ -42,7 +42,7 @@
                     text: "取消",
                     iconCls: "icon-no",
                     handler: function () {
-                        $("#deleteByCityIdDia").dialog("close");
+                        $("#deleteEndTimeStampDia").dialog("close");
                     }
                 }]
             });
@@ -54,7 +54,7 @@
 
             });
             $("#deleteByCityId").click(function () {
-                $("#deleteByCityIdDia").dialog("open");
+                $("#deleteEndTimeStampDia").dialog("open");
             });
         });
 
@@ -88,9 +88,9 @@
             });
         }
         function useCityId() {
-            var CityId = $("#cityIdInput").val();
-            if (CityId == null || CityId == "") {
-                $.messager.alert("错误", "未填写城市id！", "error");
+            var EndTimeStampInput = $("#endTimeStampInput").val();
+            if (EndTimeStampInput == null || EndTimeStampInput == "") {
+                $.messager.alert("错误", "请选择正确的时间戳！", "error");
                 return;
             }
             var data = "CityId=" + CityId;
@@ -103,15 +103,15 @@
                 success: function (response) {
                     $.messager.progress('close');
                     if (response.errorCode == 0) {
-                        $('#deleteByCityIdDia').dialog('close');
+                        $('#deleteEndTimeStampDia').dialog('close');
                         $.messager.alert('成功', '通过城市id删除条目成功!', 'info');
                     } else {
-                        $('#deleteByCityIdDia').dialog('close');
+                        $('#deleteEndTimeStampDia').dialog('close');
                         $.messager.alert('错误', '通过城市id删除条目失败!', 'error');
                     }
                 },
                 error: function (e) {
-                    $('#deleteByCityIdDia').dialog('close');
+                    $('#deleteEndTimeStampDia').dialog('close');
                     $.messager.alert('错误', '通过城市id删除条目失败!', 'error');
                 }
             });
@@ -132,9 +132,9 @@
     </p>
     <br/>
 </div>
-<div id="deleteByCityIdDia" style="padding:5px;width:250px;height:165px;">
+<div id="deleteEndTimeStampDia" style="padding:5px;width:250px;height:165px;">
     <br/>
-    <p>&nbsp;请输入城市id:&nbsp;<label id="cityIdLabel"></label><input id="cityIdInput" align="center" style="width:120px"/>
+    <p>&nbsp;请输入日期:&nbsp;<label id="cityIdLabel"></label><input id="endTimeStampInput" type="text" align="center" class="easyui-datebox" required="required" style="width:120px"/>
     </p>
     <br/>
 </div>

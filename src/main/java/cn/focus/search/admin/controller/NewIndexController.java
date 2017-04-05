@@ -4,10 +4,12 @@ import cn.focus.search.admin.utils.JSONUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/newIndex")
 public class NewIndexController {
     private Logger logger = LoggerFactory.getLogger(ParticipleManagerController.class);
+    private String url1 = "http://search-engine.focus-dev.cn/index/impressDataByPid?token_key=konichiwa&pid=";
+    private String url2 = "http://search-engine.focus-dev.cn/index/impressDataByCityId?token_key=konichiwa&cityId=";
+    private String url3 = "http://search-engine.focus-dev.cn/index/impressAllData?token_key=konichiwa";
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @RequestMapping(value = "updateIndex", method = RequestMethod.GET)
     @ResponseBody
@@ -40,13 +48,11 @@ public class NewIndexController {
     public String updateIndexByBaseId(HttpServletRequest request) {
         try {
             String baseId = request.getParameter("baseId");
-            /*
-                接口部分，输入baseId，进入判断
-             */
             if (StringUtils.isBlank(baseId)) {
                 return JSONUtils.badResult("failed");
             }
-            return JSONUtils.ok();
+            String urlTemp = url1 + baseId;
+            return restTemplate.getForObject(urlTemp.toString(), String.class);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JSONUtils.badResult("failed");
@@ -58,22 +64,20 @@ public class NewIndexController {
     public String updateIndexByCityId(HttpServletRequest request) {
         try {
             String cityId = request.getParameter("CityId");
-            /*
-                接口部分，输入CityId，进入判断
-             */
             if (StringUtils.isBlank(cityId)) {
                 return JSONUtils.badResult("failed");
             }
-            return JSONUtils.ok();
+            String urlTemp = url1 + cityId;
+            return restTemplate.getForObject(urlTemp.toString(), String.class);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JSONUtils.badResult("failed");
         }
     }
 
-    @RequestMapping(value = "updateAll",method = RequestMethod.POST)
+    @RequestMapping(value = "updateAll", method = RequestMethod.POST)
     @ResponseBody
     public String updateAll(HttpServletRequest request) {
-        return JSONUtils.ok();
+        return restTemplate.getForObject(url3.toString(), String.class);
     }
 }
